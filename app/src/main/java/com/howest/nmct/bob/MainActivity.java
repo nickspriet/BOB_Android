@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initContent() {
         container = (FrameLayout) findViewById(R.id.container);
-        navigateToRides();
+        navigateToFeed();
     }
 
     private void initDrawer() {
