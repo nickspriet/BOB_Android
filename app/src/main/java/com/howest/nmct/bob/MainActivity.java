@@ -15,6 +15,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import com.howest.nmct.bob.fragments.EventsFragment;
+import com.howest.nmct.bob.fragments.FeedFragment;
+import com.howest.nmct.bob.fragments.ProfileFragment;
+import com.howest.nmct.bob.fragments.RidesFragment;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -33,7 +38,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initContent() {
         container = (FrameLayout) findViewById(R.id.container);
-        navigateToFeed();
+        navigateToRides();
     }
 
     private void initDrawer() {
