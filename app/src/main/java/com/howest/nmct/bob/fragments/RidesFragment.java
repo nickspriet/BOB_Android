@@ -47,8 +47,22 @@ public class RidesFragment extends Fragment {
     }
 
     private void initData() {
-        rides.add(new Ride("Tomorrowland", "20/10/2015", "http://www.tomorrowland.com/sites/default/files/styles/image_gallery_full/public/media/Galleries/2013/BESTOF_Friday_-04.jpg"));
-        rides.add(new Ride("Gent Festival", "12/07/2016", "http://gentsefeesten.gent/sites/default/files/styles/eyecatcher/public/eyecatcher/image/Foto%2021%20mensenzee%20Korenmarkt.jpg?itok=5ci3hCrr"));
+        Ride tomorrowLand = new Ride("Tomorrowland", "20/10/2015", "Tomorrowstraat 123, Brussel");
+        tomorrowLand.setImage("http://www.tomorrowland.com/sites/default/files/styles/image_gallery_full/public/media/Galleries/2013/BESTOF_Friday_-04.jpg");
+
+        Ride gentseRide = new Ride("Gentse Feesten", "12/07/2016", "Korenmarkt, Gent");
+        gentseRide.setImage("http://gentsefeesten.gent/sites/default/files/styles/eyecatcher/public/eyecatcher/image/Foto%2021%20mensenzee%20Korenmarkt.jpg?itok=5ci3hCrr");
+        gentseRide.setApproved(10);
+        tomorrowLand.setRequests(5);
+
+        rides.add(tomorrowLand);
+        rides.add(gentseRide);
+        rides.add(tomorrowLand);
+        rides.add(gentseRide);
+        rides.add(tomorrowLand);
+        rides.add(gentseRide);
+        rides.add(tomorrowLand);
+        rides.add(gentseRide);
     }
 
     private void initViews() {
@@ -86,6 +100,9 @@ public class RidesFragment extends Fragment {
             Ride ride = rides.get(position);
             holder.rideTitle.setText(ride.getTitle());
             holder.rideDate.setText(ride.getDate());
+            holder.rideAddress.setText(ride.getAddress());
+            holder.valueApproved.setText(String.format("%s", ride.getApproved()));
+            holder.valueRequests.setText(String.format("%s", ride.getRequests()));
 
             Picasso p = Picasso.with(activity);
             // Red = Network
@@ -115,6 +132,15 @@ public class RidesFragment extends Fragment {
 
             @Bind(R.id.ride_date)
             TextView rideDate;
+
+            @Bind(R.id.ride_address)
+            TextView rideAddress;
+
+            @Bind(R.id.valueApproved)
+            TextView valueApproved;
+
+            @Bind(R.id.valueRequests)
+            TextView valueRequests;
 
             public ViewHolder(View view) {
                 super(view);

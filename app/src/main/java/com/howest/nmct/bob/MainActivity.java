@@ -122,18 +122,22 @@ public class MainActivity extends AppCompatActivity
 
     private void navigateToProfile() {
         navigateToFragment(new ProfileFragment());
+        toolbar.setTitle("Profile");
     }
 
     private void navigateToRides() {
         navigateToFragment(new RidesFragment());
+        toolbar.setTitle("Rides");
     }
 
     private void navigateToEvents() {
         navigateToFragment(new EventsFragment());
+        toolbar.setTitle("Events");
     }
 
     private void navigateToFeed() {
         navigateToFragment(new FeedFragment());
+        toolbar.setTitle("Feed");
     }
 
     private void navigateToFragment(Fragment fragment) {
