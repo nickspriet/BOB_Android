@@ -18,8 +18,7 @@ import butterknife.ButterKnife;
  * 21/10/15
  */
 public class FeedFragment extends Fragment {
-    @Bind(R.id.text)
-    TextView textView;
+    @Bind(R.id.text) TextView textView;
 
     public FeedFragment() {
     }
