@@ -1,37 +1,42 @@
 package com.howest.nmct.bob;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private FrameLayout container;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        initToolbar();
+        initDrawer();
+        initContent();
+    }
 
+    private void initContent() {
+        container = (FrameLayout) findViewById(R.id.container);
+        navigateToFeed();
+    }
+
+    private void initDrawer() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -40,6 +45,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    public void initToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
     }
 
     @Override
@@ -82,6 +93,49 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
+        switch (id) {
+            case R.id.nav_feed:
+                Log.d("NavigationDrawer", "Click Feed");
+                navigateToFeed();
+                break;
+            case R.id.nav_events:
+                Log.d("NavigationDrawer", "Click Events");
+                navigateToEvents();
+                break;
+            case R.id.nav_rides:
+                Log.d("NavigationDrawer", "Click Rides");
+                navigateToRides();
+                break;
+            case R.id.nav_profile:
+                Log.d("NavigationDrawer", "Click Profile");
+                navigateToProfile();
+                break;
+        }
         return true;
+    }
+
+    private void navigateToProfile() {
+        navigateToFragment(new ProfileFragment());
+    }
+
+    private void navigateToRides() {
+        navigateToFragment(new RidesFragment());
+    }
+
+    private void navigateToEvents() {
+        navigateToFragment(new EventsFragment());
+    }
+
+    private void navigateToFeed() {
+        navigateToFragment(new FeedFragment());
+    }
+
+    private void navigateToFragment(Fragment fragment) {
+        if (container == null) return;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, fragment);
+        fragmentTransaction.commit();
     }
 }
