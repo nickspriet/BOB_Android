@@ -2,6 +2,7 @@ package com.howest.nmct.bob.fragments;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -107,6 +108,26 @@ public class RidesFragment extends Fragment {
             return new ViewHolder(v);
         }
 
+        /**
+         * Sets badges active or inactive
+         *
+         * @param textView The badge to color
+         * @param isActive If the active color should be set
+         */
+        public void setBadgeColor(TextView textView, Boolean isActive) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                textView.setTextAppearance(isActive ? R.style.Badge_Active : R.style.Badge);
+            } else {
+                if (isActive) {
+                    textView.setBackgroundResource(R.color.colorAccent);
+                    textView.setTextColor(Color.WHITE);
+                } else {
+                    textView.setBackgroundColor(Color.TRANSPARENT);
+                    textView.setTextColor(Color.BLACK);
+                }
+            }
+        }
+
         public void onBindViewHolder(ViewHolder holder, int position) {
             Ride ride = rides.get(position);
             holder.rideTitle.setText(ride.getTitle());
@@ -125,16 +146,8 @@ public class RidesFragment extends Fragment {
                     .placeholder(R.drawable.ic_action_account_box)
                     .into(holder.rideImage);
 
-            if (ride.getApproved() > 0) {
-                holder.valueApproved.setBackgroundResource(android.R.color.holo_red_dark);
-                holder.valueApproved.setTextColor(Color.WHITE);
-            }
-
-            if (ride.getRequests() > 0) {
-                holder.valueRequests.setBackgroundResource(android.R.color.holo_red_dark);
-                holder.valueRequests.setTextColor(Color.WHITE);
-            }
-
+            setBadgeColor(holder.valueApproved, ride.getApproved() > 0);
+            setBadgeColor(holder.valueRequests, ride.getRequests() > 0);
         }
 
         @Override
