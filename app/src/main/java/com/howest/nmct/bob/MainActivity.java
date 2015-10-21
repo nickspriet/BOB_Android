@@ -13,56 +13,48 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
 import com.howest.nmct.bob.fragments.EventsFragment;
 import com.howest.nmct.bob.fragments.FeedFragment;
 import com.howest.nmct.bob.fragments.ProfileFragment;
 import com.howest.nmct.bob.fragments.RidesFragment;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private FrameLayout container;
-    private Toolbar toolbar;
+    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
+    @Bind(R.id.nav_view) NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initToolbar();
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
         initDrawer();
-        initContent();
-    }
-
-    private void initContent() {
-        container = (FrameLayout) findViewById(R.id.container);
         navigateToFeed();
     }
 
+    /**
+     * Sets up the Drawer Layout and a toggle to open the navigation menu.
+     */
     private void initDrawer() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-    }
-
-    public void initToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -94,12 +86,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        drawerLayout.closeDrawer(GravityCompat.START);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-
-        switch (id) {
+        switch (item.getItemId()) {
             case R.id.nav_feed:
                 Log.d("NavigationDrawer", "Click Feed");
                 navigateToFeed();
@@ -117,6 +106,7 @@ public class MainActivity extends AppCompatActivity
                 navigateToProfile();
                 break;
         }
+
         return true;
     }
 
@@ -140,8 +130,11 @@ public class MainActivity extends AppCompatActivity
         toolbar.setTitle("Feed");
     }
 
+    /**
+     * Navigates to a fragment and places it in the container.
+     * @param fragment A created fragment that is navigated to
+     */
     private void navigateToFragment(Fragment fragment) {
-        if (container == null) return;
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, fragment);

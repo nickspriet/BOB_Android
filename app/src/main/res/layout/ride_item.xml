@@ -76,11 +76,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4sp"
                         android:layout_toEndOf="@id/txtApproved"
-                        android:background="@android:color/holo_red_dark"
                         android:paddingEnd="4dp"
                         android:paddingStart="4dp"
                         android:text="@string/zero"
-                        android:textColor="@android:color/white"
                         android:textStyle="bold" />
 
                     <TextView
@@ -89,11 +87,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_marginStart="4sp"
-                        android:background="@android:color/holo_red_dark"
                         android:paddingEnd="4dp"
                         android:paddingStart="4dp"
                         android:text="@string/zero"
-                        android:textColor="@android:color/white"
                         android:textStyle="bold" />
 
                     <TextView

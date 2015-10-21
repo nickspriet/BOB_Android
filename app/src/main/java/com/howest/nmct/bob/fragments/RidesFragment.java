@@ -1,10 +1,10 @@
 package com.howest.nmct.bob.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -46,6 +46,9 @@ public class RidesFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Populates the Ride ArrayList
+     */
     private void initData() {
         Ride tomorrowLand = new Ride("Tomorrowland", "20/10/2015", "Tomorrowstraat 123, Brussel");
         tomorrowLand.setImage("http://www.tomorrowland.com/sites/default/files/styles/image_gallery_full/public/media/Galleries/2013/BESTOF_Friday_-04.jpg");
@@ -63,8 +66,13 @@ public class RidesFragment extends Fragment {
         rides.add(gentseRide);
         rides.add(tomorrowLand);
         rides.add(gentseRide);
+
+        rides.add(new Ride("An event for great and spectacular photography with your horse 2015.", "12/12/2020", "Gent"));
     }
 
+    /**
+     * Sets up the RecyclerView;
+     */
     private void initViews() {
         if (mLayoutManager == null)
             mLayoutManager = new LinearLayoutManager(getActivity());
@@ -79,6 +87,9 @@ public class RidesFragment extends Fragment {
         }
     }
 
+    /**
+     * Adapter for the RecyclerView
+     */
     static class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         private ViewGroup parent;
         private ArrayList<Ride> rides;
@@ -113,6 +124,17 @@ public class RidesFragment extends Fragment {
                     .fit()
                     .placeholder(R.drawable.ic_action_account_box)
                     .into(holder.rideImage);
+
+            if (ride.getApproved() > 0) {
+                holder.valueApproved.setBackgroundResource(android.R.color.holo_red_dark);
+                holder.valueApproved.setTextColor(Color.WHITE);
+            }
+
+            if (ride.getRequests() > 0) {
+                holder.valueRequests.setBackgroundResource(android.R.color.holo_red_dark);
+                holder.valueRequests.setTextColor(Color.WHITE);
+            }
+
         }
 
         @Override
@@ -121,24 +143,16 @@ public class RidesFragment extends Fragment {
         }
 
         static class ViewHolder extends RecyclerView.ViewHolder {
-            @Bind(R.id.cardView)
-            CardView cardView;
-
             @Bind(R.id.ride_image)
             ImageView rideImage;
-
             @Bind(R.id.ride_title)
             TextView rideTitle;
-
             @Bind(R.id.ride_date)
             TextView rideDate;
-
             @Bind(R.id.ride_address)
             TextView rideAddress;
-
             @Bind(R.id.valueApproved)
             TextView valueApproved;
-
             @Bind(R.id.valueRequests)
             TextView valueRequests;
 
