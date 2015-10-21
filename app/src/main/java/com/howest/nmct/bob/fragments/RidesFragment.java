@@ -68,7 +68,7 @@ public class RidesFragment extends Fragment {
         rides.add(tomorrowLand);
         rides.add(gentseRide);
 
-        rides.add(new Ride("An event for great and spectacular photography with your horse 2015.", "12/12/2020", "Gent"));
+        rides.add(new Ride("An event for great and spectacularious amazeballs photography with your fabulous unicorn!!! \uD83D\uDE04 \uD83D\uDC34 \uD83D\uDE04 \uD83D\uDC34 ", "12/12/2020", "Somewhere in '); DROP TABLE city;"));
     }
 
     /**
@@ -143,7 +143,8 @@ public class RidesFragment extends Fragment {
             p.setIndicatorsEnabled(true);
             p.load(ride.getImage())
                     .fit()
-                    .placeholder(R.drawable.ic_action_account_box)
+                    .centerCrop()
+                    .placeholder(R.drawable.ic_image)
                     .into(holder.rideImage);
 
             setBadgeColor(holder.valueApproved, ride.getApproved() > 0);
