@@ -9,4 +9,7 @@
     <string name="events">Events</string>
     <string name="rides">Rides</string>
     <string name="profile">Profile</string>
+    <string name="approved">Approved</string>
+    <string name="requests">Requests</string>
+    <string name="zero">0</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.howest.nmct.bob;
+package com.howest.nmct.bob.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.howest.nmct.bob.R;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -15,17 +17,17 @@ import butterknife.ButterKnife;
  * illyism
  * 21/10/15
  */
-public class FeedFragment extends Fragment {
+public class EventsFragment extends Fragment {
     @Bind(R.id.text)
     TextView textView;
 
-    public FeedFragment() {
+    public EventsFragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.content_feed, container, false);
+        View view = inflater.inflate(R.layout.content_events, container, false);
         ButterKnife.bind(this, view);
         initViews();
         return view;
@@ -33,6 +35,6 @@ public class FeedFragment extends Fragment {
 
     private void initViews() {
         if (textView != null)
-            textView.setText("Feed");
+            textView.setText("Events");
     }
 }
