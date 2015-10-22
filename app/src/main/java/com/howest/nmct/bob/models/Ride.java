@@ -5,6 +5,7 @@ package com.howest.nmct.bob.models;
  * 21/10/15
  */
 public class Ride {
+    private String id;
     private String title;
     private String date;
     private String image;
@@ -12,7 +13,8 @@ public class Ride {
     private int requests;
     private int approved;
 
-    public Ride(String title, String date, String address) {
+    public Ride(String id, String title, String date, String address) {
+        this.id = id;
         this.title = title;
         this.date = date;
         this.address = address;
@@ -64,5 +66,13 @@ public class Ride {
 
     public void setApproved(int approved) {
         this.approved = approved;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
