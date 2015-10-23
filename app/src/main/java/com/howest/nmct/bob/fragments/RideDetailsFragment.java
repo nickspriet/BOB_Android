@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.models.Ride;
+import com.poliveira.apps.parallaxlistview.ParallaxScrollView;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -27,7 +28,7 @@ public class RideDetailsFragment extends Fragment {
     TextView address;
     @Bind(R.id.date)
     TextView date;
-    @Bind(R.id.image)
+    @Bind(R.id.imageView)
     ImageView imageView;
     private Ride ride;
 
@@ -49,17 +50,22 @@ public class RideDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.content_ride_details, container, false);
+
+        initDrawer(view);
         ButterKnife.bind(this, view);
         initViews();
-        initDrawer();
         return view;
     }
 
-    private void initDrawer() {
-
+    private void initDrawer(View view) {
+        ParallaxScrollView mScrollView = (ParallaxScrollView) view.findViewById(R.id.scrollView);
+        View headerView = getActivity().getLayoutInflater().inflate(R.layout.ride_header, mScrollView, false);
+        mScrollView.setParallaxView(headerView);
     }
 
     private void initViews() {
+        if (ride == null) return;
+
         textView.setText(ride.getTitle());
         address.setText(ride.getAddress());
         date.setText(ride.getDate());
@@ -69,7 +75,7 @@ public class RideDetailsFragment extends Fragment {
         p.load(ride.getImage())
                 .fit()
                 .centerCrop()
-                .placeholder(R.drawable.ic_image)
                 .into(imageView);
+
     }
 }

@@ -6,7 +6,6 @@ package com.howest.nmct.bob.adapters;
  */
 
 import android.graphics.Color;
-import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,17 +53,8 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
      * @param isActive If the active color should be set
      */
     public void setBadgeColor(TextView textView, Boolean isActive) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            textView.setTextAppearance(isActive ? R.style.Badge_Active : R.style.Badge);
-        } else {
-            if (isActive) {
-                textView.setBackgroundResource(R.color.colorAccent);
-                textView.setTextColor(Color.WHITE);
-            } else {
-                textView.setBackgroundColor(Color.TRANSPARENT);
-                textView.setTextColor(Color.BLACK);
-            }
-        }
+        textView.setBackgroundResource(isActive ? R.color.colorAccent : Color.TRANSPARENT);
+        textView.setTextColor(isActive ? Color.WHITE : Color.BLACK);
     }
 
     public void onBindViewHolder(ViewHolder holder, int position) {

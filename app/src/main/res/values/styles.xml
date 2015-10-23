@@ -27,10 +27,27 @@
         <item name="android:textSize">@dimen/card_meta_size</item>
         <item name="android:textColor">@color/cardColorText</item>
     </style>
+    <style name="Card.Text.Meta.Label">
+        <item name="android:textStyle">bold</item>
+    </style>
 
     <style name="Card.Text.Button">
         <item name="android:textSize">@dimen/card_meta_size</item>
         <item name="android:textColor">@color/cardColorButton</item>
+    </style>
+
+    <style name="Card.Wrapper" />
+    <style name="Card.Wrapper.Details" >
+        <item name="android:layout_marginBottom">@dimen/card_leading</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:elevation">2dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:paddingTop">@dimen/card_inner_margin_vertical</item>
+        <item name="android:paddingBottom">@dimen/card_inner_margin_vertical</item>
+        <item name="android:paddingStart">@dimen/card_inner_margin_horizontal</item>
+        <item name="android:paddingEnd">@dimen/card_inner_margin_horizontal</item>
     </style>
 
     <!-- Separator - Divides content -->
@@ -58,6 +75,22 @@
 
     <style name="Badge.Active">
         <item name="android:background">@color/colorAccent</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+
+    <!-- Header - The scrollable header -->
+    <style name="Header" />
+
+    <style name="Header.Text" parent="@android:style/TextAppearance" />
+
+    <style name="Header.Text.Title">
+        <item name="android:textSize">@dimen/card_title_size</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="Header.Text.Meta">
+        <item name="android:textSize">@dimen/card_meta_size</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
