@@ -156,4 +156,15 @@ public class MainActivity extends AppCompatActivity
         navigateToFragment(RideDetailsFragment.newInstance(ride), true);
         toolbar.setTitle(ride.getTitle());
     }
+
+    public void navigatetoRideDetails(int frameLayout, Ride ride) {
+        Fragment fragment = RideDetailsFragment.newInstance(ride);
+        getSupportFragmentManager().popBackStack();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(frameLayout, fragment)
+                .addToBackStack(fragment.getClass().toString())
+                .commit();
+
+    }
 }

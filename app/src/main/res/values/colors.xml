@@ -7,7 +7,7 @@
     <color name="separator">#AACCCCCC</color>
 
     <!-- Ride Card -->
-    <color name="cardColorBackground">#FFFAFAFA</color>
+    <color name="cardColorBackground">#FFFFFF</color>
     <color name="cardColorTitle">#FF333333</color>
     <color name="cardColorText">#FF555555</color>
     <color name="cardColorButton">#2196f3</color>

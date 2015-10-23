@@ -10,7 +10,6 @@
         class="com.poliveira.apps.parallaxlistview.ParallaxScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
         app:scrollMultiplier="0.5">
 
         <LinearLayout

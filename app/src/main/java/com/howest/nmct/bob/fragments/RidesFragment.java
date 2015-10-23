@@ -1,13 +1,17 @@
 package com.howest.nmct.bob.fragments;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.howest.nmct.bob.MainActivity;
 import com.howest.nmct.bob.R;
@@ -71,6 +75,18 @@ public class RidesFragment extends Fragment {
     }
 
     public void onRideSelected(Ride ride) {
-        ((MainActivity) getActivity()).navigatetoRideDetails(ride);
+        View v = getView();
+        if (v == null) return;
+        
+        FrameLayout frameLayout = (FrameLayout) v.findViewById(R.id.frameLayout);
+        if (frameLayout != null) {
+            ((MainActivity) getActivity()).navigatetoRideDetails(R.id.frameLayout, ride);
+            Display display = getActivity().getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(size.x / 3, RecyclerView.LayoutParams.MATCH_PARENT));
+        } else {
+            ((MainActivity) getActivity()).navigatetoRideDetails(ride);
+        }
     }
 }
