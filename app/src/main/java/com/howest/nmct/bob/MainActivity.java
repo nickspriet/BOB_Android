@@ -3,8 +3,6 @@ package com.howest.nmct.bob;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,7 +15,9 @@ import android.view.MenuItem;
 import com.howest.nmct.bob.fragments.EventsFragment;
 import com.howest.nmct.bob.fragments.FeedFragment;
 import com.howest.nmct.bob.fragments.ProfileFragment;
+import com.howest.nmct.bob.fragments.RideDetailsFragment;
 import com.howest.nmct.bob.fragments.RidesFragment;
+import com.howest.nmct.bob.models.Ride;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -110,22 +110,22 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void navigateToProfile() {
+    public void navigateToProfile() {
         navigateToFragment(new ProfileFragment());
         toolbar.setTitle("Profile");
     }
 
-    private void navigateToRides() {
+    public void navigateToRides() {
         navigateToFragment(new RidesFragment());
         toolbar.setTitle("Rides");
     }
 
-    private void navigateToEvents() {
+    public void navigateToEvents() {
         navigateToFragment(new EventsFragment());
         toolbar.setTitle("Events");
     }
 
-    private void navigateToFeed() {
+    public void navigateToFeed() {
         navigateToFragment(new FeedFragment());
         toolbar.setTitle("Feed");
     }
@@ -134,10 +134,37 @@ public class MainActivity extends AppCompatActivity
      * Navigates to a fragment and places it in the container.
      * @param fragment A created fragment that is navigated to
      */
-    private void navigateToFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.container, fragment);
-        fragmentTransaction.commit();
+    public void navigateToFragment(Fragment fragment) {
+        getSupportFragmentManager().popBackStack();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, fragment)
+                .commit();
+    }
+
+    public void navigateToFragment(Fragment fragment, Boolean addToManager) {
+        getSupportFragmentManager().popBackStack();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(R.anim.fragment_enter, R.anim.fragment_exit, R.anim.pop_enter, R.anim.pop_exit)
+                .add(R.id.container, fragment)
+                .addToBackStack(fragment.getClass().toString())
+                .commit();
+    }
+
+    public void navigatetoRideDetails(Ride ride) {
+        navigateToFragment(RideDetailsFragment.newInstance(ride), true);
+        toolbar.setTitle(ride.getTitle());
+    }
+
+    public void navigatetoRideDetails(int frameLayout, Ride ride) {
+        Fragment fragment = RideDetailsFragment.newInstance(ride);
+        getSupportFragmentManager().popBackStack();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(frameLayout, fragment)
+                .addToBackStack(fragment.getClass().toString())
+                .commit();
+
     }
 }

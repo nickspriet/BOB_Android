@@ -13,9 +13,15 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+}
+
+repositories {
+    maven {
+        url "https://jitpack.io"
     }
 }
 
@@ -29,4 +35,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.0.+'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.google.guava:guava:18.0'
+    compile 'com.github.kanytu:android-parallax-listview:v1.1'
 }
