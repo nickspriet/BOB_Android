@@ -73,10 +73,10 @@ public class RidesFragment extends Fragment {
         }
     }
 
-   /* public void onRideSelected(Ride ride) {
+    public void onRideSelected(Ride ride) {
         View v = getView();
         if (v == null) return;
-        
+
         FrameLayout frameLayout = (FrameLayout) v.findViewById(R.id.frameLayout);
         if (frameLayout != null) {
             ((MainActivity) getActivity()).navigatetoRideDetails(R.id.frameLayout, ride);
@@ -87,5 +87,5 @@ public class RidesFragment extends Fragment {
         } else {
             ((MainActivity) getActivity()).navigatetoRideDetails(ride);
         }
-    }*/
+    }
 }
