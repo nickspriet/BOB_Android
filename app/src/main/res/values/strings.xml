@@ -12,4 +12,6 @@
     <string name="approved">Approved</string>
     <string name="requests">Requests</string>
     <string name="zero">0</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="facebook_app_id">417541028457112</string>
 </resources>
