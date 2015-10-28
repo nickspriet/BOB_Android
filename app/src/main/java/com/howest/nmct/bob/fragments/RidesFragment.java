@@ -27,8 +27,7 @@ import butterknife.ButterKnife;
  * 21/10/15
  */
 public class RidesFragment extends Fragment {
-    @Bind(R.id.list)
-    RecyclerView recyclerView;
+    @Bind(R.id.list) RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -74,7 +73,7 @@ public class RidesFragment extends Fragment {
         }
     }
 
-    public void onRideSelected(Ride ride) {
+   /* public void onRideSelected(Ride ride) {
         View v = getView();
         if (v == null) return;
         
@@ -88,5 +87,5 @@ public class RidesFragment extends Fragment {
         } else {
             ((MainActivity) getActivity()).navigatetoRideDetails(ride);
         }
-    }
+    }*/
 }
