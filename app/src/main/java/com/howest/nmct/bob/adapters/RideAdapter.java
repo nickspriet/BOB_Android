@@ -87,7 +87,7 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
 
     private void onClickImage(long itemId) {
         Ride ride = rides.get((int) itemId);
-        fragment.onRideSelected(ride);
+        //fragment.onRideSelected(ride);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
