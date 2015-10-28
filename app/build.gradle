@@ -37,4 +37,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.guava:guava:18.0'
     compile 'com.github.kanytu:android-parallax-listview:v1.1'
+    compile 'com.facebook.android:facebook-android-sdk:4.6.0'
+
 }
