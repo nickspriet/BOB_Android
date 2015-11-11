@@ -19,6 +19,7 @@
     <style name="Card.Text" parent="@android:style/TextAppearance" />
 
     <style name="Card.Text.Title">
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/card_title_size</item>
         <item name="android:textColor">@color/cardColorTitle</item>
     </style>
@@ -48,6 +49,13 @@
         <item name="android:paddingBottom">@dimen/card_inner_margin_vertical</item>
         <item name="android:paddingStart">@dimen/card_inner_margin_horizontal</item>
         <item name="android:paddingEnd">@dimen/card_inner_margin_horizontal</item>
+    </style>
+
+    <style name="Card.Actions" />
+    <style name="Card.Actions.Label" parent="@android:style/TextAppearance">
+        <item name="android:textSize">@dimen/card_meta_size</item>
+        <item name="android:textColor">@color/cardColorText</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <!-- Separator - Divides content -->

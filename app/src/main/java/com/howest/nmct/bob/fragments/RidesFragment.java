@@ -1,6 +1,8 @@
 package com.howest.nmct.bob.fragments;
 
+import android.content.Intent;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,8 @@ import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.adapters.RideAdapter;
 import com.howest.nmct.bob.collections.Rides;
 import com.howest.nmct.bob.models.Ride;
+
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -68,7 +72,7 @@ public class RidesFragment extends Fragment {
 
         if (recyclerView != null) {
             recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setAdapter(mAdapter);
         }
     }
@@ -87,5 +91,11 @@ public class RidesFragment extends Fragment {
         } else {
             ((MainActivity) getActivity()).navigatetoRideDetails(ride);
         }
+    }
+
+    public void onRideMapClick(Ride ride) {
+        String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?q=loc:%s", ride.getAddress());
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        getActivity().startActivity(intent);
     }
 }

@@ -3,7 +3,6 @@ package com.howest.nmct.bob.collections;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.howest.nmct.bob.models.Event;
-import com.howest.nmct.bob.models.Ride;
 
 import java.util.ArrayList;
 

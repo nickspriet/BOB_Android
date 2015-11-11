@@ -1,5 +1,7 @@
 package com.howest.nmct.bob.models;
 
+import java.util.List;
+
 /**
  * illyism
  * 21/10/15
@@ -11,7 +13,8 @@ public class Ride {
     private String image;
     private String address;
     private int requests;
-    private int approved;
+    private List<String> approvedList;
+    private User driver;
 
     public Ride(String id, String title, String date, String address) {
         this.id = id;
@@ -61,11 +64,10 @@ public class Ride {
     }
 
     public int getApproved() {
-        return approved;
-    }
-
-    public void setApproved(int approved) {
-        this.approved = approved;
+        if (approvedList != null) {
+            return approvedList.size();
+        }
+        return 0;
     }
 
     public String getId() {
@@ -74,5 +76,25 @@ public class Ride {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public User getDriver() {
+        return driver;
+    }
+
+    public void setDriver(User driver) {
+        this.driver = driver;
+    }
+
+    public Boolean isSelfDriver(Profile profile) {
+        return driver.getId().equals(profile.getId());
+    }
+
+    public Boolean isApproved(Profile profile) {
+        return approvedList != null && approvedList.contains(profile.getId());
+    }
+
+    public void setApprovedList(List<String> approvedList) {
+        this.approvedList = approvedList;
     }
 }
