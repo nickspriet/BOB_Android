@@ -15,7 +15,7 @@
     <dimen name="card_inner_margin">12dp</dimen>
     <dimen name="card_inner_margin_horizontal">16dp</dimen>
     <dimen name="card_inner_margin_vertical">12dp</dimen>
-    <dimen name="card_title_size">24sp</dimen>
+    <dimen name="card_title_size">16sp</dimen>
     <dimen name="card_meta_size">12sp</dimen>
 
     <dimen name="badge_margin">4dp</dimen>

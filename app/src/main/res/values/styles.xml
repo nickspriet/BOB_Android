@@ -19,6 +19,7 @@
     <style name="Card.Text" parent="@android:style/TextAppearance" />
 
     <style name="Card.Text.Title">
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/card_title_size</item>
         <item name="android:textColor">@color/cardColorTitle</item>
     </style>
