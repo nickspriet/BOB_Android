@@ -5,21 +5,30 @@ package com.howest.nmct.bob.adapters;
  * 22/10/15
  */
 
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spanned;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.howest.nmct.bob.MainActivity;
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.fragments.RidesFragment;
+import com.howest.nmct.bob.models.Profile;
 import com.howest.nmct.bob.models.Ride;
+import com.howest.nmct.bob.views.AutoHeightViewPager;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,43 +38,91 @@ import butterknife.OnClick;
  * Adapter for the RecyclerView
  */
 public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
-    private ArrayList<Ride> rides;
-    private MainActivity activity;
-    private RidesFragment fragment;
+    private ArrayList<Ride> mRides;
+    private MainActivity mActivity;
+    private RidesFragment mFragment;
+
+    private enum SwipedState {
+        SHOWING_PRIMARY_CONTENT,
+        SHOWING_SECONDARY_CONTENT
+    }
+    private List<SwipedState> mItemSwipedStates;
 
     public RideAdapter(RidesFragment ridesFragment, ArrayList<Ride> rides) {
-        this.activity = (MainActivity) ridesFragment.getActivity();
-        this.fragment = ridesFragment;
-        this.rides = rides;
+        mActivity = (MainActivity) ridesFragment.getActivity();
+        mFragment = ridesFragment;
+        mRides = rides;
+
+        mItemSwipedStates = new ArrayList<>();
+        for (int i = 0; i < mRides.size(); i++) {
+            mItemSwipedStates.add(i, SwipedState.SHOWING_PRIMARY_CONTENT);
+        }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
+        AutoHeightViewPager v = (AutoHeightViewPager) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.ride_item, parent, false);
-        return new ViewHolder(v, this);
+
+        ViewPagerAdapter adapter = new ViewPagerAdapter();
+        ((ViewPager) v.findViewById(R.id.viewPager)).setAdapter(adapter);
+        ViewHolder vh = new ViewHolder(v, this);
+
+        // The ViewPager loses its width information when it is put
+        // inside a RecyclerView. It needs to be explicitly resized, in this case to the width of the
+        // screen.
+        DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
+        v.getLayoutParams().width = displayMetrics.widthPixels;
+        v.requestLayout();
+
+        return vh;
     }
 
     /**
-     * Sets badges active or inactive
+     * Sets the username as highlighted depending on if the user is the driver
      *
-     * @param textView The badge to color
-     * @param isActive If the active color should be set
+     * @param textView The textview
+     * @param isDriver If the driver is the current logged in user
      */
-    public void setBadgeColor(TextView textView, Boolean isActive) {
-        textView.setBackgroundResource(isActive ? R.color.colorAccent : Color.TRANSPARENT);
-        textView.setTextColor(isActive ? Color.WHITE : Color.BLACK);
+    private void setUsernameColor(TextView textView, Boolean isDriver) {
+        textView.setTextColor(isDriver ? Color.parseColor("#2196f3") : Color.BLACK);
     }
 
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Ride ride = rides.get(position);
-        holder.rideTitle.setText(ride.getTitle());
-        holder.rideDate.setText(ride.getDate());
-        holder.rideAddress.setText(ride.getAddress());
-        holder.valueApproved.setText(String.format("%s", ride.getApproved()));
-        holder.valueRequests.setText(String.format("%s", ride.getRequests()));
+    /**
+     * Hides or shows the view
+     *
+     * @param view The view to hide or show
+     * @param isVisible If the driver is the current logged in user
+     */
+    private void setVisibility(View view, Boolean isVisible) {
+        view.setVisibility(isVisible ? View.VISIBLE : View.GONE);
+    }
 
-        Picasso p = Picasso.with(activity);
+    private Spanned formatApprovalStatus(Ride ride, Profile profile) {
+        if (ride.isSelfDriver(profile)) {
+            // I am BOB - so show me approvals and requests
+            return Html.fromHtml(String.format("<b>%s</b> approvals • <b>%s</b> requested", ride.getApproved(), ride.getRequests()));
+        } else if (ride.isApproved(profile)) {
+            // I am not BOB but I'm approved - so show me the amount of guests
+            return Html.fromHtml(String.format("<b>%s</b> guests", ride.getApproved()));
+        } else {
+            // I am not BOB and I'm awaiting approval
+            return Html.fromHtml("Waiting for approval...");
+        }
+    }
+
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        // Get information
+        Profile profile = new Profile("1", "Ilias Ismanalijev");
+        Ride ride = mRides.get(position);
+
+        // Fill in details
+        holder.rideTitle.setText(ride.getTitle());
+        holder.locationDetails.setText(Html.fromHtml(String.format("<b>%s</b> in <b>%s</b>", ride.getAddress(), ride.getDate())));
+        holder.approvalStatus.setText(formatApprovalStatus(ride, profile));
+        holder.ridePerson.setText(ride.getDriver().getName());
+
+        Picasso p = Picasso.with(mActivity);
         // Red = Network
         // Blue = Disk
         // Green = Memory
@@ -76,45 +133,96 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
                 .placeholder(R.drawable.ic_image)
                 .into(holder.rideImage);
 
-        setBadgeColor(holder.valueApproved, ride.getApproved() > 0);
-        setBadgeColor(holder.valueRequests, ride.getRequests() > 0);
+        // Hide or show elements depending on approval and driver status
+        setUsernameColor(holder.ridePerson, ride.isSelfDriver(profile));
+        setVisibility(holder.locationDetails, ride.isSelfDriver(profile) || ride.isApproved(profile));
+        setVisibility(holder.driverButton, !ride.isSelfDriver(profile));
+        setVisibility(holder.mapButton, ride.isSelfDriver(profile) || ride.isApproved(profile));
+        setVisibility(holder.guestsButton, ride.isSelfDriver(profile) || ride.isApproved(profile));
+
+        // Set up viewpager
+        holder.view.setCurrentItem(mItemSwipedStates.get(position).ordinal());
+        holder.view.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            int previousPagePosition = 0;
+
+            @Override
+            public void onPageScrolled(int pagePosition, float positionOffset, int positionOffsetPixels) {
+                if (pagePosition == previousPagePosition)
+                    return;
+
+                switch (pagePosition) {
+                    case 0:
+                        mItemSwipedStates.set(position, SwipedState.SHOWING_PRIMARY_CONTENT);
+                        break;
+                    case 1:
+                        mItemSwipedStates.set(position, SwipedState.SHOWING_SECONDARY_CONTENT);
+                        break;
+
+                }
+                previousPagePosition = pagePosition;
+            }
+
+            @Override
+            public void onPageSelected(int pagePosition) {
+                //This method keep incorrectly firing as the RecyclerView scrolls.
+                //Use the one above instead
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
     }
+
+
+
 
     @Override
     public int getItemCount() {
-        return rides.size();
+        return mRides.size();
     }
 
-    private void onClickImage(long itemId) {
-        Ride ride = rides.get((int) itemId);
-        fragment.onRideSelected(ride);
+    private void onRideSelected(long itemId) {
+        Ride ride = mRides.get((int) itemId);
+        mFragment.onRideSelected(ride);
+    }
+
+    private void onMapButtonClicked(long itemId) {
+        Ride ride = mRides.get((int) itemId);
+        mFragment.onRideMapClick(ride);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.ride_image)
-        ImageView rideImage;
-        @Bind(R.id.ride_title)
-        TextView rideTitle;
-        @Bind(R.id.ride_date)
-        TextView rideDate;
-        @Bind(R.id.ride_address)
-        TextView rideAddress;
-        @Bind(R.id.valueApproved)
-        TextView valueApproved;
-        @Bind(R.id.valueRequests)
-        TextView valueRequests;
+        @Bind(R.id.ride_person) TextView ridePerson;
+        @Bind(R.id.ride_image) ImageView rideImage;
+        @Bind(R.id.ride_title) TextView rideTitle;
+        @Bind(R.id.location_details) TextView locationDetails;
+        @Bind(R.id.approval_status) TextView approvalStatus;
 
+        @Bind(R.id.driver_button) LinearLayout driverButton;
+        @Bind(R.id.map_button) LinearLayout mapButton;
+        @Bind(R.id.guests_button) LinearLayout guestsButton;
+
+        private ViewPager view;
         private RideAdapter adapter;
 
-        public ViewHolder(View view, RideAdapter adapter) {
+        public ViewHolder(ViewPager view, RideAdapter adapter) {
             super(view);
+            this.view = view;
             this.adapter = adapter;
             ButterKnife.bind(this, view);
         }
 
-        @OnClick(R.id.ride_image)
-        public void onClickImage() {
-            adapter.onClickImage(getAdapterPosition());
+        @OnClick(R.id.cardView)
+        public void onCardClicked() {
+            adapter.onRideSelected(getAdapterPosition());
+        }
+
+        @OnClick(R.id.map_button)
+        public void onMapButtonClicked() {
+            adapter.onMapButtonClicked(getAdapterPosition());
         }
     }
+
+
 }

@@ -14,4 +14,10 @@
     <string name="zero">0</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="facebook_app_id">417541028457112</string>
+    <string name="guests">Guests</string>
+    <string name="event">Event</string>
+    <string name="bullet"> • </string>
+    <string name="in"> in </string>
+    <string name="map">Map</string>
+    <string name="driver">Driver</string>
 </resources>

@@ -51,6 +51,13 @@
         <item name="android:paddingEnd">@dimen/card_inner_margin_horizontal</item>
     </style>
 
+    <style name="Card.Actions" />
+    <style name="Card.Actions.Label" parent="@android:style/TextAppearance">
+        <item name="android:textSize">@dimen/card_meta_size</item>
+        <item name="android:textColor">@color/cardColorText</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <!-- Separator - Divides content -->
     <style name="Separator">
         <item name="android:background">@color/separator</item>

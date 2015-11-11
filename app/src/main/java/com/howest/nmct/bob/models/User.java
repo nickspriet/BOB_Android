@@ -7,6 +7,7 @@ import java.util.HashMap;
  * 21/10/15
  */
 public class User {
+    private String id;
     private String name;
     private String profilePicture;
     private String description;
@@ -16,14 +17,22 @@ public class User {
     private String city;
     private HashMap<String, Boolean> permissions;
 
-    public User() {
+    public User(String id) {
+        this.id = id;
         this.permissions = new HashMap<>();
     }
 
-    public User(HashMap<String, Boolean> permissions) {
+    public User(String id, HashMap<String, Boolean> permissions) {
+        this.id = id;
         if (permissions.values().size() < 0)
             throw new Error("Need to set permissions for this user");
         this.permissions = permissions;
+    }
+
+    public User(String id, String name) {
+        this.id = id;
+        this.name = name;
+        this.permissions = new HashMap<>();
     }
 
     protected Boolean getPermission(String key) {
@@ -87,6 +96,10 @@ public class User {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public static class KEY {
