@@ -8,13 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.adapters.EventAdapter;
-import com.howest.nmct.bob.adapters.RideAdapter;
 import com.howest.nmct.bob.collections.Events;
-import com.howest.nmct.bob.collections.Rides;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
