@@ -82,6 +82,7 @@ public class RidesFragment extends Fragment {
         if (v == null) return;
 
         FrameLayout frameLayout = (FrameLayout) v.findViewById(R.id.frameLayout);
+        // frameLayout is er als er landscape mode is
         if (frameLayout != null) {
             ((MainActivity) getActivity()).navigatetoRideDetails(R.id.frameLayout, ride);
             Display display = getActivity().getWindowManager().getDefaultDisplay();

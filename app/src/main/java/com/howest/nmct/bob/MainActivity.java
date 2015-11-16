@@ -17,6 +17,7 @@ import com.howest.nmct.bob.fragments.FeedFragment;
 import com.howest.nmct.bob.fragments.ProfileFragment;
 import com.howest.nmct.bob.fragments.RideDetailsFragment;
 import com.howest.nmct.bob.fragments.RidesFragment;
+import com.howest.nmct.bob.models.Profile;
 import com.howest.nmct.bob.models.Ride;
 
 import butterknife.Bind;
@@ -29,11 +30,14 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
     @Bind(R.id.nav_view) NavigationView navigationView;
 
+    public Profile mProfile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mProfile = new Profile("1", "Ilias Ismanalijev");
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         initDrawer();

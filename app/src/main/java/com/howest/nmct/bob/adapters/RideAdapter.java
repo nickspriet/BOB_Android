@@ -113,7 +113,7 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
 
     public void onBindViewHolder(ViewHolder holder, final int position) {
         // Get information
-        Profile profile = new Profile("1", "Ilias Ismanalijev");
+        Profile profile = mActivity.mProfile;
         Ride ride = mRides.get(position);
 
         // Fill in details

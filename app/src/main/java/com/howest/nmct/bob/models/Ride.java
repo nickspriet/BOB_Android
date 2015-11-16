@@ -1,5 +1,6 @@
 package com.howest.nmct.bob.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ public class Ride {
     private String image;
     private String address;
     private int requests;
-    private List<String> approvedList;
+    private List<String> approvedList = new ArrayList<>();
     private User driver;
 
     public Ride(String id, String title, String date, String address) {
@@ -96,5 +97,18 @@ public class Ride {
 
     public void setApprovedList(List<String> approvedList) {
         this.approvedList = approvedList;
+    }
+
+    public void addApprovedUser(User user) {
+        this.approvedList.add(user.getId());
+    }
+
+    /**
+     * Sets Title, Date, Address for a Ride
+     * @param event the event to copy data from
+     * @return Ride
+     */
+    public static Ride createRideFromEvent(Event event) {
+        return new Ride("-1", event.getEventName(), event.getEventDate(), event.getEventAddress());
     }
 }
