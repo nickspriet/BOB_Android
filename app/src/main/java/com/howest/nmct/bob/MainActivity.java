@@ -1,6 +1,8 @@
 package com.howest.nmct.bob;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -25,9 +27,14 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String SELECTED_MENU_ITEM_ID = "selectedMenuItemId";
+
     @Bind(R.id.toolbar) Toolbar toolbar;
     @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
     @Bind(R.id.nav_view) NavigationView navigationView;
+
+    private ActionBarDrawerToggle mDrawerToggle;
+    private int mSelectedMenuItemId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,27 +44,40 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         initDrawer();
-        navigateToFeed();
+
+        if (savedInstanceState == null) navigateToFeed();
+//        else {
+//            mSelectedMenuItemId = savedInstanceState.getInt(SELECTED_MENU_ITEM_ID);
+//            updateNavigation(mSelectedMenuItemId);
+//        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putInt(SELECTED_MENU_ITEM_ID, mSelectedMenuItemId);
     }
 
     /**
      * Sets up the Drawer Layout and a toggle to open the navigation menu.
      */
     private void initDrawer() {
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.setDrawerListener(toggle);
-        toggle.syncState();
+        mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) drawerLayout.closeDrawer(GravityCompat.START);
+        else super.onBackPressed();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -88,7 +108,14 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         drawerLayout.closeDrawer(GravityCompat.START);
 
-        switch (item.getItemId()) {
+        mSelectedMenuItemId = item.getItemId();
+        updateNavigation(mSelectedMenuItemId);
+
+        return true;
+    }
+
+    private void updateNavigation(int itemId) {
+        switch (itemId) {
             case R.id.nav_feed:
                 Log.d("NavigationDrawer", "Click Feed");
                 navigateToFeed();
@@ -106,8 +133,6 @@ public class MainActivity extends AppCompatActivity
                 navigateToProfile();
                 break;
         }
-
-        return true;
     }
 
     public void navigateToProfile() {
@@ -132,6 +157,7 @@ public class MainActivity extends AppCompatActivity
 
     /**
      * Navigates to a fragment and places it in the container.
+     *
      * @param fragment A created fragment that is navigated to
      */
     public void navigateToFragment(Fragment fragment) {
