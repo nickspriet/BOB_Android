@@ -1,5 +1,8 @@
 package com.howest.nmct.bob.models;
 
+import android.text.Html;
+import android.text.Spanned;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +12,7 @@ import java.util.List;
  */
 public class Ride {
     private String id;
+    private String eventId;
     private String title;
     private String date;
     private String image;
@@ -17,8 +21,9 @@ public class Ride {
     private List<String> approvedList = new ArrayList<>();
     private User driver;
 
-    public Ride(String id, String title, String date, String address) {
+    public Ride(String id, String eventId, String title, String date, String address) {
         this.id = id;
+        this.eventId = eventId;
         this.title = title;
         this.date = date;
         this.address = address;
@@ -109,6 +114,20 @@ public class Ride {
      * @return Ride
      */
     public static Ride createRideFromEvent(Event event) {
-        return new Ride("-1", event.getEventName(), event.getEventDate(), event.getEventAddress());
+        return new Ride("-1", event.getId(), event.getEventName(), event.getEventDate(), event.getEventAddress());
+    }
+
+
+    public static Spanned formatApprovalStatus(Ride ride, Profile profile) {
+        if (ride.isSelfDriver(profile)) {
+            // I am BOB - so show me approvals and requests
+            return Html.fromHtml(String.format("<b>%s</b> approvals • <b>%s</b> requested", ride.getApproved(), ride.getRequests()));
+        } else if (ride.isApproved(profile)) {
+            // I am not BOB but I'm approved - so show me the amount of guests
+            return Html.fromHtml(String.format("<b>%s</b> guests", ride.getApproved()));
+        } else {
+            // I am not BOB and I'm awaiting approval
+            return Html.fromHtml("Waiting for approval...");
+        }
     }
 }

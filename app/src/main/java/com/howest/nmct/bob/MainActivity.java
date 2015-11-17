@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.howest.nmct.bob.collections.Rides;
 import com.howest.nmct.bob.fragments.EventsFragment;
 import com.howest.nmct.bob.fragments.FeedFragment;
 import com.howest.nmct.bob.fragments.ProfileFragment;
@@ -41,8 +42,18 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         initDrawer();
+        initData();
         navigateToFeed();
     }
+
+
+    /**
+     * Populates the Ride ArrayList
+     */
+    private void initData() {
+        Rides.fetchData();
+    }
+
 
     /**
      * Sets up the Drawer Layout and a toggle to open the navigation menu.

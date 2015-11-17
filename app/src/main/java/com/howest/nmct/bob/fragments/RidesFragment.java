@@ -38,12 +38,6 @@ public class RidesFragment extends Fragment {
     public RidesFragment() {
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initData();
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,13 +45,6 @@ public class RidesFragment extends Fragment {
         ButterKnife.bind(this, view);
         initViews();
         return view;
-    }
-
-    /**
-     * Populates the Ride ArrayList
-     */
-    private void initData() {
-        Rides.fetchData();
     }
 
     /**
@@ -98,5 +85,9 @@ public class RidesFragment extends Fragment {
         String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?q=loc:%s", ride.getAddress());
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         getActivity().startActivity(intent);
+    }
+
+    public void onRideEventClick(Ride ride) {
+        ((MainActivity) getActivity()).navigateToEvents();
     }
 }
