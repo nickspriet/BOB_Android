@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<view
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    class="com.howest.nmct.bob.views.AutoHeightViewPager"
+    android:id="@+id/viewPager"
+    android:layout_width="match_parent"
+    android:overScrollMode="never"
+    android:background="@color/background"
+    android:layout_height="100dp" >
+
+    <LinearLayout
+        android:id="@+id/cardView"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.CardView
+            android:layout_marginBottom="@dimen/card_vertical_margin"
+            android:layout_marginEnd="@dimen/card_horizontal_margin"
+            android:layout_marginStart="@dimen/card_horizontal_margin"
+            android:layout_marginTop="@dimen/card_vertical_margin"
+            android:background="@color/cardColorBackground"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="@dimen/card_image_size_horizontal"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/ride_image"
+                        android:src="@android:color/black"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                    <TextView
+                        style="@style/Header.Text.Title"
+                        android:text="21 Oct"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:padding="5dp"
+                        android:gravity="center"
+                        android:foregroundGravity="center"
+                        android:background="@drawable/card_image_inner_background"
+                        android:layout_alignParentBottom="true" />
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/card_inner_margin">
+
+                    <TextView
+                        android:id="@+id/ride_person"
+                        style="@style/Card.Text.Meta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/ride_title"
+                        style="@style/Card.Text.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/location_details"
+                        style="@style/Card.Text.Meta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/approval_status"
+                        style="@style/Card.Text.Meta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@color/background"
+        android:id="@+id/cardOptionsView"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/guests_button"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="4sp"
+                android:src="@drawable/ic_account_multiple"
+                />
+
+            <TextView
+                style="@style/Card.Actions.Label"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/guests" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="4sp"
+                android:src="@drawable/ic_calendar"
+                />
+
+            <TextView
+                style="@style/Card.Actions.Label"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/event" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/map_button"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="4sp"
+                android:src="@drawable/ic_map_marker_circle"
+                />
+
+            <TextView
+                style="@style/Card.Actions.Label"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/map" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/driver_button"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="4sp"
+                android:src="@drawable/ic_account"
+                />
+
+            <TextView
+                style="@style/Card.Actions.Label"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/driver" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</view>

@@ -1,0 +1,105 @@
+<resources>
+
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- Card -->
+    <style name="Card" />
+
+    <style name="Card.Text" parent="@android:style/TextAppearance" />
+
+    <style name="Card.Text.Title">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/card_title_size</item>
+        <item name="android:textColor">@color/cardColorTitle</item>
+    </style>
+
+    <style name="Card.Text.Meta">
+        <item name="android:textSize">@dimen/card_meta_size</item>
+        <item name="android:textColor">@color/cardColorText</item>
+    </style>
+    <style name="Card.Text.Meta.Label">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Card.Text.Button">
+        <item name="android:textSize">@dimen/card_meta_size</item>
+        <item name="android:textColor">@color/cardColorButton</item>
+    </style>
+
+    <style name="Card.Wrapper" />
+    <style name="Card.Wrapper.Details" >
+        <item name="android:layout_marginBottom">@dimen/card_leading</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:elevation">2dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/cardColorBackground</item>
+        <item name="android:paddingTop">@dimen/card_inner_margin_vertical</item>
+        <item name="android:paddingBottom">@dimen/card_inner_margin_vertical</item>
+        <item name="android:paddingStart">@dimen/card_inner_margin_horizontal</item>
+        <item name="android:paddingEnd">@dimen/card_inner_margin_horizontal</item>
+    </style>
+
+    <style name="Card.Actions" />
+    <style name="Card.Actions.Label" parent="@android:style/TextAppearance">
+        <item name="android:textSize">@dimen/card_meta_size</item>
+        <item name="android:textColor">@color/cardColorText</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Separator - Divides content -->
+    <style name="Separator">
+        <item name="android:background">@color/separator</item>
+    </style>
+
+    <style name="Separator.Horizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginBottom">@dimen/card_inner_margin</item>
+        <item name="android:layout_marginTop">@dimen/card_inner_margin</item>
+    </style>
+
+    <!-- Badge - A small badge that shows numbers -->
+    <style name="Badge">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">@dimen/badge_margin</item>
+        <item name="android:paddingEnd">@dimen/badge_margin</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">@color/cardColorText</item>
+    </style>
+
+    <style name="Badge.Active">
+        <item name="android:background">@color/colorAccent</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+
+    <!-- Header - The scrollable header -->
+    <style name="Header" />
+
+    <style name="Header.Text" parent="@android:style/TextAppearance" />
+
+    <style name="Header.Text.Title">
+        <item name="android:textSize">@dimen/card_title_size</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="Header.Text.Meta">
+        <item name="android:textSize">@dimen/card_meta_size</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+</resources>
