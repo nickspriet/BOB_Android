@@ -1,5 +1,6 @@
 package com.howest.nmct.bob.fragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,14 +23,10 @@ import butterknife.ButterKnife;
  * 22/10/15
  */
 public class RideDetailsFragment extends Fragment {
-    @Bind(R.id.text)
-    TextView textView;
-    @Bind(R.id.address)
-    TextView address;
-    @Bind(R.id.date)
-    TextView date;
-    @Bind(R.id.imageView)
-    ImageView imageView;
+    @Bind(R.id.address) TextView address;
+    @Bind(R.id.date) TextView date;
+    @Bind(R.id.ride_image) ImageView imageView;
+
     private Ride ride;
 
     public RideDetailsFragment() {
@@ -51,31 +48,23 @@ public class RideDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.content_ride_details, container, false);
 
-        initDrawer(view);
         ButterKnife.bind(this, view);
         initViews();
         return view;
     }
 
-    private void initDrawer(View view) {
-        ParallaxScrollView mScrollView = (ParallaxScrollView) view.findViewById(R.id.scrollView);
-        View headerView = getActivity().getLayoutInflater().inflate(R.layout.ride_header, mScrollView, false);
-        mScrollView.setParallaxView(headerView);
-    }
-
     private void initViews() {
         if (ride == null) return;
 
-        textView.setText(ride.getTitle());
         address.setText(ride.getAddress());
         date.setText(ride.getDate());
 
-        Picasso p = Picasso.with(getActivity());
-        p.setIndicatorsEnabled(true);
-        p.load(ride.getImage())
-                .fit()
-                .centerCrop()
-                .into(imageView);
+        //Picasso p = Picasso.with(getActivity());
+        //p.setIndicatorsEnabled(true);
+        //p.load(ride.getImage())
+        //        .fit()
+        //       .centerCrop()
+        //        .into(imageView);
 
     }
 }

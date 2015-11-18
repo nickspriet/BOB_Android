@@ -1,6 +1,5 @@
 package com.howest.nmct.bob.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -16,6 +15,7 @@ import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.adapters.EventAdapter;
 import com.howest.nmct.bob.collections.Events;
 import com.howest.nmct.bob.collections.Rides;
+import com.howest.nmct.bob.fragments.CreateRideDialogFragment.RideOptionSelectedListener;
 import com.howest.nmct.bob.models.Event;
 import com.howest.nmct.bob.models.Ride;
 
@@ -25,8 +25,9 @@ import butterknife.ButterKnife;
 /**
  * Created by Nick on 28/10/2015.
  */
-public class EventsFragment extends Fragment implements CreateRideDialogFragment.RideOptionSelectedListener  {
-    @Bind(R.id.list) RecyclerView recyclerView;
+public class EventsFragment extends Fragment implements RideOptionSelectedListener {
+    @Bind(R.id.list)
+    RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -83,5 +84,28 @@ public class EventsFragment extends Fragment implements CreateRideDialogFragment
     @Override
     public void onDialogNotBobClick(Event mEvent) {
 
+    }
+
+    public void onEventSelected(Event event) {
+        if (getView() == null) return;
+
+        navigateToEventFragment(event);
+
+    }
+
+    private void navigateToEventFragment(Event event) {
+        // navigateToFragment(EventDetailsFragment.newInstance(event), true);
+        getActivity().setTitle(event.getEventName());
+    }
+
+
+    public void navigateToFragment(Fragment fragment, Boolean addToManager) {
+        getActivity().getSupportFragmentManager().popBackStack();
+
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, fragment)
+                .addToBackStack(fragment.getClass().toString())
+                .commit();
     }
 }

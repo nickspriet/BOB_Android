@@ -4,12 +4,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.howest.nmct.bob.MainActivity;
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.fragments.EventsFragment;
 import com.howest.nmct.bob.models.Event;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -23,14 +25,14 @@ import butterknife.OnClick;
  */
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
 
-    private ArrayList<Event> events;
-    private MainActivity activity;
-    private EventsFragment fragment;
+    private ArrayList<Event> mEvents;
+    private MainActivity mActivity;
+    private EventsFragment mFragment;
 
     public EventAdapter(EventsFragment eventsFragment, ArrayList<Event> events) {
-        this.activity = (MainActivity) eventsFragment.getActivity();
-        this.fragment = eventsFragment;
-        this.events = events;
+        this.mActivity = (MainActivity) eventsFragment.getActivity();
+        this.mFragment = eventsFragment;
+        this.mEvents = events;
     }
 
     @Override
@@ -40,28 +42,39 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     }
 
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Event event = events.get(position);
+        Event event = mEvents.get(position);
+        holder.tvEventDay.setText("" + event.getEventDateFormat("FF"));
+        holder.tvEventMonth.setText(event.getEventDateFormat("MMM").toUpperCase());
         holder.tvEventName.setText(event.getEventName());
-        holder.tvEventDate.setText(event.getEventDate());
-        holder.tvEventAddress.setText(event.getEventAddress());
+        holder.tvEventInfo.setText(event.getEventDateFormat("E h a") + " " + event.getEventAddress());
+        holder.tvEventFriendsOrGuests.setText(event.getEventFriendsOrGuests());
 
-
+        //set image via picasso
+        Picasso p = Picasso.with(this.mActivity.getApplicationContext());
+        p.setIndicatorsEnabled(true);
+        p.load(event.getEventImage())
+                .fit()
+                .centerCrop()
+                .into(holder.imgEvent);
     }
 
     @Override
     public int getItemCount() {
-        return events.size();
+        return mEvents.size();
     }
 
     private void onEventGoing(int adapterPosition) {
-        Event event = events.get(adapterPosition);
-        fragment.onShowCreateRideDialog(event);
+        Event event = mEvents.get(adapterPosition);
+        mFragment.onShowCreateRideDialog(event);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tvEventName) TextView tvEventName;
-        @Bind(R.id.tvEventDate) TextView tvEventDate;
-        @Bind(R.id.tvEventAddress) TextView tvEventAddress;
+        @Bind(R.id.imgEvent)  ImageView imgEvent;
+        @Bind(R.id.tvEventDay)  TextView tvEventDay;
+        @Bind(R.id.tvEventMonth)  TextView tvEventMonth;
+        @Bind(R.id.tvEventName)  TextView tvEventName;
+        @Bind(R.id.tvEventInfo)  TextView tvEventInfo;
+        @Bind(R.id.tvEventFriendsOrGuests)  TextView tvEventFriendsOrGuests;
 
         private EventAdapter adapter;
 
@@ -75,7 +88,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         public void onEventGoing() {
             adapter.onEventGoing(getAdapterPosition());
         }
+
+        @OnClick(R.id.cardView)
+        public void onCardClicked() {
+            adapter.onEventSelected(getAdapterPosition());
+        }
     }
 
-
+    private void onEventSelected(long itemId) {
+        Event event = mEvents.get((int) itemId);
+        mFragment.onEventSelected(event);
+    }
 }
