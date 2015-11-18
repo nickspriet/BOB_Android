@@ -2,36 +2,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:id="@+id/cardView"
+    android:orientation="horizontal">
 
     <android.support.v7.widget.CardView
-        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/card_vertical_margin"
         android:layout_marginEnd="@dimen/card_horizontal_margin"
         android:layout_marginStart="@dimen/card_horizontal_margin"
         android:layout_marginTop="@dimen/card_vertical_margin"
+        android:layout_gravity="center"
         android:background="@color/cardColorBackground">
 
         <RelativeLayout
+            android:background="?android:attr/selectableItemBackground"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/imgEvent"
                 android:layout_width="fill_parent"
-                android:layout_height="120dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true" />
+                android:layout_height="@dimen/card_image_size_vertical" />
 
             <ImageView
                 android:id="@+id/imgBobStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/imgEvent"
+                android:layout_below="@+id/imgEvent"
                 android:layout_alignParentEnd="true"
-                android:layout_marginBottom="-25dp"
+                android:layout_marginTop="-25dp"
                 android:src="@mipmap/ic_launcher" />
 
             <LinearLayout
@@ -41,66 +41,64 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/imgEvent"
                 android:orientation="horizontal"
-                android:padding="8dp">
+                android:paddingTop="@dimen/card_inner_margin_vertical"
+                android:paddingBottom="@dimen/card_inner_margin_vertical"
+                android:paddingStart="@dimen/card_inner_margin_horizontal"
+                android:paddingEnd="@dimen/card_inner_margin_horizontal"
+                android:gravity="center_vertical">
 
-                <RelativeLayout
-                    android:layout_width="fill_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="6"
-                    android:gravity="center">
+                    android:paddingEnd="@dimen/card_inner_margin_horizontal"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tvEventDay"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
                         android:text="23"
                         android:textAlignment="center"
-                        android:textSize="32dp"
-                        android:textStyle="bold" />
+                        android:textSize="32sp" />
 
                     <TextView
                         android:id="@+id/tvEventMonth"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tvEventDay"
+                        android:layout_marginTop="-5sp"
                         android:text="NOV"
                         android:textAlignment="center"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="16dp" />
-                </RelativeLayout>
+                        android:textSize="16sp" />
+                </LinearLayout>
 
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
+                        style="@style/Card.Text.Title"
                         android:id="@+id/tvEventName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
                         android:text="Name of the event"
                         android:textStyle="bold" />
 
                     <TextView
+                        style="@style/Card.Text.Meta"
                         android:id="@+id/tvEventInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tvEventName"
                         android:text="Sat 6:30 PM · Howest Obee · Kortrijk..." />
 
                     <TextView
+                        style="@style/Card.Text.Meta"
                         android:id="@+id/tvEventFriendsOrGuests"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tvEventInfo"
                         android:text="Ilias, Nick and 9 other friends are going" />
-                </RelativeLayout>
+                </LinearLayout>
+
             </LinearLayout>
 
         </RelativeLayout>
