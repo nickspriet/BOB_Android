@@ -9,11 +9,11 @@
         android:layout_height="fill_parent"
         android:src="@drawable/side_nav_bar"
         android:id="@+id/nav_header_background"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="10dp"
         />
 
     <LinearLayout
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="@dimen/nav_header_height"
         android:layout_alignParentBottom="true"
@@ -24,14 +24,16 @@
 
     <LinearLayout
         android:layout_alignParentBottom="true"
-        android:padding="@dimen/nav_header_vertical_spacing"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/nav_header_profile"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/ic_account"
             android:layout_gravity="center"
             app:civ_border_width="2dp"
@@ -40,7 +42,7 @@
 
         <TextView
             style="@style/Header.Text.Title"
-            android:paddingLeft="@dimen/nav_header_vertical_spacing"
+            android:paddingLeft="18dp"
             android:layout_gravity="center"
             android:id="@+id/nav_header_name"
             android:layout_width="wrap_content"

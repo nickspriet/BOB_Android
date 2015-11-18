@@ -37,15 +37,41 @@ public class LoginActivity extends AppCompatActivity {
 
     //manage callbacks
     private CallbackManager callbackManager;
-
-    public static final MediaType JSON
-            = MediaType.parse("application/json; charset=utf-8");
+    OkHttpClient okHttpClient = new OkHttpClient();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        checkSavedToken();
+    }
 
+    /**
+     * Checks if there is a Facebook or a backend token saved.
+     */
+    private void checkSavedToken() {
+        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        String fbToken = sharedPreferences.getString(Constants.FACEBOOK_TOKEN, "");
+        String backendToken = sharedPreferences.getString(Constants.BACKEND_TOKEN, "");
+
+        if (backendToken.isEmpty() && !fbToken.isEmpty()) {
+            Log.i("LoginActivity", "No Backend Token - Attempting login");
+            setContentView(R.layout.activity_loading);
+            syncToken();
+        } else if (!backendToken.isEmpty() && !fbToken.isEmpty()) {
+            Log.i("LoginActivity", "We have a backend token - Get profile");
+            setContentView(R.layout.activity_loading);
+            getProfile();
+        } else {
+            Log.i("LoginActivity", "No backend token and no facebook token");
+            initLoginButton();
+        }
+    }
+
+    /**
+     * Open up the correct view and show the login button
+     */
+    private void initLoginButton() {
         //the SDK needs to be initialized before using any of its methods
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
@@ -80,26 +106,13 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i("LoginActivity", "Login attempt failed.");
             }
         });
-
-        checkSavedToken();
     }
 
-    private void checkSavedToken() {
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        String fbToken = sharedPreferences.getString(Constants.FACEBOOK_TOKEN, "");
-        String backendToken = sharedPreferences.getString(Constants.BACKEND_TOKEN, "");
-
-        if (backendToken.isEmpty() && !fbToken.isEmpty()) {
-            Log.i("LoginActivity", "No Backend Token - Attempting login");
-            syncToken();
-        } else if (!backendToken.isEmpty() && !fbToken.isEmpty()) {
-            Log.i("LoginActivity", "We have a backend token - Get profile");
-            getProfile();
-        }
-    }
-
+    /**
+     * User already has a token from our backend.
+     * Do a call to the backend to get a profile.
+     */
     private void getProfile() {
-        OkHttpClient okHttpClient = new OkHttpClient();
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         String token = sharedPreferences.getString(Constants.BACKEND_TOKEN, "");
 
@@ -133,6 +146,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Save the Facebook token in our SharedPreferences
+     * @param accessToken
+     */
     private void saveToken(AccessToken accessToken) {
         Log.i("LoginActivity", "Saving Facebook token");
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
@@ -151,7 +168,6 @@ public class LoginActivity extends AppCompatActivity {
         Log.i("LoginActivity", "Syncing Facebook token");
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
 
-        OkHttpClient okHttpClient = new OkHttpClient();
         RequestBody body = new FormEncodingBuilder()
                 .add(Constants.FACEBOOK_TOKEN, sharedPreferences.getString(Constants.FACEBOOK_TOKEN, ""))
                 .add(Constants.FACEBOOK_USERID, sharedPreferences.getString(Constants.FACEBOOK_USERID, ""))
@@ -199,10 +215,15 @@ public class LoginActivity extends AppCompatActivity {
         onLoggedIn(apiAuthenticatedResponse.data.user);
     }
 
+    /**
+     * User has logged in. Start the next activity.
+     * @param user profile
+     */
     private void onLoggedIn(User user) {
         Intent i = new Intent(this, MainActivity.class);
         i.putExtra(Constants.USER_PROFILE, user);
         startActivity(i);
+        finish();
     }
 
     //handle the result received from the activity

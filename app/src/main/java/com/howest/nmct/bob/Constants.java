@@ -5,7 +5,7 @@ package com.howest.nmct.bob;
  * 17/11/15
  */
 public class Constants {
-    static String BACKEND_HOST = "192.168.1.227:3000";
+    static String BACKEND_HOST = "bob.il.ly";
     static String BACKEND_SCHEME = "http";
     static String BACKEND_BASEURL =  BACKEND_SCHEME + "://" + BACKEND_HOST;
     static String API_USER_LOGIN = BACKEND_BASEURL + "/user/login";

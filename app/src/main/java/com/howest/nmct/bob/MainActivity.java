@@ -73,15 +73,22 @@ public class MainActivity extends AppCompatActivity
 
         // Set profile
         Picasso picasso = Picasso.with(this);
-        picasso.load(mUser.getPicture())
-                .fit()
-                .centerCrop()
-                .into((ImageView) findViewById(R.id.nav_header_profile));
+        Log.d("MainActivity", mUser.getPicture());
+        Log.d("MainActivity", mUser.getCover());
+        if (!mUser.getPicture().isEmpty()) {
+            picasso.load(mUser.getPicture())
+                    .fit()
+                    .centerCrop()
+                    .into((ImageView) findViewById(R.id.nav_header_profile));
+        }
 
-        picasso.load(mUser.getCover())
-                .fit()
-                .centerCrop()
-                .into((ImageView) findViewById(R.id.nav_header_background));
+        if (!mUser.getCover().isEmpty()) {
+            picasso.load(mUser.getCover())
+                    .fit()
+                    .centerCrop()
+                    .into((ImageView) findViewById(R.id.nav_header_background));
+        }
+
 
         TextView tvName = (TextView) findViewById(R.id.nav_header_name);
         tvName.setText(mUser.getName());

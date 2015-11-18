@@ -8,24 +8,29 @@ import com.howest.nmct.bob.models.User;
  * illyism
  * 17/11/15
  */
-public class APIAuthenticatedResponse extends APILoginResponse {
+public class APIAuthenticatedResponse extends APIResponse {
     @SerializedName("data")
     @Expose
     public APIData data;
 
-
-    public APIAuthenticatedResponse(int statusCode, String message, User user, APIData data) {
-        super(statusCode, message, user, data);
+    public APIAuthenticatedResponse(int statusCode, String message, APIData data) {
+        super(statusCode, message);
+        this.data = data;
     }
 
-    public class APIData extends APILoginResponse.APIData {
+
+    public class APIData {
         @SerializedName("token")
         @Expose
         public String token;
 
+        @SerializedName("user")
+        @Expose
+        public User user;
+
         public APIData(String token, User user) {
-            super(user);
             this.token = token;
+            this.user = user;
         }
     }
 }

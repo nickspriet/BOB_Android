@@ -13,7 +13,7 @@ public class APILoginResponse extends APIResponse {
     @Expose
     public APIData data;
 
-    public APILoginResponse(int statusCode, String message, User user, APIData data) {
+    public APILoginResponse(int statusCode, String message, APIData data) {
         super(statusCode, message);
         this.data = data;
     }

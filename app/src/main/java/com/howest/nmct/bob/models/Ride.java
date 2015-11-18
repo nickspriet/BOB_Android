@@ -21,9 +21,10 @@ public class Ride {
     private List<String> approvedList = new ArrayList<>();
     private User driver;
 
-    public Ride(String id, String eventId, String title, String date, String address) {
+    public Ride(String id, String eventId, User user, String title, String date, String address) {
         this.id = id;
         this.eventId = eventId;
+        this.driver = user;
         this.title = title;
         this.date = date;
         this.address = address;
@@ -84,16 +85,8 @@ public class Ride {
         this.id = id;
     }
 
-    public User getDriver() {
-        return driver;
-    }
-
-    public void setDriver(User driver) {
-        this.driver = driver;
-    }
-
-    public Boolean isSelfDriver(User user) {
-        return driver.getId().equals(user.getId());
+    public Boolean isSelfDriver(User otherUser) {
+        return this.getDriver().getId().equals(otherUser.getId());
     }
 
     public Boolean isApproved(User user) {
@@ -111,10 +104,13 @@ public class Ride {
     /**
      * Sets Title, Date, Address for a Ride
      * @param event the event to copy data from
+     * @param driver The driver of the new ride
      * @return Ride
      */
-    public static Ride createRideFromEvent(Event event) {
-        return new Ride("-1", event.getId(), event.getEventName(), event.getEventDate(), event.getEventAddress());
+    public static Ride createRideFromEvent(Event event, User driver) {
+        Ride ride = new Ride("-1", event.getId(), driver, event.getEventName(), event.getEventDate(), event.getEventAddress());
+        ride.addApprovedUser(driver);
+        return ride;
     }
 
 
@@ -129,5 +125,9 @@ public class Ride {
             // I am not BOB and I'm awaiting approval
             return Html.fromHtml("Waiting for approval...");
         }
+    }
+
+    public User getDriver() {
+        return driver;
     }
 }
