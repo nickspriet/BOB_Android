@@ -96,6 +96,9 @@
         <item name="android:textSize">@dimen/card_title_size</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
+    <style name="Header.Text.Title.Dark">
+        <item name="android:textColor">@color/cardColorText</item>
+    </style>
 
     <style name="Header.Text.Meta">
         <item name="android:textSize">@dimen/card_meta_size</item>

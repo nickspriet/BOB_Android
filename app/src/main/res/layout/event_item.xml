@@ -14,133 +14,95 @@
         android:layout_marginTop="@dimen/card_vertical_margin"
         android:background="@color/cardColorBackground">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgEvent"
+                android:layout_width="fill_parent"
+                android:layout_height="120dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true" />
+
+            <ImageView
+                android:id="@+id/imgBobStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/imgEvent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="-25dp"
+                android:src="@mipmap/ic_launcher" />
 
             <LinearLayout
-                android:id="@+id/llEvent"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:layout_margin="4dp"
-                android:orientation="vertical">
+                android:id="@+id/linearLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/imgEvent"
+                android:orientation="horizontal"
+                android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/tvEventWeekDay"
-                    android:layout_width="match_parent"
-                    android:layout_height="36dp"
-                    android:gravity="center"
-                    android:padding="4dp"
-                    android:text="Tue"
-                    android:textAllCaps="true"
-                    android:textSize="24dp" />
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:gravity="center">
 
-                <TextView
-                    android:id="@+id/tvEventDay"
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:gravity="center"
-                    android:text="20"
-                    android:textSize="36dp"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/tvEventDay"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:text="23"
+                        android:textAlignment="center"
+                        android:textSize="32dp"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvEvent"
-                    android:layout_width="match_parent"
-                    android:layout_height="36dp"
-                    android:gravity="center"
-                    android:padding="4dp"
-                    android:text="Sep"
-                    android:textAllCaps="true"
-                    android:textSize="24dp" />
+                    <TextView
+                        android:id="@+id/tvEventMonth"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvEventDay"
+                        android:text="NOV"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="16dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvEventName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:text="Name of the event"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvEventInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvEventName"
+                        android:text="Sat 6:30 PM · Howest Obee · Kortrijk..." />
+
+                    <TextView
+                        android:id="@+id/tvEventFriendsOrGuests"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvEventInfo"
+                        android:text="Ilias, Nick and 9 other friends are going" />
+                </RelativeLayout>
             </LinearLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_inner_margin">
-
-                <TextView
-                    android:id="@+id/tvEventName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:text="Student Welcome Concert"
-                    android:textSize="20dp" />
-
-                <ImageView
-                    android:id="@+id/iconEventAddress"
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/tvEventName"
-                    android:layout_marginRight="4dp"
-                    android:src="@drawable/ic_map_marker_circle" />
-
-                <TextView
-                    android:id="@+id/tvEventAddress"
-                    style="@style/Card.Text.Meta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvEventName"
-                    android:layout_toEndOf="@+id/iconEventAddress"
-                    android:text="Street, 0000 City" />
-
-                <ImageView
-                    android:id="@+id/iconEventDate"
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_marginRight="4dp"
-                    android:src="@drawable/ic_clock"
-                    android:layout_below="@+id/tvEventAddress"
-                    android:layout_alignParentStart="true" />
-
-                <TextView
-                    android:id="@+id/tvEventDate"
-                    style="@style/Card.Text.Meta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tvEventAddress"
-                    android:layout_toEndOf="@+id/iconEventDate"
-                    android:text="Oct 20 at 9:00pm to Oct 21 at 5:00am" />
-
-                <View
-                    android:id="@+id/separator"
-                    style="@style/Separator.Horizontal"
-                    android:layout_below="@id/tvEventDate" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/separator"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/btnEventGoing"
-                        style="@style/Card.Text.Button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.33"
-                        android:text="Going (21)" />
-
-                    <Button
-                        android:id="@+id/tvEventMaybe"
-                        style="@style/Card.Text.Button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.33"
-                        android:text="Maybe (7)" />
-
-                    <Button
-                        android:id="@+id/tvEventNotGoing"
-                        style="@style/Card.Text.Button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.33"
-                        android:text="Not going (11)" />
-                </LinearLayout>
-            </RelativeLayout>
-        </LinearLayout>
+        </RelativeLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

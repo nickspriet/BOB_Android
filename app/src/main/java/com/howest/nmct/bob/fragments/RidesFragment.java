@@ -2,18 +2,25 @@ package com.howest.nmct.bob.fragments;
 
 import android.content.Intent;
 import android.graphics.Point;
+import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.AutoTransition;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.howest.nmct.bob.MainActivity;
 import com.howest.nmct.bob.R;
@@ -34,6 +41,9 @@ public class RidesFragment extends Fragment {
     @Bind(R.id.list) RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    @Nullable
+    @Bind(R.id.ride_image)  ImageView ride_image;
+
 
     public RidesFragment() {
     }
@@ -64,22 +74,37 @@ public class RidesFragment extends Fragment {
         }
     }
 
-    public void onRideSelected(Ride ride) {
+    public void onRideSelected(Ride ride, ImageView rideImage) {
         View v = getView();
         if (v == null) return;
-
-        FrameLayout frameLayout = (FrameLayout) v.findViewById(R.id.frameLayout);
-        // frameLayout is er als er landscape mode is
-        if (frameLayout != null) {
-            ((MainActivity) getActivity()).navigatetoRideDetails(R.id.frameLayout, ride);
-            Display display = getActivity().getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(size.x / 3, RecyclerView.LayoutParams.MATCH_PARENT));
-        } else {
-            ((MainActivity) getActivity()).navigatetoRideDetails(ride);
-        }
+        navigatetoRideDetails(ride, rideImage);
     }
+
+    public void navigatetoRideDetails(Ride ride, ImageView rideImage) {
+        navigateToFragment(RideDetailsFragment.newInstance(ride), true, rideImage);
+        getActivity().setTitle(ride.getTitle());
+    }
+
+
+    public void navigateToFragment(Fragment fragment, Boolean addToManager, ImageView rideImage) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            TransitionInflater transActivity = TransitionInflater.from(getActivity());
+
+            setSharedElementReturnTransition(transActivity.inflateTransition(R.transition.change_image_transform));
+            setExitTransition(transActivity.inflateTransition(android.R.transition.explode));
+
+            fragment.setSharedElementEnterTransition(transActivity.inflateTransition(R.transition.change_image_transform));
+            fragment.setEnterTransition(transActivity.inflateTransition(android.R.transition.explode));
+        }
+
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.container, fragment)
+                .addSharedElement(rideImage, rideImage.getTransitionName())
+                .addToBackStack(fragment.getClass().toString())
+                .commit();
+    }
+
 
     public void onRideMapClick(Ride ride) {
         String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?q=loc:%s", ride.getAddress());
