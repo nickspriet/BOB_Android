@@ -1,6 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_marginTop="16dp"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -15,9 +14,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/card_vertical_margin"
-            android:layout_marginEnd="@dimen/card_horizontal_margin"
-            android:layout_marginStart="@dimen/card_horizontal_margin"
-            android:layout_marginTop="@dimen/card_vertical_margin"
             android:background="@color/cardColorBackground">
 
             <LinearLayout
@@ -98,14 +94,7 @@
         </android.support.v7.widget.CardView>
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="12dp"
-        android:layout_marginTop="100dp"
-        android:src="@mipmap/ic_launcher" />
+
 
     <LinearLayout
         android:id="@+id/llCardViewEventDetailsAttendants"
@@ -120,16 +109,15 @@
             android:id="@+id/cardViewEventDetailsAttendants"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/card_vertical_margin"
-            android:layout_marginEnd="@dimen/card_horizontal_margin"
-            android:layout_marginStart="@dimen/card_horizontal_margin"
-            android:layout_marginTop="@dimen/card_vertical_margin"
             android:background="@color/cardColorBackground">
 
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp">
+                android:paddingTop="@dimen/card_inner_margin_vertical"
+                android:paddingStart="@dimen/card_inner_margin_horizontal"
+                android:paddingEnd="@dimen/card_inner_margin_horizontal"
+                android:paddingBottom="@dimen/card_inner_margin_vertical">
 
                 <TextView
                     android:id="@+id/tvEventDetailsFriendsAndGuests"
@@ -186,16 +174,15 @@
             android:id="@+id/cardViewEventDetailsInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/card_vertical_margin"
-            android:layout_marginEnd="@dimen/card_horizontal_margin"
-            android:layout_marginStart="@dimen/card_horizontal_margin"
-            android:layout_marginTop="@dimen/card_vertical_margin"
             android:background="@color/cardColorBackground">
 
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp">
+                android:paddingTop="@dimen/card_inner_margin_vertical"
+                android:paddingStart="@dimen/card_inner_margin_horizontal"
+                android:paddingEnd="@dimen/card_inner_margin_horizontal"
+                android:paddingBottom="@dimen/card_inner_margin_vertical">
 
                 <RelativeLayout
                     android:id="@+id/rlTime"
@@ -207,7 +194,7 @@
                         android:id="@+id/icClock"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/clock" />
+                        android:src="@drawable/ic_clock" />
 
                     <TextView
                         android:id="@+id/tvEventDetailsTotalTime"
@@ -265,7 +252,7 @@
                         android:id="@+id/icOrganisator"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/organisator" />
+                        android:src="@drawable/ic_account" />
 
                     <TextView
                         android:id="@+id/tvEventDetailsOrganisator"
@@ -294,16 +281,15 @@
             android:id="@+id/cardViewEventDetailsDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/card_vertical_margin"
-            android:layout_marginEnd="@dimen/card_horizontal_margin"
-            android:layout_marginStart="@dimen/card_horizontal_margin"
-            android:layout_marginTop="@dimen/card_vertical_margin"
             android:background="@color/cardColorBackground">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp">
+                android:paddingTop="@dimen/card_inner_margin_vertical"
+                android:paddingStart="@dimen/card_inner_margin_horizontal"
+                android:paddingEnd="@dimen/card_inner_margin_horizontal"
+                android:paddingBottom="@dimen/card_inner_margin_vertical">
 
                 <TextView
                     android:id="@+id/lblDescription"
@@ -324,6 +310,15 @@
             </RelativeLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="100dp"
+        android:src="@mipmap/ic_launcher" />
 
 
 </RelativeLayout>

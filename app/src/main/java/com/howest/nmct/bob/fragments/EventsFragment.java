@@ -94,7 +94,7 @@ public class EventsFragment extends Fragment implements RideOptionSelectedListen
     }
 
     private void navigateToEventFragment(Event event) {
-        // navigateToFragment(EventDetailsFragment.newInstance(event), true);
+        navigateToFragment(EventDetailsFragment.newInstance(event), true);
         getActivity().setTitle(event.getEventName());
     }
 

@@ -133,6 +133,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Request request, IOException e) {
                 Log.i("LoginActivity", "Call failed");
+                // @TODO java.net.SocketTimeoutException - No internet connection
                 e.printStackTrace();
             }
 
@@ -186,6 +187,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Request request, IOException e) {
                 Log.i("LoginActivity", "Call failed");
+                // @TODO java.net.SocketTimeoutException - No internet connection
                 e.printStackTrace();
             }
 

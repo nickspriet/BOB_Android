@@ -22,15 +22,9 @@ import butterknife.ButterKnife;
  * 21/10/15
  */
 public class ProfileFragment extends Fragment {
+    @Bind(R.id.imgCover) ImageView imgCover;
     @Bind(R.id.imgProfile) ImageView imgProfile;
     @Bind(R.id.tvProfileName) TextView tvProfileName;
-    @Bind(R.id.tvProfilePhone) TextView tvProfilePhone;
-    @Bind(R.id.tvProfileEmail) TextView tvProfileEmail;
-    @Bind(R.id.tvProfileAddress) TextView tvProfileAddress;
-    @Bind(R.id.tvProfileAboutMe) TextView tvProfileAboutMe;
-    @Bind(R.id.tvProfileCarType) TextView tvProfileCarType;
-    @Bind(R.id.tvProfileCarLicense) TextView tvProfileCarLicense;
-    private MainActivity mActivity;
 
     public ProfileFragment() {
     }
@@ -41,17 +35,26 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.content_profile, container, false);
         ButterKnife.bind(this, view);
         initViews();
-        mActivity = (MainActivity) getActivity();
         return view;
     }
 
     private void initViews() {
+        MainActivity parentActivity = (MainActivity) getActivity();
+        User user = parentActivity.mUser;
+
         Picasso p = Picasso.with(getActivity());
         p.setIndicatorsEnabled(true);
-        p.load(mActivity.mUser.getPicture())
+        p.load(user.getCover())
+                .fit()
+                .centerCrop()
+                .into(imgCover);
+
+        p.load(user.getPicture())
                 .fit()
                 .centerCrop()
                 .into(imgProfile);
+
+        tvProfileName.setText(user.getName());
     }
 
 }
