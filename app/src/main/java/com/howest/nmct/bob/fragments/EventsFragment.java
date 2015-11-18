@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.adapters.EventAdapter;
 import com.howest.nmct.bob.collections.Events;
+import com.howest.nmct.bob.models.Event;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -20,7 +21,8 @@ import butterknife.ButterKnife;
  * Created by Nick on 28/10/2015.
  */
 public class EventsFragment extends Fragment {
-    @Bind(R.id.list) RecyclerView recyclerView;
+    @Bind(R.id.list)
+    RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -58,5 +60,28 @@ public class EventsFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             recyclerView.setAdapter(mAdapter);
         }
+    }
+
+    public void onEventSelected(Event event) {
+        if (getView() == null) return;
+
+        navigateToEventFragment(event);
+
+    }
+
+    private void navigateToEventFragment(Event event) {
+        navigateToFragment(EventDetailsFragment.newInstance(event), true);
+        getActivity().setTitle(event.getEventName());
+    }
+
+
+    public void navigateToFragment(Fragment fragment, Boolean addToManager) {
+        getActivity().getSupportFragmentManager().popBackStack();
+
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, fragment)
+                .addToBackStack(fragment.getClass().toString())
+                .commit();
     }
 }

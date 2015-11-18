@@ -7,6 +7,7 @@ package com.howest.nmct.bob.adapters;
 
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.media.Image;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -182,9 +183,9 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         return mRides.size();
     }
 
-    private void onRideSelected(long itemId) {
+    private void onRideSelected(long itemId, ImageView rideImage) {
         Ride ride = mRides.get((int) itemId);
-        mFragment.onRideSelected(ride);
+        mFragment.onRideSelected(ride, rideImage);
     }
 
     private void onMapButtonClicked(long itemId) {
@@ -215,7 +216,7 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
 
         @OnClick(R.id.cardView)
         public void onCardClicked() {
-            adapter.onRideSelected(getAdapterPosition());
+            adapter.onRideSelected(getAdapterPosition(), rideImage);
         }
 
         @OnClick(R.id.map_button)

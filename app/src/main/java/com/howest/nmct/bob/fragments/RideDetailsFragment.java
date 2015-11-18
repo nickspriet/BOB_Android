@@ -23,14 +23,10 @@ import butterknife.ButterKnife;
  * 22/10/15
  */
 public class RideDetailsFragment extends Fragment {
-//    @Bind(R.id.text)
-//    TextView textView;
-    @Bind(R.id.address)
-    TextView address;
-    @Bind(R.id.date)
-    TextView date;
-    @Bind(R.id.ride_image)
-    ImageView imageView;
+    @Bind(R.id.address) TextView address;
+    @Bind(R.id.date) TextView date;
+    @Bind(R.id.ride_image) ImageView imageView;
+
     private Ride ride;
 
     public RideDetailsFragment() {
@@ -60,17 +56,15 @@ public class RideDetailsFragment extends Fragment {
     private void initViews() {
         if (ride == null) return;
 
-        //textView.setText(ride.getTitle());
         address.setText(ride.getAddress());
         date.setText(ride.getDate());
 
-
-//        Picasso p = Picasso.with(getActivity());
-//        p.setIndicatorsEnabled(true);
-//        p.load(ride.getImage())
-//                .fit()
-//                .centerCrop()
-//                .into(imageView);
+        //Picasso p = Picasso.with(getActivity());
+        //p.setIndicatorsEnabled(true);
+        //p.load(ride.getImage())
+        //        .fit()
+        //       .centerCrop()
+        //        .into(imageView);
 
     }
 }

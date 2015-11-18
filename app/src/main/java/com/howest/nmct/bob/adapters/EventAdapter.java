@@ -1,7 +1,5 @@
 package com.howest.nmct.bob.adapters;
 
-import android.graphics.Color;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,14 +25,14 @@ import butterknife.OnClick;
  */
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
 
-    private ArrayList<Event> events;
-    private MainActivity activity;
-    private EventsFragment fragment;
+    private ArrayList<Event> mEvents;
+    private MainActivity mActivity;
+    private EventsFragment mFragment;
 
     public EventAdapter(EventsFragment eventsFragment, ArrayList<Event> events) {
-        this.activity = (MainActivity) eventsFragment.getActivity();
-        this.fragment = eventsFragment;
-        this.events = events;
+        this.mActivity = (MainActivity) eventsFragment.getActivity();
+        this.mFragment = eventsFragment;
+        this.mEvents = events;
     }
 
     @Override
@@ -44,26 +42,40 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     }
 
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Event event = events.get(position);
+        Event event = mEvents.get(position);
+        holder.tvEventDay.setText("" + event.getEventDateFormat("FF"));
+        holder.tvEventMonth.setText(event.getEventDateFormat("MMM").toUpperCase());
         holder.tvEventName.setText(event.getEventName());
-        holder.tvEventDate.setText(event.getEventDate());
-        holder.tvEventAddress.setText(event.getEventAddress());
+        holder.tvEventInfo.setText(event.getEventDateFormat("E h a") + " " + event.getEventAddress());
+        holder.tvEventFriendsOrGuests.setText(event.getEventFriendsOrGuests());
 
-
+        //set image via picasso
+        Picasso p = Picasso.with(this.mActivity.getApplicationContext());
+        p.setIndicatorsEnabled(true);
+        p.load(event.getEventImage())
+                .fit()
+                .centerCrop()
+                .into(holder.imgEvent);
     }
 
     @Override
     public int getItemCount() {
-        return events.size();
+        return mEvents.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @Nullable @Bind(R.id.tvEventName)
+        @Bind(R.id.imgEvent)
+        ImageView imgEvent;
+        @Bind(R.id.tvEventDay)
+        TextView tvEventDay;
+        @Bind(R.id.tvEventMonth)
+        TextView tvEventMonth;
+        @Bind(R.id.tvEventName)
         TextView tvEventName;
-        @Nullable @Bind(R.id.tvEventDate)
-        TextView tvEventDate;
-        @Nullable @Bind(R.id.tvEventAddress)
-        TextView tvEventAddress;
+        @Bind(R.id.tvEventInfo)
+        TextView tvEventInfo;
+        @Bind(R.id.tvEventFriendsOrGuests)
+        TextView tvEventFriendsOrGuests;
 
         private EventAdapter adapter;
 
@@ -72,5 +84,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             this.adapter = adapter;
             ButterKnife.bind(this, view);
         }
+
+        @OnClick(R.id.cardView)
+        public void onCardClicked() {
+            adapter.onEventSelected(getAdapterPosition());
+        }
+    }
+
+    private void onEventSelected(long itemId) {
+        Event event = mEvents.get((int) itemId);
+        mFragment.onEventSelected(event);
     }
 }
