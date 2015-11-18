@@ -1,12 +1,10 @@
 package com.howest.nmct.bob.fragments;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.models.Event;

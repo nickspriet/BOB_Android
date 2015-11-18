@@ -6,9 +6,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.howest.nmct.bob.MainActivity;
 import com.howest.nmct.bob.R;
+import com.howest.nmct.bob.models.User;
+import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -18,7 +22,15 @@ import butterknife.ButterKnife;
  * 21/10/15
  */
 public class ProfileFragment extends Fragment {
-    @Bind(R.id.text) TextView textView;
+    @Bind(R.id.imgProfile) ImageView imgProfile;
+    @Bind(R.id.tvProfileName) TextView tvProfileName;
+    @Bind(R.id.tvProfilePhone) TextView tvProfilePhone;
+    @Bind(R.id.tvProfileEmail) TextView tvProfileEmail;
+    @Bind(R.id.tvProfileAddress) TextView tvProfileAddress;
+    @Bind(R.id.tvProfileAboutMe) TextView tvProfileAboutMe;
+    @Bind(R.id.tvProfileCarType) TextView tvProfileCarType;
+    @Bind(R.id.tvProfileCarLicense) TextView tvProfileCarLicense;
+    private MainActivity mActivity;
 
     public ProfileFragment() {
     }
@@ -29,12 +41,17 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.content_profile, container, false);
         ButterKnife.bind(this, view);
         initViews();
+        mActivity = (MainActivity) getActivity();
         return view;
     }
 
     private void initViews() {
-        if (textView != null)
-            textView.setText("Profile");
+        Picasso p = Picasso.with(getActivity());
+        p.setIndicatorsEnabled(true);
+        p.load(mActivity.mUser.getPicture())
+                .fit()
+                .centerCrop()
+                .into(imgProfile);
     }
 
 }
