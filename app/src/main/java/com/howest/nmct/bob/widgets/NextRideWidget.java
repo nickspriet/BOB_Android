@@ -3,23 +3,19 @@ package com.howest.nmct.bob.widgets;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.widget.RemoteViews;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.collections.Rides;
-import com.howest.nmct.bob.models.Profile;
 import com.howest.nmct.bob.models.Ride;
 import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class NextRideWidget extends AppWidgetProvider {
     Ride mRide;
-    Profile mProfile = new Profile("1", "Ilias Ismanalijev");
+    // User mProfile = new User("1", "Ilias Ismanalijev");
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -58,7 +54,7 @@ public class NextRideWidget extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.next_ride_widget);
         views.setTextViewText(R.id.ride_title, mRide.getTitle());
         views.setTextViewText(R.id.location_details, mRide.getAddress());
-        views.setTextViewText(R.id.approval_status, Ride.formatApprovalStatus(mRide, mProfile));
+        // views.setTextViewText(R.id.approval_status, Ride.formatApprovalStatus(mRide, mProfile));
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);

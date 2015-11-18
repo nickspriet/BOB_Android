@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="appBackground">#1E5898</color>
     <color name="colorPrimary">#2196f3</color>
     <color name="colorPrimaryDark">#0258ad</color>
     <color name="colorAccent">#FF4081</color>
@@ -12,4 +13,5 @@
     <color name="cardColorText">#FF555555</color>
     <color name="cardColorIcon">#FF555555</color>
     <color name="cardColorButton">#2196f3</color>
+
 </resources>

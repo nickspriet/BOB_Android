@@ -92,12 +92,12 @@ public class Ride {
         this.driver = driver;
     }
 
-    public Boolean isSelfDriver(Profile profile) {
-        return driver.getId().equals(profile.getId());
+    public Boolean isSelfDriver(User user) {
+        return driver.getId().equals(user.getId());
     }
 
-    public Boolean isApproved(Profile profile) {
-        return approvedList != null && approvedList.contains(profile.getId());
+    public Boolean isApproved(User user) {
+        return approvedList != null && approvedList.contains(user.getId());
     }
 
     public void setApprovedList(List<String> approvedList) {
@@ -118,11 +118,11 @@ public class Ride {
     }
 
 
-    public static Spanned formatApprovalStatus(Ride ride, Profile profile) {
-        if (ride.isSelfDriver(profile)) {
+    public static Spanned formatApprovalStatus(Ride ride, User user) {
+        if (ride.isSelfDriver(user)) {
             // I am BOB - so show me approvals and requests
             return Html.fromHtml(String.format("<b>%s</b> approvals • <b>%s</b> requested", ride.getApproved(), ride.getRequests()));
-        } else if (ride.isApproved(profile)) {
+        } else if (ride.isApproved(user)) {
             // I am not BOB but I'm approved - so show me the amount of guests
             return Html.fromHtml(String.format("<b>%s</b> guests", ride.getApproved()));
         } else {

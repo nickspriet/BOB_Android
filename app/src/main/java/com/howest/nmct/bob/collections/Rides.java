@@ -40,7 +40,7 @@ public class Rides {
 
     public static void fetchData() {
         if (rides.size() != 0) return;
-
+        /*
         Ride tomorrowLand = new Ride("1", "1", "Tomorrowland", "2 days", "Tomorrowstraat 123, Brussel");
         tomorrowLand.setImage("http://www.tomorrowland.com/sites/default/files/styles/image_gallery_full/public/media/Galleries/2013/BESTOF_Friday_-04.jpg");
         tomorrowLand.setDriver(new User("1", "Ilias Ismanalijev"));
@@ -66,5 +66,6 @@ public class Rides {
                 randomRide,
                 approvedRide
         );
+        */
     }
 }

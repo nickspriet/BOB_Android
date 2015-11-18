@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.text.Spanned;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +21,8 @@ import android.widget.TextView;
 import com.howest.nmct.bob.MainActivity;
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.fragments.RidesFragment;
-import com.howest.nmct.bob.models.Profile;
 import com.howest.nmct.bob.models.Ride;
+import com.howest.nmct.bob.models.User;
 import com.howest.nmct.bob.views.AutoHeightViewPager;
 import com.squareup.picasso.Picasso;
 
@@ -102,7 +101,7 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
 
     public void onBindViewHolder(ViewHolder holder, final int position) {
         // Get information
-        Profile profile = mActivity.mProfile;
+        User profile = mActivity.mUser;
         Ride ride = mRides.get(position);
 
         // Fill in details

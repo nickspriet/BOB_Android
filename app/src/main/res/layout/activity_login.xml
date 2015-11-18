@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:background="@color/appBackground"
     tools:context="com.howest.nmct.bob.LoginActivity">
 
     <ImageView
@@ -19,29 +18,30 @@
     <TextView
         android:id="@+id/tvLoginInfo"
         android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
         android:layout_below="@id/imgLogo"
-        android:text="To get started,\n please sign in using Facebook."
-        android:layout_centerHorizontal="true"
-        android:textSize="20dp"
+        android:text="Find &amp; Share Rides"
+        android:textSize="16dp"
+        android:textColor="@android:color/white"
         android:layout_marginTop="20dp"
         android:textAlignment="center"/>
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/btnLogin"
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/tvLoginInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+    <LinearLayout
+        android:padding="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tvInfo"
-        android:text="User Id ???"
-        android:layout_below="@id/btnLogin"
-        android:layout_margin="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/btnLogin"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_horizontal"
+             />
+    </LinearLayout>
+
 
 
 

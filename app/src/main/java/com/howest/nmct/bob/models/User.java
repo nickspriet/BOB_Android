@@ -1,116 +1,117 @@
 package com.howest.nmct.bob.models;
 
-import java.util.HashMap;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * illyism
  * 21/10/15
  */
-public class User {
-    private String id;
-    private String name;
-    private String profilePicture;
-    private String description;
-    private String phonenumber;
-    private String email;
-    private String country;
-    private String city;
-    private HashMap<String, Boolean> permissions;
+public class User implements Parcelable {
+    @SerializedName("_id")
+    @Expose
+    public String Id;
 
-    public User(String id) {
-        this.id = id;
-        this.permissions = new HashMap<>();
-    }
+    @SerializedName("facebookID")
+    @Expose
+    public String facebookID;
 
-    public User(String id, HashMap<String, Boolean> permissions) {
-        this.id = id;
-        if (permissions.values().size() < 0)
-            throw new Error("Need to set permissions for this user");
-        this.permissions = permissions;
-    }
+    @SerializedName("name")
+    @Expose
+    public String name;
 
-    public User(String id, String name) {
-        this.id = id;
+    @SerializedName("firstName")
+    @Expose
+    public String firstName;
+
+    @SerializedName("lastName")
+    @Expose
+    public String lastName;
+
+    @SerializedName("picture")
+    @Expose
+    public String picture;
+
+    @SerializedName("cover")
+    @Expose
+    public String cover;
+
+    @SerializedName("link")
+    @Expose
+    public String link;
+    private boolean email;
+
+    public User(String id, String facebookID, String name, String firstName, String lastName,
+                String picture, String cover, String link) {
+        this.Id = id;
+        this.facebookID = facebookID;
         this.name = name;
-        this.permissions = new HashMap<>();
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.picture = picture;
+        this.cover = cover;
+        this.link = link;
     }
 
-    protected Boolean getPermission(String key) {
-        if (permissions.containsKey(key))
-            return permissions.get(key);
-        else
-            return false;
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(Id);
+        dest.writeString(facebookID);
+        dest.writeString(name);
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(picture);
+        dest.writeString(cover);
+        dest.writeString(link);
+    }
+
+    public User(Parcel in) {
+        Id = in.readString();
+        facebookID = in.readString();
+        name = in.readString();
+        firstName = in.readString();
+        lastName = in.readString();
+        picture = in.readString();
+        cover = in.readString();
+        link = in.readString();
+    }
+
+    public static final Parcelable.Creator CREATOR =
+            new Parcelable.Creator() {
+                public User createFromParcel(Parcel in) {
+                    return new User(in);
+                }
+
+                public User[] newArray(int size) {
+                    return new User[size];
+                }
+            };
+
+    public String getId() {
+        return Id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getCover() {
+        return cover;
     }
 
-    public String getProfilePicture() {
-        return profilePicture;
+    public boolean getEmail() {
+        return email;
     }
 
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
+    public String getPicture() {
+        return picture;
     }
-
-    public String getDescription() {
-        return getPermission(KEY.DESCRIPTION) ? description : "";
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getPhonenumber() {
-        return getPermission(KEY.PHONENUMBER) ? phonenumber : "";
-    }
-
-    public void setPhonenumber(String phonenumber) {
-        this.phonenumber = phonenumber;
-    }
-
-    public String getEmail() {
-        return getPermission(KEY.EMAIL) ? email : "";
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getCountry() {
-        return getPermission(KEY.COUNTRY) ? country : "";
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getCity() {
-        return getPermission(KEY.CITY) ? city : "";
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public static class KEY {
-        public static String NAME = "NAME";
-        public static String PROFILEPICTURE = "PROFILEPICTURE";
-        public static String DESCRIPTION = "DESCRIPTION";
-        public static String PHONENUMBER = "PHONENUMBER";
-        public static String EMAIL = "EMAIL";
-        public static String COUNTRY = "COUNTRY";
-        public static String CITY = "CITY";
-    }
-
-
 }

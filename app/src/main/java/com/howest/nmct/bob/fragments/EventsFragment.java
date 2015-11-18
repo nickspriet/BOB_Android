@@ -75,8 +75,8 @@ public class EventsFragment extends Fragment implements CreateRideDialogFragment
     public void onDialogBobClick(Event event) {
         MainActivity parentActivity = (MainActivity) getActivity();
         Ride newRide = Ride.createRideFromEvent(event);
-        newRide.addApprovedUser(parentActivity.mProfile);
-        newRide.setDriver(parentActivity.mProfile);
+        newRide.addApprovedUser(parentActivity.mUser);
+        newRide.setDriver(parentActivity.mUser);
         Rides.addRide(newRide);
         parentActivity.navigateToRides();
         parentActivity.navigatetoRideDetails(newRide);
