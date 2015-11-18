@@ -40,31 +40,12 @@ public class Rides {
 
     public static void fetchData() {
         if (rides.size() != 0) return;
-
-        Ride tomorrowLand = new Ride("1", "Tomorrowland", "2 days", "Tomorrowstraat 123, Brussel");
-        tomorrowLand.setImage("http://www.tomorrowland.com/sites/default/files/styles/image_gallery_full/public/media/Galleries/2013/BESTOF_Friday_-04.jpg");
-        tomorrowLand.setDriver(new User("1", "Ilias Ismanalijev"));
-        tomorrowLand.setRequests(2);
-
-        Ride gentseRide = new Ride("2", "Gentse Feesten", "one day", "Korenmarkt, Gent");
-        gentseRide.setImage("http://gentsefeesten.gent/sites/default/files/styles/eyecatcher/public/eyecatcher/image/Foto%2021%20mensenzee%20Korenmarkt.jpg?itok=5ci3hCrr");
-        gentseRide.setApprovedList(Arrays.asList("3", "5", "2"));
-        gentseRide.setDriver(new User("2", "Nick Spriet"));
-
-        Ride randomRide = new Ride("3", "An event for great and spectacularious amazeballs photography with your fabulous unicorn!!! \uD83D\uDE04 \uD83D\uDC34 \uD83D\uDE04 \uD83D\uDC34 ", "one week", "Somewhere in '); DROP TABLE city;");
-        randomRide.setDriver(new User("3", "Bob Dylan"));
-
-        Ride approvedRide = new Ride("4", "Approved event", "2 hours", "Graaf Karel de Goedelaan 38, 8500 Kortrijk");
-        approvedRide.setImage("https://lh4.googleusercontent.com/-iPKFd-LgH2o/VME_mbKVl4I/AAAAAAAAABM/_I77Gual3Zs/s408-k-no/");
-        approvedRide.setApprovedList(Arrays.asList("1", "2"));
-        approvedRide.setDriver(new User("2", "Nick Spriet"));
-
-
-        Rides.addRides(
-                tomorrowLand,
-                gentseRide,
-                randomRide,
-                approvedRide
-        );
+        User user = new User("1", "1", "Ilias Ismanalijev", "Ilias", "Ismanalijev",
+                "https://fbcdn-sphotos-f-a.akamaihd.net/hphotos-ak-xap1/v/t1.0-9/12027626_1077838225560816_4235616874323113303_n.jpg?oh=e0e858a8876f3a49b69bc0690064fc27&oe=56B28D3B&__gda__=1454655490_c13993560b66647cf06de663af6b237c",
+                "https://scontent-bru2-1.xx.fbcdn.net/hphotos-xpf1/v/t1.0-9/11846638_1053922741285698_465322780535143622_n.jpg?oh=f34b22f77aa08411af8da81729063ba6&oe=56B5A67B", "" +
+                "https://www.facebook.com/IliasIsmanalijev");
+        Ride ride =new Ride("1", "1", user, "Kiekenfuif", "this friday", "Howest, Kortrijk");
+        ride.setImage("https://scontent-bru2-1.xx.fbcdn.net/hphotos-xta1/v/t1.0-9/12141664_907950152574754_6218674705680497012_n.jpg?oh=20ed26455077e67f417f909220c3aa6f&oe=56F58065");
+        addRide(ride);
     }
 }

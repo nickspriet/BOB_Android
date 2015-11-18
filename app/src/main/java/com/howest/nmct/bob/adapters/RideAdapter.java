@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.text.Spanned;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +21,8 @@ import android.widget.TextView;
 import com.howest.nmct.bob.MainActivity;
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.fragments.RidesFragment;
-import com.howest.nmct.bob.models.Profile;
 import com.howest.nmct.bob.models.Ride;
+import com.howest.nmct.bob.models.User;
 import com.howest.nmct.bob.views.AutoHeightViewPager;
 import com.squareup.picasso.Picasso;
 
@@ -98,28 +97,17 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         view.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
-    private Spanned formatApprovalStatus(Ride ride, Profile profile) {
-        if (ride.isSelfDriver(profile)) {
-            // I am BOB - so show me approvals and requests
-            return Html.fromHtml(String.format("<b>%s</b> approvals • <b>%s</b> requested", ride.getApproved(), ride.getRequests()));
-        } else if (ride.isApproved(profile)) {
-            // I am not BOB but I'm approved - so show me the amount of guests
-            return Html.fromHtml(String.format("<b>%s</b> guests", ride.getApproved()));
-        } else {
-            // I am not BOB and I'm awaiting approval
-            return Html.fromHtml("Waiting for approval...");
-        }
-    }
+
 
     public void onBindViewHolder(ViewHolder holder, final int position) {
         // Get information
-        Profile profile = new Profile("1", "Ilias Ismanalijev");
+        User profile = mActivity.mUser;
         Ride ride = mRides.get(position);
 
         // Fill in details
         holder.rideTitle.setText(ride.getTitle());
         holder.locationDetails.setText(Html.fromHtml(String.format("<b>%s</b> in <b>%s</b>", ride.getAddress(), ride.getDate())));
-        holder.approvalStatus.setText(formatApprovalStatus(ride, profile));
+        holder.approvalStatus.setText(Ride.formatApprovalStatus(ride, profile));
         holder.ridePerson.setText(ride.getDriver().getName());
 
         Picasso p = Picasso.with(mActivity);
@@ -192,6 +180,11 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         mFragment.onRideMapClick(ride);
     }
 
+    private void onEventButtonClicked(int adapterPosition) {
+        Ride ride = mRides.get(adapterPosition);
+        mFragment.onRideEventClick(ride);
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.ride_person) TextView ridePerson;
         @Bind(R.id.ride_image) ImageView rideImage;
@@ -222,7 +215,14 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         public void onMapButtonClicked() {
             adapter.onMapButtonClicked(getAdapterPosition());
         }
+
+        @OnClick(R.id.event_button)
+        public void onEventButtonClicked() {
+            adapter.onEventButtonClicked(getAdapterPosition());
+        }
     }
+
+
 
 
 }

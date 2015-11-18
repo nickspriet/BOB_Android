@@ -1,5 +1,6 @@
 package com.howest.nmct.bob;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -11,13 +12,18 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.howest.nmct.bob.collections.Rides;
 import com.howest.nmct.bob.fragments.EventsFragment;
 import com.howest.nmct.bob.fragments.FeedFragment;
 import com.howest.nmct.bob.fragments.ProfileFragment;
 import com.howest.nmct.bob.fragments.RideDetailsFragment;
 import com.howest.nmct.bob.fragments.RidesFragment;
 import com.howest.nmct.bob.models.Ride;
+import com.howest.nmct.bob.models.User;
+import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,16 +35,31 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
     @Bind(R.id.nav_view) NavigationView navigationView;
 
+    public User mUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Bundle b = getIntent().getExtras();
+        mUser = b.getParcelable(Constants.USER_PROFILE);
+
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         initDrawer();
+        initData();
         navigateToFeed();
     }
+
+
+    /**
+     * Populates the Ride ArrayList
+     */
+    private void initData() {
+        Rides.fetchData();
+    }
+
 
     /**
      * Sets up the Drawer Layout and a toggle to open the navigation menu.
@@ -49,6 +70,28 @@ public class MainActivity extends AppCompatActivity
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Set profile
+        Picasso picasso = Picasso.with(this);
+        Log.d("MainActivity", mUser.getPicture());
+        Log.d("MainActivity", mUser.getCover());
+        if (!mUser.getPicture().isEmpty()) {
+            picasso.load(mUser.getPicture())
+                    .fit()
+                    .centerCrop()
+                    .into((ImageView) findViewById(R.id.nav_header_profile));
+        }
+
+        if (!mUser.getCover().isEmpty()) {
+            picasso.load(mUser.getCover())
+                    .fit()
+                    .centerCrop()
+                    .into((ImageView) findViewById(R.id.nav_header_background));
+        }
+
+
+        TextView tvName = (TextView) findViewById(R.id.nav_header_name);
+        tvName.setText(mUser.getName());
     }
 
     @Override

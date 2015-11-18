@@ -1,19 +1,15 @@
 package com.howest.nmct.bob.adapters;
 
-import android.graphics.Color;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.howest.nmct.bob.MainActivity;
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.fragments.EventsFragment;
 import com.howest.nmct.bob.models.Event;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -57,13 +53,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         return events.size();
     }
 
+    private void onEventGoing(int adapterPosition) {
+        Event event = events.get(adapterPosition);
+        fragment.onShowCreateRideDialog(event);
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @Nullable @Bind(R.id.tvEventName)
-        TextView tvEventName;
-        @Nullable @Bind(R.id.tvEventDate)
-        TextView tvEventDate;
-        @Nullable @Bind(R.id.tvEventAddress)
-        TextView tvEventAddress;
+        @Bind(R.id.tvEventName) TextView tvEventName;
+        @Bind(R.id.tvEventDate) TextView tvEventDate;
+        @Bind(R.id.tvEventAddress) TextView tvEventAddress;
 
         private EventAdapter adapter;
 
@@ -72,5 +70,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             this.adapter = adapter;
             ButterKnife.bind(this, view);
         }
+
+        @OnClick(R.id.btnEventGoing)
+        public void onEventGoing() {
+            adapter.onEventGoing(getAdapterPosition());
+        }
     }
+
+
 }

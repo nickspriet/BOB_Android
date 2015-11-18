@@ -1,5 +1,9 @@
 package com.howest.nmct.bob.models;
 
+import android.text.Html;
+import android.text.Spanned;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,16 +12,19 @@ import java.util.List;
  */
 public class Ride {
     private String id;
+    private String eventId;
     private String title;
     private String date;
     private String image;
     private String address;
     private int requests;
-    private List<String> approvedList;
+    private List<String> approvedList = new ArrayList<>();
     private User driver;
 
-    public Ride(String id, String title, String date, String address) {
+    public Ride(String id, String eventId, User user, String title, String date, String address) {
         this.id = id;
+        this.eventId = eventId;
+        this.driver = user;
         this.title = title;
         this.date = date;
         this.address = address;
@@ -78,23 +85,49 @@ public class Ride {
         this.id = id;
     }
 
-    public User getDriver() {
-        return driver;
+    public Boolean isSelfDriver(User otherUser) {
+        return this.getDriver().getId().equals(otherUser.getId());
     }
 
-    public void setDriver(User driver) {
-        this.driver = driver;
-    }
-
-    public Boolean isSelfDriver(Profile profile) {
-        return driver.getId().equals(profile.getId());
-    }
-
-    public Boolean isApproved(Profile profile) {
-        return approvedList != null && approvedList.contains(profile.getId());
+    public Boolean isApproved(User user) {
+        return approvedList != null && approvedList.contains(user.getId());
     }
 
     public void setApprovedList(List<String> approvedList) {
         this.approvedList = approvedList;
+    }
+
+    public void addApprovedUser(User user) {
+        this.approvedList.add(user.getId());
+    }
+
+    /**
+     * Sets Title, Date, Address for a Ride
+     * @param event the event to copy data from
+     * @param driver The driver of the new ride
+     * @return Ride
+     */
+    public static Ride createRideFromEvent(Event event, User driver) {
+        Ride ride = new Ride("-1", event.getId(), driver, event.getEventName(), event.getEventDate(), event.getEventAddress());
+        ride.addApprovedUser(driver);
+        return ride;
+    }
+
+
+    public static Spanned formatApprovalStatus(Ride ride, User user) {
+        if (ride.isSelfDriver(user)) {
+            // I am BOB - so show me approvals and requests
+            return Html.fromHtml(String.format("<b>%s</b> approvals • <b>%s</b> requested", ride.getApproved(), ride.getRequests()));
+        } else if (ride.isApproved(user)) {
+            // I am not BOB but I'm approved - so show me the amount of guests
+            return Html.fromHtml(String.format("<b>%s</b> guests", ride.getApproved()));
+        } else {
+            // I am not BOB and I'm awaiting approval
+            return Html.fromHtml("Waiting for approval...");
+        }
+    }
+
+    public User getDriver() {
+        return driver;
     }
 }

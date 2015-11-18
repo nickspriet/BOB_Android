@@ -20,4 +20,15 @@
     <string name="in"> in </string>
     <string name="map">Map</string>
     <string name="driver">Driver</string>
+    <string name="cancel">Cancel</string>
+    <string name="accept">Accept</string>
+    <string name="are_you_bob">Are you BOB?</string>
+
+    <string-array name="bob_options">
+        <item>Yes, I would like to share my ride</item>
+        <item>No, I would like to join a ride</item>
+        <item>Nevermind</item>
+    </string-array>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>
