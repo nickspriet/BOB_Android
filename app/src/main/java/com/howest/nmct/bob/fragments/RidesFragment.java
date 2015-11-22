@@ -38,22 +38,14 @@ import butterknife.ButterKnife;
  * 21/10/15
  */
 public class RidesFragment extends Fragment {
-    @Bind(R.id.list)
-    RecyclerView recyclerView;
+    @Bind(R.id.list) RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     @Nullable
-    @Bind(R.id.ride_image)
-    ImageView ride_image;
+    @Bind(R.id.ride_image)  ImageView ride_image;
 
 
     public RidesFragment() {
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initData();
     }
 
     @Nullable
@@ -63,13 +55,6 @@ public class RidesFragment extends Fragment {
         ButterKnife.bind(this, view);
         initViews();
         return view;
-    }
-
-    /**
-     * Populates the Ride ArrayList
-     */
-    private void initData() {
-        Rides.fetchData();
     }
 
     /**
@@ -93,18 +78,6 @@ public class RidesFragment extends Fragment {
         View v = getView();
         if (v == null) return;
         navigatetoRideDetails(ride, rideImage);
-
-
-//        FrameLayout frameLayout = (FrameLayout) v.findViewById(R.id.frameLayout);
-//        if (frameLayout != null) {
-//            ((MainActivity) getActivity()).navigatetoRideDetails(R.id.frameLayout, ride);
-//            Display display = getActivity().getWindowManager().getDefaultDisplay();
-//            Point size = new Point();
-//            display.getSize(size);
-//            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(size.x / 3, RecyclerView.LayoutParams.MATCH_PARENT));
-//        } else {
-        // ((MainActivity) getActivity()).navigatetoRideDetails(ride);
-//}
     }
 
     public void navigatetoRideDetails(Ride ride, ImageView rideImage) {
@@ -114,26 +87,16 @@ public class RidesFragment extends Fragment {
 
 
     public void navigateToFragment(Fragment fragment, Boolean addToManager, ImageView rideImage) {
-
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             TransitionInflater transActivity = TransitionInflater.from(getActivity());
-
-
-            //Transition transition = new AutoTransition().setDuration(6000);
-            //fragment.setSharedElementEnterTransition(transition);
-            //rideImage.setTransitionName("MyTransition");
-
 
             setSharedElementReturnTransition(transActivity.inflateTransition(R.transition.change_image_transform));
             setExitTransition(transActivity.inflateTransition(android.R.transition.explode));
 
-            //Fragment rideDetailsFragment = new RideDetailsFragment();
             fragment.setSharedElementEnterTransition(transActivity.inflateTransition(R.transition.change_image_transform));
             fragment.setEnterTransition(transActivity.inflateTransition(android.R.transition.explode));
         }
 
-        //getActivity().getSupportFragmentManager().popBackStack();
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.container, fragment)
@@ -147,5 +110,9 @@ public class RidesFragment extends Fragment {
         String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?q=loc:%s", ride.getAddress());
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         getActivity().startActivity(intent);
+    }
+
+    public void onRideEventClick(Ride ride) {
+        ((MainActivity) getActivity()).navigateToEvents();
     }
 }

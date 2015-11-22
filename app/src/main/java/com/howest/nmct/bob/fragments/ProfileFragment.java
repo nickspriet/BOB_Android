@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.howest.nmct.bob.MainActivity;
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.models.User;
 import com.squareup.picasso.Picasso;
@@ -21,22 +22,9 @@ import butterknife.ButterKnife;
  * 21/10/15
  */
 public class ProfileFragment extends Fragment {
-    @Bind(R.id.imgProfile)
-    ImageView imgProfile;
-    @Bind(R.id.tvProfileName)
-    TextView tvProfileName;
-    @Bind(R.id.tvProfilePhone)
-    TextView tvProfilePhone;
-    @Bind(R.id.tvProfileEmail)
-    TextView tvProfileEmail;
-    @Bind(R.id.tvProfileAddress)
-    TextView tvProfileAddress;
-    @Bind(R.id.tvProfileAboutMe)
-    TextView tvProfileAboutMe;
-    @Bind(R.id.tvProfileCarType)
-    TextView tvProfileCarType;
-    @Bind(R.id.tvProfileCarLicense)
-    TextView tvProfileCarLicense;
+    @Bind(R.id.imgCover) ImageView imgCover;
+    @Bind(R.id.imgProfile) ImageView imgProfile;
+    @Bind(R.id.tvProfileName) TextView tvProfileName;
 
     public ProfileFragment() {
     }
@@ -51,21 +39,22 @@ public class ProfileFragment extends Fragment {
     }
 
     private void initViews() {
-
-        User user = new User("0", "Nick Spriet");
-        user.setCity("Kortrijk");
-        user.setCountry("Belgium");
-        user.setDescription("Good driver");
-        user.setPhonenumber("+32 (0) 472 12 34 56");
-        user.setProfilePicture("http://ribot.co.uk/ieias/wp-content/uploads/2015/04/Manuel-Marcos_avatar_1429541741.png");
-
+        MainActivity parentActivity = (MainActivity) getActivity();
+        User user = parentActivity.mUser;
 
         Picasso p = Picasso.with(getActivity());
         p.setIndicatorsEnabled(true);
-        p.load(user.getProfilePicture())
+        p.load(user.getCover())
+                .fit()
+                .centerCrop()
+                .into(imgCover);
+
+        p.load(user.getPicture())
                 .fit()
                 .centerCrop()
                 .into(imgProfile);
+
+        tvProfileName.setText(user.getName());
     }
 
 }

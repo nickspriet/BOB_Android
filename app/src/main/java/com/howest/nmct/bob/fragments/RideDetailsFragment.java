@@ -59,12 +59,12 @@ public class RideDetailsFragment extends Fragment {
         address.setText(ride.getAddress());
         date.setText(ride.getDate());
 
-        //Picasso p = Picasso.with(getActivity());
-        //p.setIndicatorsEnabled(true);
-        //p.load(ride.getImage())
-        //        .fit()
-        //       .centerCrop()
-        //        .into(imageView);
+        Picasso p = Picasso.with(getActivity());
+        p.setIndicatorsEnabled(true);
+        p.load(ride.getImage())
+                .fit()
+               .centerCrop()
+                .into(imageView);
 
     }
 }

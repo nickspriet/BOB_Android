@@ -2,6 +2,7 @@ package com.howest.nmct.bob.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,10 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.howest.nmct.bob.MainActivity;
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.adapters.EventAdapter;
 import com.howest.nmct.bob.collections.Events;
+import com.howest.nmct.bob.collections.Rides;
+import com.howest.nmct.bob.fragments.CreateRideDialogFragment.RideOptionSelectedListener;
 import com.howest.nmct.bob.models.Event;
+import com.howest.nmct.bob.models.Ride;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -20,7 +25,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Nick on 28/10/2015.
  */
-public class EventsFragment extends Fragment {
+public class EventsFragment extends Fragment implements RideOptionSelectedListener {
     @Bind(R.id.list)
     RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -60,6 +65,25 @@ public class EventsFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             recyclerView.setAdapter(mAdapter);
         }
+    }
+
+    public void onShowCreateRideDialog(Event event) {
+        DialogFragment dialog = CreateRideDialogFragment.newInstance(this, event);
+        dialog.show(getFragmentManager(), "CreateRideDialogFragment");
+    }
+
+    @Override
+    public void onDialogBobClick(Event event) {
+        MainActivity parentActivity = (MainActivity) getActivity();
+        Ride newRide = Ride.createRideFromEvent(event, parentActivity.mUser);
+        Rides.addRide(newRide);
+        parentActivity.navigateToRides();
+        parentActivity.navigatetoRideDetails(newRide);
+    }
+
+    @Override
+    public void onDialogNotBobClick(Event mEvent) {
+
     }
 
     public void onEventSelected(Event event) {

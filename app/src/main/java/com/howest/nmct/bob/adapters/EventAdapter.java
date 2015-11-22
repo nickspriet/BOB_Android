@@ -63,19 +63,18 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         return mEvents.size();
     }
 
+    private void onEventGoing(int adapterPosition) {
+        Event event = mEvents.get(adapterPosition);
+        mFragment.onShowCreateRideDialog(event);
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.imgEvent)
-        ImageView imgEvent;
-        @Bind(R.id.tvEventDay)
-        TextView tvEventDay;
-        @Bind(R.id.tvEventMonth)
-        TextView tvEventMonth;
-        @Bind(R.id.tvEventName)
-        TextView tvEventName;
-        @Bind(R.id.tvEventInfo)
-        TextView tvEventInfo;
-        @Bind(R.id.tvEventFriendsOrGuests)
-        TextView tvEventFriendsOrGuests;
+        @Bind(R.id.imgEvent)  ImageView imgEvent;
+        @Bind(R.id.tvEventDay)  TextView tvEventDay;
+        @Bind(R.id.tvEventMonth)  TextView tvEventMonth;
+        @Bind(R.id.tvEventName)  TextView tvEventName;
+        @Bind(R.id.tvEventInfo)  TextView tvEventInfo;
+        @Bind(R.id.tvEventFriendsOrGuests)  TextView tvEventFriendsOrGuests;
 
         private EventAdapter adapter;
 
@@ -84,6 +83,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             this.adapter = adapter;
             ButterKnife.bind(this, view);
         }
+
+        /*
+        @OnClick(R.id.btnEventGoing)
+        public void onEventGoing() {
+            adapter.onEventGoing(getAdapterPosition());
+        }
+        */
 
         @OnClick(R.id.cardView)
         public void onCardClicked() {
