@@ -84,10 +84,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             ButterKnife.bind(this, view);
         }
 
+        /*
         @OnClick(R.id.btnEventGoing)
         public void onEventGoing() {
             adapter.onEventGoing(getAdapterPosition());
         }
+        */
 
         @OnClick(R.id.cardView)
         public void onCardClicked() {
