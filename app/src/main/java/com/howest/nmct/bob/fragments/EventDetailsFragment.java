@@ -20,11 +20,6 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class EventDetailsFragment extends Fragment {
-
-    @Bind(R.id.tvEventDetailsDayName) TextView tvEventDetailsDayName;
-    @Bind(R.id.tvEventDetailsDay) TextView tvEventDetailsDay;
-    @Bind(R.id.tvEventDetailsMonth) TextView tvEventDetailsMonth;
-    @Bind(R.id.tvEventDetailsTime) TextView tvEventDetailsTime;
     @Bind(R.id.imgEventDetails) ImageView imgEventDetails;
     @Bind(R.id.tvEventDetailsName) TextView tvEventDetailsName;
     @Bind(R.id.tvEventDetailsAddress) TextView tvEventDetailsAddress;
@@ -62,10 +57,6 @@ public class EventDetailsFragment extends Fragment {
     private void initViews() {
         if (mEvent == null) return;
 
-        tvEventDetailsDayName.setText(mEvent.getEventDateFormat("EEE"));
-        tvEventDetailsDay.setText(mEvent.getEventDateFormat("FF"));
-        tvEventDetailsMonth.setText(mEvent.getEventDateFormat("MMM"));
-        tvEventDetailsTime.setText(mEvent.getEventDateFormat("hh:mm a"));
         tvEventDetailsName.setText(mEvent.getEventName());
         tvEventDetailsAddress.setText(mEvent.getEventAddress());
         tvEventDetailsTotalTime.setText(mEvent.getEventDateFormat("EEE") + " " + mEvent.getEventDateFormat("FF") + " at " + mEvent.getEventDateFormat("hh:mm a"));

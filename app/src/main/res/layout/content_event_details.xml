@@ -1,324 +1,166 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/llCardViewEventDetailsHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_height="@dimen/nav_header_height"
+            android:layout_width="match_parent">
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardViewEventDetailsHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/card_vertical_margin"
-            android:background="@color/cardColorBackground">
+            <ImageView
+                android:id="@+id/imgEventDetails"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <View
+                android:layout_marginBottom="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/header_background">
+            </View>
+
+            <TextView
+                android:id="@+id/tvEventDetailsName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:padding="@dimen/nav_header_vertical_spacing"
+                style="@style/Header.Text.Title"
+                android:text="Name of the event" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="100dp"
+                android:src="@mipmap/ic_launcher" />
+
+        </RelativeLayout>
+
+        <LinearLayout style="@style/Card.Wrapper.Details">
+            <TextView
+                android:id="@+id/tvEventDetailsFriendsAndGuests"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="27 are going (including 7 Bobs)" />
+
+            <View style="@style/Separator.Horizontal" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="120dp">
+                android:layout_height="wrap_content">
 
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:gravity="center">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Going (52/140)" />
 
-                    <TextView
-                        android:id="@+id/tvEventDetailsDayName"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:text="TUE"
-                        android:textAlignment="center"
-                        android:textSize="20dp" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Interested (10/25)" />
 
-                    <TextView
-                        android:id="@+id/tvEventDetailsDay"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tvEventDetailsDayName"
-                        android:text="23"
-                        android:textAlignment="center"
-                        android:textSize="28dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvEventDetailsMonth"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tvEventDetailsDay"
-                        android:text="NOV"
-                        android:textAlignment="center"
-                        android:textSize="20dp" />
-
-                    <TextView
-                        android:id="@+id/tvEventDetailsTime"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tvEventDetailsMonth"
-                        android:layout_marginTop="8dp"
-                        android:text="19:00 PM"
-                        android:textAlignment="center"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="16dp" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:id="@+id/imgEventDetails"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent" />
-
-                    <TextView
-                        android:id="@+id/tvEventDetailsName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentStart="true"
-                        android:padding="12dp"
-                        android:textColor="#fff"
-                        android:text="Name of the event"
-                        android:textSize="16dp" />
-
-
-                </RelativeLayout>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Not going (17/120)" />
             </LinearLayout>
-        </android.support.v7.widget.CardView>
-    </LinearLayout>
+        </LinearLayout>
 
+        <LinearLayout style="@style/Card.Wrapper.Details">
 
-
-    <LinearLayout
-        android:id="@+id/llCardViewEventDetailsAttendants"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/llCardViewEventDetailsHeader"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical">
-
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardViewEventDetailsAttendants"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/cardColorBackground">
-
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/card_inner_margin_vertical"
-                android:paddingStart="@dimen/card_inner_margin_horizontal"
-                android:paddingEnd="@dimen/card_inner_margin_horizontal"
-                android:paddingBottom="@dimen/card_inner_margin_vertical">
+                android:orientation="vertical"
+                android:gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/tvEventDetailsFriendsAndGuests"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="27 are going (including 7 Bobs)" />
+                    android:text="Time"/>
 
-                <View
-                    android:id="@+id/seperator1"
-                    style="@style/Separator.Horizontal"
-                    android:layout_below="@id/tvEventDetailsFriendsAndGuests"
-                    android:layout_margin="5dp" />
-
-                <LinearLayout
-                    android:layout_width="fill_parent"
+                <TextView
+                    android:id="@+id/tvEventDetailsTotalTime"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/seperator1">
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@+id/icClock"
+                    android:text="Oct 20 at 9:00pm to Oct 21 at 5:00am" />
+            </LinearLayout>
 
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Going (52/140)" />
+            <View style="@style/Separator.Horizontal" />
 
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Interested (10/25)" />
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Not going (17/120)" />
-                </LinearLayout>
-
-            </RelativeLayout>
-
-        </android.support.v7.widget.CardView>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/llCardViewEventDetailsInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/llCardViewEventDetailsAttendants"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical">
-
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardViewEventDetailsInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/cardColorBackground">
-
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/card_inner_margin_vertical"
-                android:paddingStart="@dimen/card_inner_margin_horizontal"
-                android:paddingEnd="@dimen/card_inner_margin_horizontal"
-                android:paddingBottom="@dimen/card_inner_margin_vertical">
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
-                <RelativeLayout
-                    android:id="@+id/rlTime"
-                    android:layout_width="fill_parent"
+                <TextView
+                    style="@style/Card.Text.Meta.Label"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
+                    android:text="Location"/>
 
-                    <ImageView
-                        android:id="@+id/icClock"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_clock" />
-
-                    <TextView
-                        android:id="@+id/tvEventDetailsTotalTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="16dp"
-                        android:layout_toEndOf="@+id/icClock"
-                        android:text="Oct 20 at 9:00pm to Oct 21 at 5:00am" />
-                </RelativeLayout>
-
-                <View
-                    android:id="@+id/seperator21"
-                    style="@style/Separator.Horizontal"
-                    android:layout_below="@id/rlTime"
-                    android:layout_margin="5dp" />
-
-                <RelativeLayout
-                    android:id="@+id/rlAttendants"
-                    android:layout_width="fill_parent"
+                <TextView
+                    android:id="@+id/tvEventDetailsAddress"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/seperator21"
-                    android:gravity="center_vertical">
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@+id/icMapMarker"
+                    android:text="Street, 0000 City, Country" />
 
-                    <ImageView
-                        android:id="@+id/icMapMarker"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/map_marker" />
+            </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tvEventDetailsAddress"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="16dp"
-                        android:layout_toEndOf="@+id/icMapMarker"
-                        android:text="Street, 0000 City, Country" />
-                </RelativeLayout>
+            <View style="@style/Separator.Horizontal" />
 
-                <View
-                    android:id="@+id/seperator22"
-                    style="@style/Separator.Horizontal"
-                    android:layout_below="@id/rlAttendants"
-                    android:layout_margin="5dp" />
-
-                <RelativeLayout
-                    android:id="@+id/rlInfo"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/seperator22"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:id="@+id/icOrganisator"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_account" />
-
-                    <TextView
-                        android:id="@+id/tvEventDetailsOrganisator"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="16dp"
-                        android:layout_toEndOf="@+id/icOrganisator"
-                        android:text="You are invited by Ilias Ismanalijev" />
-
-
-                </RelativeLayout>
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/llCardViewEventDetailsDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/llCardViewEventDetailsInfo"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardViewEventDetailsDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/cardColorBackground">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="@dimen/card_inner_margin_vertical"
-                android:paddingStart="@dimen/card_inner_margin_horizontal"
-                android:paddingEnd="@dimen/card_inner_margin_horizontal"
-                android:paddingBottom="@dimen/card_inner_margin_vertical">
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/lblDescription"
+                    android:id="@+id/tvEventDetailsOrganisator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="4dp"
-                    android:text="Description"
-                    android:textStyle="bold" />
+                    android:layout_marginStart="16dp"
+                    android:text="You are invited by Ilias Ismanalijev" />
 
-                <TextView
-                    android:id="@+id/tvProfileAboutMe"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/lblDescription"
-                    android:padding="4dp"
-                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " />
 
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card.Wrapper.Details">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="Description"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvProfileAboutMe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="@string/loremipsum" />
+        </LinearLayout>
+
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginRight="12dp"
-        android:layout_marginTop="100dp"
-        android:src="@mipmap/ic_launcher" />
-
-
-</RelativeLayout>
+</ScrollView>
