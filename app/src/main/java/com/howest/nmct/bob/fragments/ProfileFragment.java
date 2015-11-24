@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.howest.nmct.bob.R;
-import com.howest.nmct.bob.activities.MainActivity;
+import com.howest.nmct.bob.activities.ProfileActivity;
+import com.howest.nmct.bob.interfaces.ToolbarController;
 import com.howest.nmct.bob.models.User;
 import com.squareup.picasso.Picasso;
 
@@ -38,13 +39,13 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        ((MainActivity) getActivity()).clearToolbar();
+        ((ToolbarController) getActivity()).clearToolbar();
     }
 
 
     private void initViews() {
-        MainActivity parentActivity = (MainActivity) getActivity();
-        User user = parentActivity.mUser;
+        ProfileActivity parentActivity = (ProfileActivity) getActivity();
+        User user = parentActivity.getUser();
 
         Picasso p = Picasso.with(getActivity());
         p.setIndicatorsEnabled(true);
@@ -53,8 +54,6 @@ public class ProfileFragment extends Fragment {
                 .fit()
                 .centerCrop()
                 .into(imgProfile);
-
-        parentActivity.setToolbarImage(parentActivity.mUser.getCover(), parentActivity.mUser.getName());
     }
 
 }

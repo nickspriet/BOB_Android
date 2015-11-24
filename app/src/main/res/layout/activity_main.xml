@@ -23,6 +23,7 @@
                 android:fitsSystemWindows="true"
                 app:contentScrim="?attr/colorPrimary"
                 app:title="BOB"
+                android:transitionName="toolbar"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <ImageView
@@ -32,6 +33,7 @@
                     app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
                     app:layout_collapseMode="parallax"
                     android:visibility="gone"
+                    android:transitionName="toolbarImage"
                     android:src="@drawable/ic_account"/>
 
                 <View

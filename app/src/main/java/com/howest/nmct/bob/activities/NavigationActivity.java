@@ -1,40 +1,46 @@
 package com.howest.nmct.bob.activities;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.howest.nmct.bob.R;
-import com.howest.nmct.bob.fragments.EventDetailsFragment;
-import com.howest.nmct.bob.fragments.EventsFragment;
-import com.howest.nmct.bob.fragments.FeedFragment;
-import com.howest.nmct.bob.fragments.ProfileFragment;
-import com.howest.nmct.bob.fragments.RideDetailsFragment;
-import com.howest.nmct.bob.fragments.RidesFragment;
 import com.howest.nmct.bob.models.Event;
 import com.howest.nmct.bob.models.Ride;
 
 import butterknife.Bind;
 
+import static com.howest.nmct.bob.Constants.ACTIVITY_EVENTS;
+import static com.howest.nmct.bob.Constants.ACTIVITY_FEED;
+import static com.howest.nmct.bob.Constants.ACTIVITY_PROFILE;
+import static com.howest.nmct.bob.Constants.ACTIVITY_RIDES;
+import static com.howest.nmct.bob.Constants.EVENT;
+import static com.howest.nmct.bob.Constants.RIDE;
+
 /**
  * illyism
  * 24/11/15
  */
-public class NavigationActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FragmentManager.OnBackStackChangedListener {
+public abstract class NavigationActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String SELECTED_MENU_ITEM_ID = "selectedMenuItemId";
 
@@ -54,24 +60,19 @@ public class NavigationActivity extends AppCompatActivity
         outState.putInt(SELECTED_MENU_ITEM_ID, mSelectedMenuItemId);
     }
 
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
     /**
      * Initializes the navigation drawer, the toggle button and toolbar
      */
     public void initNavigation() {
-        initToolbar();
-        initDrawerToggle();
-        getSupportFragmentManager().addOnBackStackChangedListener(this);
-        mNavigationView.setNavigationItemSelectedListener(this);
-    }
-
-    /**
-     * Sets the toolbar as the actionbar
-     */
-    private void initToolbar() {
         setSupportActionBar(mToolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        initDrawerToggle();
+        mNavigationView.setNavigationItemSelectedListener(this);
     }
 
     /**
@@ -97,28 +98,30 @@ public class NavigationActivity extends AppCompatActivity
         else super.onBackPressed();
     }
 
-    /**
-     * Sets the up or home icon depending on the backstack
-     */
-    @Override
-    public void onBackStackChanged() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            mDrawerToggle.setDrawerIndicatorEnabled(false);
-        } else {
-            setToolbarTitle(getSupportFragmentManager().getFragments().get(0).getClass().getSimpleName());
-            mDrawerToggle.setDrawerIndicatorEnabled(true);
-        }
-        mDrawerToggle.syncState();
-    }
-
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Events when selecting an item in the options
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        } else {
+            throw new Error(String.format("Options Item not specified: %s", item));
+        }
+    }
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -127,25 +130,6 @@ public class NavigationActivity extends AppCompatActivity
         updateNavigation(mSelectedMenuItemId);
 
         return true;
-    }
-
-    private void setToolbarTitle(String className) {
-        String title = "BOB";
-        switch (className) {
-            case "EventsFragment":
-                title = "Events";
-                break;
-            case "ProfileFragment":
-                title = "Profile";
-                break;
-            case "FeedFragment":
-                title = "Feed";
-                break;
-            case "RidesFragment":
-                title = "Rides";
-                break;
-        }
-        mToolbarLayout.setTitle(title);
     }
 
     /**
@@ -170,56 +154,137 @@ public class NavigationActivity extends AppCompatActivity
                 Log.d("NavigationDrawer", "Click Profile");
                 navigateToProfile();
                 break;
+            default:
+                throw new Error(String.format("Navigation Item not specified: %s", itemId));
         }
     }
 
     public void navigateToProfile() {
-        navigateToFragment(new ProfileFragment());
+        navigateToActivity(ACTIVITY_PROFILE);
         mToolbarLayout.setTitle("Profile");
     }
 
     public void navigateToRides() {
-        navigateToFragment(new RidesFragment());
+        navigateToActivity(ACTIVITY_RIDES);
         mToolbarLayout.setTitle("Rides");
     }
 
     public void navigateToEvents() {
-        navigateToFragment(new EventsFragment());
+        navigateToActivity(ACTIVITY_EVENTS);
         mToolbarLayout.setTitle("Events");
     }
 
     public void navigateToFeed() {
-        navigateToFragment(new FeedFragment());
+        navigateToActivity(ACTIVITY_FEED);
         mToolbarLayout.setTitle("Feed");
     }
 
     /**
-     * Navigates to a fragment and places it in the container.
-     * @param fragment A created fragment that is navigated to
+     * Navigates to an activity
+     * @param activityName The name of the activity
      */
-    public void navigateToFragment(Fragment fragment) {
-        getSupportFragmentManager().popBackStack();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, fragment)
-                .commit();
+    private void navigateToActivity(String activityName) {
+        Intent i;
+        switch (activityName) {
+            case ACTIVITY_PROFILE:
+                i = new Intent(this, ProfileActivity.class);
+                break;
+            case ACTIVITY_FEED:
+                i = new Intent(this, FeedActivity.class);
+                break;
+            case ACTIVITY_EVENTS:
+                i = new Intent(this, EventsActivity.class);
+                break;
+            case ACTIVITY_RIDES:
+                i = new Intent(this, RidesActivity.class);
+                break;
+            default:
+                throw new Error("Invalid activityName");
+        }
+
+        addDataToIntent(i);
+        startActivity(i);
+        finish();
     }
 
-    public void navigateToFragment(Fragment fragment, Boolean addToManager) {
-        getSupportFragmentManager().popBackStack();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, fragment)
-                .addToBackStack(fragment.getClass().toString())
-                .commit();
+    /**
+     * Adds data to the intent - Defined by inheritors
+     * @param i the intent
+     */
+    protected abstract void addDataToIntent(Intent i);
+
+    /**
+     * Shows the back icon
+     * @param isIconUp true to show up, false to show home
+     */
+    public void setHomeAsUp(Boolean isIconUp) {
+        if (getSupportActionBar() != null) {
+            mDrawerToggle.setDrawerIndicatorEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
-    public void navigatetoRideDetails(Ride ride) {
-        navigateToFragment(RideDetailsFragment.newInstance(ride), true);
+
+    /**
+     * Starts the RideActivity and inserts the Ride bundle
+     * @param ride The Ride
+     */
+    public void navigateToRideDetails(Ride ride) {
+        Intent i = new Intent(this, RideDetailsActivity.class);
+        addDataToIntent(i);
+        i.putExtra(RIDE, ride);
+        Pair toolbar = new Pair<>(mToolbarLayout, "Toolbar");
+
+        ActivityOptionsCompat transitionActivityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this, toolbar);
+
+        ActivityCompat.startActivity(this,
+                i, transitionActivityOptions.toBundle());
     }
 
-    public void navigateToEventDetails(Event event) {
-        navigateToFragment(EventDetailsFragment.newInstance(event), true);
+    /**
+     * Starts the RideActivity and inserts the Ride bundle with a transition
+     * @param ride The Ride
+     * @param imageView The View that is shared
+     */
+    public void navigateToRideDetails(Ride ride, ImageView imageView) {
+        Intent i = new Intent(this, RideDetailsActivity.class);
+        addDataToIntent(i);
+        i.putExtra(RIDE, ride);
+
+        Pair image = new Pair<>(imageView, ViewCompat.getTransitionName(imageView));
+        Pair toolbar = new Pair<>(mToolbarLayout, "Toolbar");
+
+        ActivityOptionsCompat transitionActivityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this, image, toolbar);
+
+        ActivityCompat.startActivity(this,
+                i, transitionActivityOptions.toBundle());
     }
+
+    /**
+     * Starts the EventDetailsActivity and inserts the Event bundle with a transition
+     * @param event The Event
+     * @param imageView The View that is shared
+     */
+    public void navigateToEventDetails(Event event, ImageView imageView) {
+        Intent i = new Intent(this, EventDetailsActivity.class);
+        addDataToIntent(i);
+        i.putExtra(EVENT, event);
+
+        Pair image = new Pair<>(imageView, ViewCompat.getTransitionName(imageView));
+        Pair toolbar = new Pair<>(mToolbarLayout, "Toolbar");
+
+        ActivityOptionsCompat transitionActivityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this, image, toolbar);
+
+        ActivityCompat.startActivity(this,
+                i, transitionActivityOptions.toBundle());
+    }
+
+
 
 }

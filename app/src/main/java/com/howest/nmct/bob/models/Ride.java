@@ -1,5 +1,7 @@
 package com.howest.nmct.bob.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.Html;
 import android.text.Spanned;
 
@@ -10,7 +12,7 @@ import java.util.List;
  * illyism
  * 21/10/15
  */
-public class Ride {
+public class Ride implements Parcelable {
     private String id;
     private String eventId;
     private String title;
@@ -130,4 +132,42 @@ public class Ride {
     public User getDriver() {
         return driver;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(eventId);
+        dest.writeParcelable(driver, flags);
+        dest.writeString(title);
+        dest.writeString(date);
+        dest.writeString(address);
+        dest.writeString(image);
+    }
+
+    public Ride(Parcel in) {
+        id = in.readString();
+        eventId = in.readString();
+        driver = in.readParcelable(User.class.getClassLoader());
+        title = in.readString();
+        date = in.readString();
+        address = in.readString();
+        image = in.readString();
+    }
+
+    public static final Parcelable.Creator CREATOR =
+            new Parcelable.Creator() {
+                public Ride createFromParcel(Parcel in) {
+                    return new Ride(in);
+                }
+
+                public Ride[] newArray(int size) {
+                    return new Ride[size];
+                }
+            };
 }

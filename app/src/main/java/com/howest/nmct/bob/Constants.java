@@ -21,4 +21,13 @@ public class Constants {
     public static String DEVICE_MODEL = "com.howest.nmct.bob.DEVICE_MODEL";
 
     public static String USER_PROFILE = "com.howest.nmct.bob.USER_PROFILE";
+    public static String EVENT = "com.howest.nmct.bob.EVENT";
+    public static String RIDE = "com.howest.nmct.bob.RIDE";
+
+    public final static String ACTIVITY_EVENTS = "com.howest.nmct.bob.ACTIVITY_EVENTS";
+    public final static String ACTIVITY_FEED = "com.howest.nmct.bob.ACTIVITY_FEED";
+    public final static String ACTIVITY_PROFILE = "com.howest.nmct.bob.ACTIVITY_PROFILE";
+    public final static String ACTIVITY_RIDES = "com.howest.nmct.bob.ACTIVITY_RIDES";
+    public final static String ACTIVITY_EVENT_DETAILS = "com.howest.nmct.bob.ACTIVITY_EVENT_DETAILS";
+    public final static String ACTIVITY_RIDE_DETAILS = "com.howest.nmct.bob.ACTIVITY_RIDE_DETAILS";
 }

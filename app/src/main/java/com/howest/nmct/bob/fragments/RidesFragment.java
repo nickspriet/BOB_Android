@@ -10,9 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.howest.nmct.bob.R;
-import com.howest.nmct.bob.activities.MainActivity;
+import com.howest.nmct.bob.activities.NavigationActivity;
+import com.howest.nmct.bob.activities.RidesActivity;
 import com.howest.nmct.bob.adapters.RideAdapter;
 import com.howest.nmct.bob.collections.Rides;
 import com.howest.nmct.bob.models.Ride;
@@ -66,8 +68,9 @@ public class RidesFragment extends Fragment {
         }
     }
 
-    public void onRideSelected(Ride ride) {
-        ((MainActivity) getActivity()).navigatetoRideDetails(ride);
+    public void onRideSelected(Ride ride, ImageView rideImage) {
+        ((NavigationActivity) getActivity())
+                .navigateToRideDetails(ride, rideImage);
     }
 
     public void onRideMapClick(Ride ride) {
@@ -77,6 +80,6 @@ public class RidesFragment extends Fragment {
     }
 
     public void onRideEventClick(Ride ride) {
-        ((MainActivity) getActivity()).navigateToEvents();
+        ((RidesActivity) getActivity()).navigateToEvents();
     }
 }

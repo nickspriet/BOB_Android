@@ -1,15 +1,16 @@
 package com.howest.nmct.bob.models;
 
-import java.text.DateFormat;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 /**
- * Created by Nick on 28/10/2015.
+ * Nick on 28/10/2015.
  */
-public class Event {
+public class Event implements Parcelable {
     private String id;
     private String eventName;
     private Date eventDate;
@@ -74,4 +75,37 @@ public class Event {
     public String getEventFriendsOrGuests() {
         return "Ilias, Nick and 5 other friends are going";
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(eventName);
+        dest.writeLong(eventDate.getTime());
+        dest.writeString(eventAddress);
+        dest.writeString(eventImage);
+    }
+
+    public Event(Parcel in) {
+        id = in.readString();
+        eventName = in.readString();
+        eventDate = new Date(in.readLong());
+        eventAddress = in.readString();
+        eventImage = in.readString();
+    }
+
+    public static final Parcelable.Creator CREATOR =
+            new Parcelable.Creator() {
+                public Event createFromParcel(Parcel in) {
+                    return new Event(in);
+                }
+
+                public Event[] newArray(int size) {
+                    return new Event[size];
+                }
+            };
 }

@@ -1,63 +1,74 @@
 package com.howest.nmct.bob.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.howest.nmct.bob.Constants;
 import com.howest.nmct.bob.R;
-import com.howest.nmct.bob.collections.Rides;
+import com.howest.nmct.bob.interfaces.ToolbarController;
 import com.howest.nmct.bob.models.User;
 import com.squareup.picasso.Picasso;
 
 import butterknife.ButterKnife;
 
-public class MainActivity extends NavigationActivity {
-    public User mUser;
+import static com.howest.nmct.bob.Constants.USER_PROFILE;
+
+/**
+ * A BaseActivity to inherit from
+ * - Holds User object
+ * - Controls the toolbar images and title with ToolbarController
+ * - Contains one fragment
+ */
+public abstract class BaseActivity extends NavigationActivity implements ToolbarController {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        if (savedInstanceState != null) {
-            mUser = savedInstanceState.getParcelable(Constants.USER_PROFILE);
-        }
-        if (mUser == null) {
-            Bundle b = getIntent().getExtras();
-            mUser = b.getParcelable(Constants.USER_PROFILE);
-        }
-
+        setContentView(getContentLayout());
         ButterKnife.bind(this);
-        super.initNavigation();
-        initData();
-        initDrawerHeader();
 
-        if (savedInstanceState == null) navigateToEvents();
+        initUserData(savedInstanceState, getIntent().getExtras());
+        super.initNavigation();
+        initDrawerHeader();
+        initData(savedInstanceState != null ? savedInstanceState : getIntent().getExtras());
+        setupToolbar();
+        initFragment();
+    }
+
+    protected int getContentLayout() {
+        return R.layout.activity_main;
+    }
+    protected abstract void initData(Bundle bundle);
+    protected abstract void setupToolbar();
+    protected abstract void initFragment();
+
+    private User mUser;
+    public User getUser() {
+        return mUser;
+    }
+
+    public void initUserData(Bundle savedInstanceState, Bundle extras) {
+        if (savedInstanceState != null)
+            mUser = savedInstanceState.getParcelable(USER_PROFILE);
+        if (mUser == null)
+            mUser = extras.getParcelable(USER_PROFILE);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(Constants.USER_PROFILE, mUser);
+        outState.putParcelable(USER_PROFILE, mUser);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mUser = savedInstanceState.getParcelable(Constants.USER_PROFILE);
+        mUser = savedInstanceState.getParcelable(USER_PROFILE);
     }
-
-    /**
-     * Populates the Ride ArrayList
-     */
-    private void initData() {
-        Rides.fetchData();
-    }
-
 
     /**
      * Sets the navigation drawer header for the logged in profile
@@ -90,46 +101,43 @@ public class MainActivity extends NavigationActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Events when selecting an item in the options
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-    }
-
-    /**
-     * Sets the image and title of the collapsing toolbar
-     * @param url URL of the image to set
-     * @param title Title of the toolbar to set
-     */
-    public void setToolbarImage(String url, String title) {
+    public void setToolbarImage(String url) {
         Picasso p = Picasso.with(this);
-        p.setIndicatorsEnabled(true);
         p.load(url)
                 .fit()
                 .centerCrop()
                 .into(mToolbarImage);
         mToolbarImage.setVisibility(View.VISIBLE);
-        mToolbarOverlay.setVisibility(View.VISIBLE);
-        mToolbarLayout.setTitle(title);
+        // mToolbarOverlay.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * Removes the image of the collapsing toolbar
-     */
+    @Override
     public void clearToolbar() {
         mToolbarOverlay.setVisibility(View.GONE);
         mToolbarImage.setImageResource(0);
         mToolbarImage.setVisibility(View.GONE);
     }
+
+    @Override
+    public void setToolbarTitle(String title) {
+        mToolbarLayout.setTitle(title);
+    }
+
+    /**
+     * Adds a fragment to the container framelayout
+     * @param fragment A fragment that will be shown
+     */
+    public void addFragmentToContainer(Fragment fragment) {
+        getSupportFragmentManager().popBackStack();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, fragment)
+                .commit();
+    }
+
+    @Override
+    protected void addDataToIntent(Intent i) {
+        i.putExtra(USER_PROFILE, mUser);
+    }
+
 }
