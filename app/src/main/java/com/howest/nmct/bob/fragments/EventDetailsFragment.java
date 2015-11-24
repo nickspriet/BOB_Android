@@ -6,12 +6,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
+import com.howest.nmct.bob.activities.MainActivity;
 import com.howest.nmct.bob.models.Event;
-import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -20,8 +19,6 @@ import butterknife.ButterKnife;
  * A simple {@link Fragment} subclass.
  */
 public class EventDetailsFragment extends Fragment {
-    @Bind(R.id.imgEventDetails) ImageView imgEventDetails;
-    @Bind(R.id.tvEventDetailsName) TextView tvEventDetailsName;
     @Bind(R.id.tvEventDetailsAddress) TextView tvEventDetailsAddress;
     @Bind(R.id.tvEventDetailsTotalTime) TextView tvEventDetailsTotalTime;
 
@@ -49,6 +46,11 @@ public class EventDetailsFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((MainActivity) getActivity()).clearToolbar();
+    }
 
     public void setEvent(Event event) {
         this.mEvent = event;
@@ -57,19 +59,10 @@ public class EventDetailsFragment extends Fragment {
     private void initViews() {
         if (mEvent == null) return;
 
-        tvEventDetailsName.setText(mEvent.getEventName());
         tvEventDetailsAddress.setText(mEvent.getEventAddress());
         tvEventDetailsTotalTime.setText(mEvent.getEventDateFormat("EEE") + " " + mEvent.getEventDateFormat("FF") + " at " + mEvent.getEventDateFormat("hh:mm a"));
 
-
-        //set image via picasso
-        Picasso p = Picasso.with(getContext());
-        p.setIndicatorsEnabled(true);
-        p.load(mEvent.getEventImage())
-                .fit()
-                .centerCrop()
-                .into(imgEventDetails);
-
+        ((MainActivity) getActivity()).setToolbarImage(mEvent.getEventImage(), mEvent.getEventName());
     }
 }
 

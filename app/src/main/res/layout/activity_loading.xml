@@ -6,7 +6,7 @@
     android:gravity="center"
     android:background="@color/appBackground"
     android:id="@+id/loadingPanel"
-    tools:context="com.howest.nmct.bob.LoginActivity">
+    tools:context=".activities.LoginActivity">
 
     <ProgressBar
         android:layout_width="wrap_content"

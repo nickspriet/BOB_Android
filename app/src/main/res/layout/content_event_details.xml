@@ -1,4 +1,5 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -7,50 +8,36 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_height="@dimen/nav_header_height"
-            android:layout_width="match_parent">
-
-            <ImageView
-                android:id="@+id/imgEventDetails"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <View
-                android:layout_marginBottom="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_alignParentBottom="true"
-                android:background="@drawable/header_background">
-            </View>
-
-            <TextView
-                android:id="@+id/tvEventDetailsName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
-                android:padding="@dimen/nav_header_vertical_spacing"
-                style="@style/Header.Text.Title"
-                android:text="Name of the event" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="12dp"
-                android:layout_marginTop="100dp"
-                android:src="@mipmap/ic_launcher" />
-
-        </RelativeLayout>
-
         <LinearLayout style="@style/Card.Wrapper.Details">
+
             <TextView
                 android:id="@+id/tvEventDetailsFriendsAndGuests"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="27 are going (including 7 Bobs)" />
+
+            <View style="@style/Separator.Horizontal" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@mipmap/ic_launcher" />
+
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="You are a BOB!">
+
+                </TextView>
+
+            </LinearLayout>
+
 
             <View style="@style/Separator.Horizontal" />
 
@@ -87,6 +74,7 @@
                 android:gravity="center_vertical">
 
                 <TextView
+                    style="@style/Card.Text.Meta.Label.Padded"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Time"/>
@@ -95,9 +83,6 @@
                     android:id="@+id/tvEventDetailsTotalTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="16dp"
-                    android:layout_toEndOf="@+id/icClock"
                     android:text="Oct 20 at 9:00pm to Oct 21 at 5:00am" />
             </LinearLayout>
 
@@ -110,7 +95,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    style="@style/Card.Text.Meta.Label"
+                    style="@style/Card.Text.Meta.Label.Padded"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Location"/>
@@ -119,8 +104,6 @@
                     android:id="@+id/tvEventDetailsAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_toEndOf="@+id/icMapMarker"
                     android:text="Street, 0000 City, Country" />
 
             </LinearLayout>
@@ -137,7 +120,6 @@
                     android:id="@+id/tvEventDetailsOrganisator"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:text="You are invited by Ilias Ismanalijev" />
 
 
@@ -147,20 +129,18 @@
         <LinearLayout style="@style/Card.Wrapper.Details">
 
             <TextView
+                style="@style/Card.Text.Meta.Label.Padded"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:text="Description"
-                android:textStyle="bold" />
+                android:text="Description" />
 
             <TextView
                 android:id="@+id/tvProfileAboutMe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
                 android:text="@string/loremipsum" />
         </LinearLayout>
 
     </LinearLayout>
 
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>
