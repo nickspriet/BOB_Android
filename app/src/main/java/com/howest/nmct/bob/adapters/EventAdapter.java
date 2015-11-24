@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.howest.nmct.bob.MainActivity;
 import com.howest.nmct.bob.R;
+import com.howest.nmct.bob.activities.MainActivity;
 import com.howest.nmct.bob.fragments.EventsFragment;
 import com.howest.nmct.bob.models.Event;
 import com.squareup.picasso.Picasso;
