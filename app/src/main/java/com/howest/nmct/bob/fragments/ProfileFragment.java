@@ -7,10 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.howest.nmct.bob.MainActivity;
 import com.howest.nmct.bob.R;
+import com.howest.nmct.bob.activities.MainActivity;
 import com.howest.nmct.bob.models.User;
 import com.squareup.picasso.Picasso;
 
@@ -22,9 +21,7 @@ import butterknife.ButterKnife;
  * 21/10/15
  */
 public class ProfileFragment extends Fragment {
-    @Bind(R.id.imgCover) ImageView imgCover;
     @Bind(R.id.imgProfile) ImageView imgProfile;
-    @Bind(R.id.tvProfileName) TextView tvProfileName;
 
     public ProfileFragment() {
     }
@@ -38,23 +35,26 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((MainActivity) getActivity()).clearToolbar();
+    }
+
+
     private void initViews() {
         MainActivity parentActivity = (MainActivity) getActivity();
         User user = parentActivity.mUser;
 
         Picasso p = Picasso.with(getActivity());
         p.setIndicatorsEnabled(true);
-        p.load(user.getCover())
-                .fit()
-                .centerCrop()
-                .into(imgCover);
 
         p.load(user.getPicture())
                 .fit()
                 .centerCrop()
                 .into(imgProfile);
 
-        tvProfileName.setText(user.getName());
+        parentActivity.setToolbarImage(parentActivity.mUser.getCover(), parentActivity.mUser.getName());
     }
 
 }

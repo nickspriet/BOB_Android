@@ -1,4 +1,4 @@
-package com.howest.nmct.bob;
+package com.howest.nmct.bob.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,13 +18,14 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.gson.Gson;
+import com.howest.nmct.bob.Constants;
+import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.api.APIAuthenticatedResponse;
 import com.howest.nmct.bob.api.APILoginResponse;
 import com.howest.nmct.bob.models.User;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
@@ -43,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         checkSavedToken();
     }
 
@@ -54,7 +56,12 @@ public class LoginActivity extends AppCompatActivity {
         String fbToken = sharedPreferences.getString(Constants.FACEBOOK_TOKEN, "");
         String backendToken = sharedPreferences.getString(Constants.BACKEND_TOKEN, "");
 
-        if (backendToken.isEmpty() && !fbToken.isEmpty()) {
+        if (fbToken.isEmpty() && AccessToken.getCurrentAccessToken() != null ) {
+            Log.i("LoginActivity", "No tokens saved - Saving token");
+            AccessToken accessToken = AccessToken.getCurrentAccessToken();
+            saveToken(accessToken);
+            syncToken();
+        } else if (backendToken.isEmpty() && !fbToken.isEmpty()) {
             Log.i("LoginActivity", "No Backend Token - Attempting login");
             setContentView(R.layout.activity_loading);
             syncToken();
@@ -73,7 +80,6 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void initLoginButton() {
         //the SDK needs to be initialized before using any of its methods
-        FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
 
         setContentView(R.layout.activity_login);
@@ -149,7 +155,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Save the Facebook token in our SharedPreferences
-     * @param accessToken
+     * @param accessToken The accesstoken that is to be saved
      */
     private void saveToken(AccessToken accessToken) {
         Log.i("LoginActivity", "Saving Facebook token");

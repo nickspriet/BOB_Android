@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.howest.nmct.bob.MainActivity;
 import com.howest.nmct.bob.R;
+import com.howest.nmct.bob.activities.MainActivity;
 import com.howest.nmct.bob.adapters.EventAdapter;
 import com.howest.nmct.bob.collections.Events;
 import com.howest.nmct.bob.collections.Rides;
@@ -23,7 +23,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by Nick on 28/10/2015.
+ * Nick on 28/10/2015.
  */
 public class EventsFragment extends Fragment implements RideOptionSelectedListener {
     @Bind(R.id.list)
@@ -88,24 +88,6 @@ public class EventsFragment extends Fragment implements RideOptionSelectedListen
 
     public void onEventSelected(Event event) {
         if (getView() == null) return;
-
-        navigateToEventFragment(event);
-
-    }
-
-    private void navigateToEventFragment(Event event) {
-        navigateToFragment(EventDetailsFragment.newInstance(event), true);
-        getActivity().setTitle(event.getEventName());
-    }
-
-
-    public void navigateToFragment(Fragment fragment, Boolean addToManager) {
-        getActivity().getSupportFragmentManager().popBackStack();
-
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, fragment)
-                .addToBackStack(fragment.getClass().toString())
-                .commit();
+        ((MainActivity) getActivity()).navigateToEventDetails(event);
     }
 }

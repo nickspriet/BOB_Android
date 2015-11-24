@@ -1,19 +1,16 @@
 package com.howest.nmct.bob.fragments;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
+import com.howest.nmct.bob.activities.MainActivity;
 import com.howest.nmct.bob.models.Ride;
-import com.poliveira.apps.parallaxlistview.ParallaxScrollView;
-import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,11 +20,10 @@ import butterknife.ButterKnife;
  * 22/10/15
  */
 public class RideDetailsFragment extends Fragment {
-    @Bind(R.id.address) TextView address;
-    @Bind(R.id.date) TextView date;
-    @Bind(R.id.ride_image) ImageView imageView;
+    @Bind(R.id.address) TextView tvAddress;
+    @Bind(R.id.date) TextView tvDate;
 
-    private Ride ride;
+    private Ride mRide;
 
     public RideDetailsFragment() {
     }
@@ -39,7 +35,7 @@ public class RideDetailsFragment extends Fragment {
     }
 
     public void setRide(Ride ride) {
-        this.ride = ride;
+        this.mRide = ride;
     }
 
 
@@ -53,18 +49,19 @@ public class RideDetailsFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((MainActivity) getActivity()).clearToolbar();
+    }
+
+
     private void initViews() {
-        if (ride == null) return;
+        if (mRide == null) return;
 
-        address.setText(ride.getAddress());
-        date.setText(ride.getDate());
+        tvAddress.setText(mRide.getAddress());
+        tvDate.setText(mRide.getDate());
 
-        Picasso p = Picasso.with(getActivity());
-        p.setIndicatorsEnabled(true);
-        p.load(ride.getImage())
-                .fit()
-               .centerCrop()
-                .into(imageView);
-
+        ((MainActivity) getActivity()).setToolbarImage(mRide.getImage(), mRide.getTitle());
     }
 }
