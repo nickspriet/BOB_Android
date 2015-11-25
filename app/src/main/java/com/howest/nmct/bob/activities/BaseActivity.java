@@ -39,6 +39,7 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
         initFragment();
     }
 
+    @SuppressWarnings("SameReturnValue")
     protected int getContentLayout() {
         return R.layout.activity_main;
     }
@@ -51,7 +52,7 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
         return mUser;
     }
 
-    public void initUserData(Bundle savedInstanceState, Bundle extras) {
+    private void initUserData(Bundle savedInstanceState, Bundle extras) {
         if (savedInstanceState != null)
             mUser = savedInstanceState.getParcelable(USER_PROFILE);
         if (mUser == null)
@@ -73,7 +74,7 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
     /**
      * Sets the navigation drawer header for the logged in profile
      */
-    public void initDrawerHeader() {
+    private void initDrawerHeader() {
         // Set profile
         Picasso picasso = Picasso.with(this);
         View headerView = mNavigationView.getHeaderView(0);
@@ -102,20 +103,13 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
 
     @Override
     public void setToolbarImage(String url) {
-        Picasso p = Picasso.with(this);
-        p.load(url)
-                .fit()
-                .centerCrop()
-                .into(mToolbarImage);
-        mToolbarImage.setVisibility(View.VISIBLE);
-        // mToolbarOverlay.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void clearToolbar() {
-        mToolbarOverlay.setVisibility(View.GONE);
-        mToolbarImage.setImageResource(0);
-        mToolbarImage.setVisibility(View.GONE);
+        if (mToolbarImage != null) {
+            Picasso p = Picasso.with(this);
+            p.load(url)
+                    .fit()
+                    .centerCrop()
+                    .into(mToolbarImage);
+        }
     }
 
     @Override
@@ -127,7 +121,7 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
      * Adds a fragment to the container framelayout
      * @param fragment A fragment that will be shown
      */
-    public void addFragmentToContainer(Fragment fragment) {
+    void addFragmentToContainer(Fragment fragment) {
         getSupportFragmentManager().popBackStack();
         getSupportFragmentManager()
                 .beginTransaction()

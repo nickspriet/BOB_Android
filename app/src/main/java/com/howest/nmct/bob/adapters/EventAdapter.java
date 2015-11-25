@@ -26,9 +26,9 @@ import butterknife.OnClick;
  */
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
 
-    private ArrayList<Event> mEvents;
-    private BaseActivity mActivity;
-    private EventsFragment mFragment;
+    private final ArrayList<Event> mEvents;
+    private final BaseActivity mActivity;
+    private final EventsFragment mFragment;
 
     public EventAdapter(EventsFragment eventsFragment, ArrayList<Event> events) {
         this.mActivity = (BaseActivity) eventsFragment.getActivity();
@@ -77,7 +77,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         @Bind(R.id.tvEventInfo)  TextView tvEventInfo;
         @Bind(R.id.tvEventFriendsOrGuests)  TextView tvEventFriendsOrGuests;
 
-        private EventAdapter adapter;
+        private final EventAdapter adapter;
 
         public ViewHolder(View view, EventAdapter adapter) {
             super(view);

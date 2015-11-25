@@ -6,7 +6,6 @@ import com.howest.nmct.bob.models.Ride;
 import com.howest.nmct.bob.models.User;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * illyism

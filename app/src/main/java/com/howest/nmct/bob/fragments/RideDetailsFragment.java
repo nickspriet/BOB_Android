@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
-import com.howest.nmct.bob.interfaces.ToolbarController;
 import com.howest.nmct.bob.models.Ride;
 
 import butterknife.Bind;
@@ -34,7 +33,7 @@ public class RideDetailsFragment extends Fragment {
         return fragment;
     }
 
-    public void setRide(Ride ride) {
+    private void setRide(Ride ride) {
         this.mRide = ride;
     }
 
@@ -48,13 +47,6 @@ public class RideDetailsFragment extends Fragment {
         initViews();
         return view;
     }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        ((ToolbarController) getActivity()).clearToolbar();
-    }
-
 
     private void initViews() {
         if (mRide == null) return;

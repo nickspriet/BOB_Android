@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
-import com.howest.nmct.bob.activities.BaseActivity;
 import com.howest.nmct.bob.models.Event;
 
 import butterknife.Bind;
@@ -42,13 +41,7 @@ public class EventDetailsFragment extends Fragment {
         return v;
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        ((BaseActivity) getActivity()).clearToolbar();
-    }
-
-    public void setEvent(Event event) {
+    private void setEvent(Event event) {
         this.mEvent = event;
     }
 

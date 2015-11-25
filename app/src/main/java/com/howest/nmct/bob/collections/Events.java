@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by Nick on 28/10/2015.
+ * Nick on 28/10/2015.
  */
 public class Events {
-    private static ArrayList<Event> events = new ArrayList<>();
+    private static final ArrayList<Event> events = new ArrayList<>();
 
     public static ArrayList<Event> getEvents() {
         return events;

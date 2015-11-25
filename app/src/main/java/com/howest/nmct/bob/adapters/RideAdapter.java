@@ -37,15 +37,15 @@ import butterknife.OnClick;
  * Adapter for the RecyclerView
  */
 public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
-    private ArrayList<Ride> mRides;
-    private BaseActivity mActivity;
-    private RidesFragment mFragment;
+    private final ArrayList<Ride> mRides;
+    private final BaseActivity mActivity;
+    private final RidesFragment mFragment;
 
     private enum SwipedState {
         SHOWING_PRIMARY_CONTENT,
         SHOWING_SECONDARY_CONTENT
     }
-    private List<SwipedState> mItemSwipedStates;
+    private final List<SwipedState> mItemSwipedStates;
 
     public RideAdapter(RidesFragment ridesFragment, ArrayList<Ride> rides) {
         mActivity = (BaseActivity) ridesFragment.getActivity();
@@ -196,8 +196,8 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         @Bind(R.id.map_button) LinearLayout mapButton;
         @Bind(R.id.guests_button) LinearLayout guestsButton;
 
-        private ViewPager view;
-        private RideAdapter adapter;
+        private final ViewPager view;
+        private final RideAdapter adapter;
 
         public ViewHolder(ViewPager view, RideAdapter adapter) {
             super(view);

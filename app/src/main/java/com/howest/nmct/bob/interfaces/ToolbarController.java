@@ -12,11 +12,6 @@ public interface ToolbarController {
     void setToolbarImage(String url);
 
     /**
-     * Removes the image of the collapsing toolbar
-     */
-    void clearToolbar();
-
-    /**
      * Sets the title of the toolbar
      * @param title Title of the toolbar to set
      */

@@ -3,6 +3,7 @@ package com.howest.nmct.bob.activities;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.fragments.ProfileFragment;
 
 import java.util.List;
@@ -12,7 +13,12 @@ import java.util.List;
  * 24/11/15
  */
 public class ProfileActivity extends BaseActivity {
-    public ProfileFragment mFragment;
+    private ProfileFragment mFragment;
+
+    @Override
+    protected int getContentLayout() {
+        return R.layout.activity_main_expanded;
+    }
 
     @Override
     protected void initData(Bundle activityData) {

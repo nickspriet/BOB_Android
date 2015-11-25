@@ -3,6 +3,7 @@ package com.howest.nmct.bob.fragments;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
@@ -14,7 +15,7 @@ import com.howest.nmct.bob.models.Event;
  * 16/11/15
  */
 public class CreateRideDialogFragment extends DialogFragment {
-    RideOptionSelectedListener mListener;
+    private RideOptionSelectedListener mListener;
     private Event mEvent;
 
     public static CreateRideDialogFragment newInstance(RideOptionSelectedListener listener, Event event) {
@@ -24,6 +25,7 @@ public class CreateRideDialogFragment extends DialogFragment {
         return fragment;
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

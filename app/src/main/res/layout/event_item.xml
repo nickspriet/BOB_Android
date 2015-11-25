@@ -21,11 +21,13 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:contentDescription="@string/event_image"
                 android:id="@+id/imgEvent"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/card_image_size_vertical" />
 
             <ImageView
+                android:contentDescription="@string/BOB"
                 android:id="@+id/imgBobStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,7 +52,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingEnd="@dimen/card_inner_margin_horizontal"
+                    android:layout_marginEnd="@dimen/card_inner_margin_horizontal"
                     android:orientation="vertical">
 
                     <TextView

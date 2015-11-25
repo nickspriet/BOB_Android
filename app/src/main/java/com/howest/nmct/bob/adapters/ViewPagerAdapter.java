@@ -12,7 +12,7 @@ import com.howest.nmct.bob.R;
  *
  * http://github.com/rohaanhamid/ScrollableItemList
  */
-public class ViewPagerAdapter extends PagerAdapter {
+class ViewPagerAdapter extends PagerAdapter {
 
     public Object instantiateItem(ViewGroup collection, int position) {
 

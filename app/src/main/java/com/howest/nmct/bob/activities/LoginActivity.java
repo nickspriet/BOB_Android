@@ -45,11 +45,10 @@ import static com.howest.nmct.bob.Constants.FACEBOOK_USERID;
 import static com.howest.nmct.bob.Constants.USER_PROFILE;
 
 public class LoginActivity extends AppCompatActivity {
-    private LoginButton btnLogin;
 
     //manage callbacks
     private CallbackManager callbackManager;
-    OkHttpClient okHttpClient = new OkHttpClient();
+    private final OkHttpClient okHttpClient = new OkHttpClient();
 
 
     @Override
@@ -95,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
-        btnLogin = (LoginButton) findViewById(R.id.btnLogin);
+        LoginButton btnLogin = (LoginButton) findViewById(R.id.btnLogin);
         btnLogin.setReadPermissions(
                 "public_profile", // For showing your name, cover photo, profile pictures, ...
                 "email", // For sending you notification emails

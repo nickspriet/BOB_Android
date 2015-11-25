@@ -12,7 +12,7 @@ import java.util.List;
  * 24/11/15
  */
 public class FeedActivity extends BaseActivity {
-    public FeedFragment mFragment;
+    private FeedFragment mFragment;
 
     @Override
     protected void initData(Bundle activityData) {

@@ -13,7 +13,7 @@ import java.util.List;
  * 24/11/15
  */
 public class EventsActivity extends BaseActivity {
-    public EventsFragment mFragment;
+    private EventsFragment mFragment;
 
     @Override
     protected void initData(Bundle activityData) {

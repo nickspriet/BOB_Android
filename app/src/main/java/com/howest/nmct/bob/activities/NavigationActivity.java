@@ -46,8 +46,7 @@ public abstract class NavigationActivity extends AppCompatActivity
 
     @Bind(R.id.toolbarLayout) CollapsingToolbarLayout mToolbarLayout;
     @Bind(R.id.toolbar) Toolbar mToolbar;
-    @Bind(R.id.toolbarImage) ImageView mToolbarImage;
-    @Bind(R.id.toolbarOverlay) View mToolbarOverlay;
+    @Nullable @Bind(R.id.toolbarImage) ImageView mToolbarImage;
     @Bind(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @Bind(R.id.nav_view) NavigationView mNavigationView;
 
@@ -69,7 +68,7 @@ public abstract class NavigationActivity extends AppCompatActivity
     /**
      * Initializes the navigation drawer, the toggle button and toolbar
      */
-    public void initNavigation() {
+    void initNavigation() {
         setSupportActionBar(mToolbar);
         initDrawerToggle();
         mNavigationView.setNavigationItemSelectedListener(this);
@@ -215,9 +214,8 @@ public abstract class NavigationActivity extends AppCompatActivity
 
     /**
      * Shows the back icon
-     * @param isIconUp true to show up, false to show home
      */
-    public void setHomeAsUp(Boolean isIconUp) {
+    void setHomeAsUp() {
         if (getSupportActionBar() != null) {
             mDrawerToggle.setDrawerIndicatorEnabled(false);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -90,7 +90,7 @@ public class Event implements Parcelable {
         dest.writeString(eventImage);
     }
 
-    public Event(Parcel in) {
+    private Event(Parcel in) {
         id = in.readString();
         eventName = in.readString();
         eventDate = new Date(in.readLong());

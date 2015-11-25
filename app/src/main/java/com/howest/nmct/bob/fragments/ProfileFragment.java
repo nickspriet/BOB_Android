@@ -10,7 +10,6 @@ import android.widget.ImageView;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.activities.ProfileActivity;
-import com.howest.nmct.bob.interfaces.ToolbarController;
 import com.howest.nmct.bob.models.User;
 import com.squareup.picasso.Picasso;
 
@@ -35,13 +34,6 @@ public class ProfileFragment extends Fragment {
         initViews();
         return view;
     }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        ((ToolbarController) getActivity()).clearToolbar();
-    }
-
 
     private void initViews() {
         ProfileActivity parentActivity = (ProfileActivity) getActivity();

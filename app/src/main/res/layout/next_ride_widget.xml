@@ -7,63 +7,59 @@
         android:layout_width="match_parent"
         android:gravity="center"
         android:layout_gravity="center"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="@dimen/card_image_size_horizontal"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:contentDescription="@string/ride_image"
+                android:id="@+id/ride_image"
+                android:src="@android:color/black"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <TextView
+                style="@style/Header.Text.Title"
+                android:text="21 Oct"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:padding="5dp"
+                android:gravity="center"
+                android:foregroundGravity="center"
+                android:background="@drawable/card_image_inner_background"
+                android:layout_alignParentBottom="true" />
+        </RelativeLayout>
+
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_margin="@dimen/card_inner_margin">
 
-            <RelativeLayout
-                android:layout_width="@dimen/card_image_size_horizontal"
-                android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/ride_title"
+                android:text="@string/title"
+                style="@style/Card.Text.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-                <ImageView
-                    android:id="@+id/ride_image"
-                    android:src="@android:color/black"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-                <TextView
-                    style="@style/Header.Text.Title"
-                    android:text="21 Oct"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:padding="5dp"
-                    android:gravity="center"
-                    android:foregroundGravity="center"
-                    android:background="@drawable/card_image_inner_background"
-                    android:layout_alignParentBottom="true" />
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/location_details"
+                android:text="@string/location"
+                style="@style/Card.Text.Meta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
+            <TextView
+                android:id="@+id/approval_status"
+                android:text="@string/approval_status"
+                style="@style/Card.Text.Meta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/card_inner_margin">
-
-                <TextView
-                    android:id="@+id/ride_title"
-                    android:text="Title"
-                    style="@style/Card.Text.Title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/location_details"
-                    android:text="Location"
-                    style="@style/Card.Text.Meta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/approval_status"
-                    android:text="Approval Status"
-                    style="@style/Card.Text.Meta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
