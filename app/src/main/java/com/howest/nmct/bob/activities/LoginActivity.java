@@ -18,7 +18,6 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.gson.Gson;
-import com.howest.nmct.bob.Constants;
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.api.APIAuthenticatedResponse;
 import com.howest.nmct.bob.api.APILoginResponse;
@@ -33,12 +32,23 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
+import static com.howest.nmct.bob.Constants.API_USER_LOGIN;
+import static com.howest.nmct.bob.Constants.BACKEND_HOST;
+import static com.howest.nmct.bob.Constants.BACKEND_SCHEME;
+import static com.howest.nmct.bob.Constants.BACKEND_TOKEN;
+import static com.howest.nmct.bob.Constants.DEVICE_MODEL;
+import static com.howest.nmct.bob.Constants.DEVICE_TYPE;
+import static com.howest.nmct.bob.Constants.FACEBOOK_EXPIRES;
+import static com.howest.nmct.bob.Constants.FACEBOOK_PERMISSIONS;
+import static com.howest.nmct.bob.Constants.FACEBOOK_TOKEN;
+import static com.howest.nmct.bob.Constants.FACEBOOK_USERID;
+import static com.howest.nmct.bob.Constants.USER_PROFILE;
+
 public class LoginActivity extends AppCompatActivity {
-    private LoginButton btnLogin;
 
     //manage callbacks
     private CallbackManager callbackManager;
-    OkHttpClient okHttpClient = new OkHttpClient();
+    private final OkHttpClient okHttpClient = new OkHttpClient();
 
 
     @Override
@@ -53,8 +63,8 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void checkSavedToken() {
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        String fbToken = sharedPreferences.getString(Constants.FACEBOOK_TOKEN, "");
-        String backendToken = sharedPreferences.getString(Constants.BACKEND_TOKEN, "");
+        String fbToken = sharedPreferences.getString(FACEBOOK_TOKEN, "");
+        String backendToken = sharedPreferences.getString(BACKEND_TOKEN, "");
 
         if (fbToken.isEmpty() && AccessToken.getCurrentAccessToken() != null ) {
             Log.i("LoginActivity", "No tokens saved - Saving token");
@@ -84,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
-        btnLogin = (LoginButton) findViewById(R.id.btnLogin);
+        LoginButton btnLogin = (LoginButton) findViewById(R.id.btnLogin);
         btnLogin.setReadPermissions(
                 "public_profile", // For showing your name, cover photo, profile pictures, ...
                 "email", // For sending you notification emails
@@ -120,11 +130,11 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void getProfile() {
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        String token = sharedPreferences.getString(Constants.BACKEND_TOKEN, "");
+        String token = sharedPreferences.getString(BACKEND_TOKEN, "");
 
         Uri.Builder builder = new Uri.Builder();
-        builder.scheme(Constants.BACKEND_SCHEME)
-                .encodedAuthority(Constants.BACKEND_HOST)
+        builder.scheme(BACKEND_SCHEME)
+                .encodedAuthority(BACKEND_HOST)
                 .appendPath("user")
                 .appendPath("profile")
                 .appendQueryParameter("token", token);
@@ -161,10 +171,10 @@ public class LoginActivity extends AppCompatActivity {
         Log.i("LoginActivity", "Saving Facebook token");
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         sharedPreferences.edit()
-                .putString(Constants.FACEBOOK_TOKEN, accessToken.getToken())
-                .putString(Constants.FACEBOOK_USERID, accessToken.getUserId())
-                .putString(Constants.FACEBOOK_EXPIRES, accessToken.getExpires().toString())
-                .putStringSet(Constants.FACEBOOK_PERMISSIONS, accessToken.getPermissions())
+                .putString(FACEBOOK_TOKEN, accessToken.getToken())
+                .putString(FACEBOOK_USERID, accessToken.getUserId())
+                .putString(FACEBOOK_EXPIRES, accessToken.getExpires().toString())
+                .putStringSet(FACEBOOK_PERMISSIONS, accessToken.getPermissions())
                 .apply();
     }
 
@@ -176,15 +186,15 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
 
         RequestBody body = new FormEncodingBuilder()
-                .add(Constants.FACEBOOK_TOKEN, sharedPreferences.getString(Constants.FACEBOOK_TOKEN, ""))
-                .add(Constants.FACEBOOK_USERID, sharedPreferences.getString(Constants.FACEBOOK_USERID, ""))
-                .add(Constants.FACEBOOK_EXPIRES, sharedPreferences.getString(Constants.FACEBOOK_EXPIRES, ""))
-                .add(Constants.DEVICE_TYPE, "android")
-                .add(Constants.DEVICE_MODEL, android.os.Build.MODEL)
+                .add(FACEBOOK_TOKEN, sharedPreferences.getString(FACEBOOK_TOKEN, ""))
+                .add(FACEBOOK_USERID, sharedPreferences.getString(FACEBOOK_USERID, ""))
+                .add(FACEBOOK_EXPIRES, sharedPreferences.getString(FACEBOOK_EXPIRES, ""))
+                .add(DEVICE_TYPE, "android")
+                .add(DEVICE_MODEL, android.os.Build.MODEL)
                 .build();
 
         Request request = new Request.Builder()
-                .url(Constants.API_USER_LOGIN)
+                .url(API_USER_LOGIN)
                 .post(body)
                 .build();
 
@@ -216,7 +226,7 @@ public class LoginActivity extends AppCompatActivity {
         // Save the backend token
         SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
         sharedPreferences.edit()
-                .putString(Constants.BACKEND_TOKEN, apiAuthenticatedResponse.data.token)
+                .putString(BACKEND_TOKEN, apiAuthenticatedResponse.data.token)
                 .apply();
 
         // Start the app
@@ -228,8 +238,8 @@ public class LoginActivity extends AppCompatActivity {
      * @param user profile
      */
     private void onLoggedIn(User user) {
-        Intent i = new Intent(this, MainActivity.class);
-        i.putExtra(Constants.USER_PROFILE, user);
+        Intent i = new Intent(this, FeedActivity.class);
+        i.putExtra(USER_PROFILE, user);
         startActivity(i);
         finish();
     }

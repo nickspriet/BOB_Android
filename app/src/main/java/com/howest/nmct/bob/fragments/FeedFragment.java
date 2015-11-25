@@ -34,6 +34,6 @@ public class FeedFragment extends Fragment {
 
     private void initViews() {
         if (textView != null)
-            textView.setText("Feed");
+            textView.setText(R.string.feed);
     }
 }

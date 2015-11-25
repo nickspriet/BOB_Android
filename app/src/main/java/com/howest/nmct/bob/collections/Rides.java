@@ -1,12 +1,9 @@
 package com.howest.nmct.bob.collections;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import com.howest.nmct.bob.models.Ride;
 import com.howest.nmct.bob.models.User;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * illyism
@@ -30,12 +27,16 @@ public class Rides {
     }
 
     public static Ride getRide(final String id) {
-        return Iterables.find(rides, new Predicate<Ride>() {
-            @Override
-            public boolean apply(Ride input) {
-                return input.getId().equals(id);
+        Ride foundRide = null;
+
+        for (Ride r : rides) {
+            if (r.getId().equals(id)) {
+                foundRide = r;
+                break;
             }
-        });
+        }
+
+        return foundRide;
     }
 
     public static void fetchData() {

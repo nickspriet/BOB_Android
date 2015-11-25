@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
-import com.howest.nmct.bob.activities.MainActivity;
 import com.howest.nmct.bob.models.Event;
 
 import butterknife.Bind;
@@ -23,13 +22,9 @@ public class EventDetailsFragment extends Fragment {
     @Bind(R.id.tvEventDetailsTotalTime) TextView tvEventDetailsTotalTime;
 
     private Event mEvent;
+    public EventDetailsFragment() {}
 
-
-    public EventDetailsFragment() {
-        // Required empty public constructor
-    }
-
-    public static Fragment newInstance(Event event) {
+    public static EventDetailsFragment newInstance(Event event) {
         EventDetailsFragment fragment = new EventDetailsFragment();
         fragment.setEvent(event);
         return fragment;
@@ -46,13 +41,7 @@ public class EventDetailsFragment extends Fragment {
         return v;
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        ((MainActivity) getActivity()).clearToolbar();
-    }
-
-    public void setEvent(Event event) {
+    private void setEvent(Event event) {
         this.mEvent = event;
     }
 
@@ -61,8 +50,6 @@ public class EventDetailsFragment extends Fragment {
 
         tvEventDetailsAddress.setText(mEvent.getEventAddress());
         tvEventDetailsTotalTime.setText(mEvent.getEventDateFormat("EEE") + " " + mEvent.getEventDateFormat("FF") + " at " + mEvent.getEventDateFormat("hh:mm a"));
-
-        ((MainActivity) getActivity()).setToolbarImage(mEvent.getEventImage(), mEvent.getEventName());
     }
 }
 

@@ -25,6 +25,7 @@
                 android:gravity="center_vertical">
 
                 <ImageView
+                    android:contentDescription="@string/BOB"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginEnd="10dp"
@@ -32,7 +33,7 @@
 
                 <TextView android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="You are a BOB!">
+                    android:text="@string/you_are_a_bob">
 
                 </TextView>
 
@@ -42,22 +43,33 @@
             <View style="@style/Separator.Horizontal" />
 
             <LinearLayout
+                style="?android:buttonBarStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
                 <Button
+                    style="?android:buttonBarButtonStyle"
+                    android:background="@drawable/button_background"
+                    android:textColor="@android:color/white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:elevation="6dp"
                     android:text="Going (52/140)" />
 
                 <Button
+                    style="?android:buttonBarButtonStyle"
+                    android:background="@drawable/button_background"
+                    android:textColor="@android:color/white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Interested (10/25)" />
 
                 <Button
+                    style="?android:buttonBarButtonStyle"
+                    android:background="@drawable/button_background"
+                    android:textColor="@android:color/white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

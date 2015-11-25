@@ -4,9 +4,8 @@
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
     android:orientation="horizontal"
-    tools:context=".activities.MainActivity">
+    tools:context=".activities.RidesActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
