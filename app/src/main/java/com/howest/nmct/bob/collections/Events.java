@@ -1,7 +1,5 @@
 package com.howest.nmct.bob.collections;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import com.howest.nmct.bob.models.Event;
 
 import java.util.ArrayList;
@@ -18,12 +16,16 @@ public class Events {
     }
 
     public static Event getEvent(final String id) {
-        return Iterables.find(events, new Predicate<Event>() {
-            @Override
-            public boolean apply(Event input) {
-                return input.getId().equals(id);
+        Event foundEvent = null;
+
+        for (Event e : events) {
+            if (e.getId().equals(id)) {
+                foundEvent = e;
+                break;
             }
-        });
+        }
+
+        return foundEvent;
     }
 
     public static void addEvent(Event event) {

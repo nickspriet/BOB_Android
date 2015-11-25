@@ -1,5 +1,7 @@
 package com.howest.nmct.bob.interfaces;
 
+import com.squareup.picasso.Callback;
+
 /**
  * Methods for controlling the toolbar
  */
@@ -10,6 +12,8 @@ public interface ToolbarController {
      * @param url URL of the image to set
      */
     void setToolbarImage(String url);
+
+    void setToolbarImage(String url, Callback callback);
 
     /**
      * Sets the title of the toolbar

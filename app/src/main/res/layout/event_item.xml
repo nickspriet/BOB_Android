@@ -23,8 +23,8 @@
             <ImageView
                 android:contentDescription="@string/event_image"
                 android:id="@+id/imgEvent"
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/card_image_size_vertical" />
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/nav_header_height" />
 
             <ImageView
                 android:contentDescription="@string/BOB"

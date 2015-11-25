@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.interfaces.ToolbarController;
 import com.howest.nmct.bob.models.User;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import butterknife.ButterKnife;
@@ -113,8 +114,23 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
     }
 
     @Override
+    public void setToolbarImage(String url, Callback callback) {
+        if (mToolbarImage != null) {
+            Picasso p = Picasso.with(this);
+            p.load(url)
+                    .fit()
+                    .centerCrop()
+                    .into(mToolbarImage, callback);
+        }
+    }
+
+    @Override
     public void setToolbarTitle(String title) {
+        mToolbar.setTitle(title);
         mToolbarLayout.setTitle(title);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
     }
 
     /**
