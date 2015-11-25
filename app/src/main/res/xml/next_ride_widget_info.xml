@@ -4,4 +4,4 @@
     android:previewImage="@drawable/example_appwidget_preview"
     android:initialLayout="@layout/next_ride_widget" android:resizeMode="vertical"
     android:widgetCategory="home_screen"
-    android:initialKeyguardLayout="@layout/next_ride_widget"></appwidget-provider>
+    android:initialKeyguardLayout="@layout/next_ride_widget"/>

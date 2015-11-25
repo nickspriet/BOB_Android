@@ -19,7 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
-import com.howest.nmct.bob.activities.MainActivity;
+import com.howest.nmct.bob.activities.BaseActivity;
 import com.howest.nmct.bob.fragments.RidesFragment;
 import com.howest.nmct.bob.models.Ride;
 import com.howest.nmct.bob.models.User;
@@ -37,18 +37,18 @@ import butterknife.OnClick;
  * Adapter for the RecyclerView
  */
 public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
-    private ArrayList<Ride> mRides;
-    private MainActivity mActivity;
-    private RidesFragment mFragment;
+    private final ArrayList<Ride> mRides;
+    private final BaseActivity mActivity;
+    private final RidesFragment mFragment;
 
     private enum SwipedState {
         SHOWING_PRIMARY_CONTENT,
         SHOWING_SECONDARY_CONTENT
     }
-    private List<SwipedState> mItemSwipedStates;
+    private final List<SwipedState> mItemSwipedStates;
 
     public RideAdapter(RidesFragment ridesFragment, ArrayList<Ride> rides) {
-        mActivity = (MainActivity) ridesFragment.getActivity();
+        mActivity = (BaseActivity) ridesFragment.getActivity();
         mFragment = ridesFragment;
         mRides = rides;
 
@@ -101,7 +101,7 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
 
     public void onBindViewHolder(ViewHolder holder, final int position) {
         // Get information
-        User profile = mActivity.mUser;
+        User profile = mActivity.getUser();
         Ride ride = mRides.get(position);
 
         // Fill in details
@@ -170,9 +170,9 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         return mRides.size();
     }
 
-    private void onRideSelected(long itemId) {
+    private void onRideSelected(long itemId, ImageView rideImage) {
         Ride ride = mRides.get((int) itemId);
-        mFragment.onRideSelected(ride);
+        mFragment.onRideSelected(ride, rideImage);
     }
 
     private void onMapButtonClicked(long itemId) {
@@ -196,8 +196,8 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         @Bind(R.id.map_button) LinearLayout mapButton;
         @Bind(R.id.guests_button) LinearLayout guestsButton;
 
-        private ViewPager view;
-        private RideAdapter adapter;
+        private final ViewPager view;
+        private final RideAdapter adapter;
 
         public ViewHolder(ViewPager view, RideAdapter adapter) {
             super(view);
@@ -208,7 +208,7 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
 
         @OnClick(R.id.cardView)
         public void onCardClicked() {
-            adapter.onRideSelected(getAdapterPosition());
+            adapter.onRideSelected(getAdapterPosition(), rideImage);
         }
 
         @OnClick(R.id.map_button)

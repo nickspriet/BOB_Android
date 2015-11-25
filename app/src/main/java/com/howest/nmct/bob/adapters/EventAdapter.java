@@ -1,5 +1,6 @@
 package com.howest.nmct.bob.adapters;
 
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
-import com.howest.nmct.bob.activities.MainActivity;
+import com.howest.nmct.bob.activities.BaseActivity;
 import com.howest.nmct.bob.fragments.EventsFragment;
 import com.howest.nmct.bob.models.Event;
 import com.squareup.picasso.Picasso;
@@ -25,12 +26,12 @@ import butterknife.OnClick;
  */
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
 
-    private ArrayList<Event> mEvents;
-    private MainActivity mActivity;
-    private EventsFragment mFragment;
+    private final ArrayList<Event> mEvents;
+    private final BaseActivity mActivity;
+    private final EventsFragment mFragment;
 
     public EventAdapter(EventsFragment eventsFragment, ArrayList<Event> events) {
-        this.mActivity = (MainActivity) eventsFragment.getActivity();
+        this.mActivity = (BaseActivity) eventsFragment.getActivity();
         this.mFragment = eventsFragment;
         this.mEvents = events;
     }
@@ -76,7 +77,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         @Bind(R.id.tvEventInfo)  TextView tvEventInfo;
         @Bind(R.id.tvEventFriendsOrGuests)  TextView tvEventFriendsOrGuests;
 
-        private EventAdapter adapter;
+        private final EventAdapter adapter;
 
         public ViewHolder(View view, EventAdapter adapter) {
             super(view);
@@ -93,12 +94,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
         @OnClick(R.id.cardView)
         public void onCardClicked() {
-            adapter.onEventSelected(getAdapterPosition());
+            ViewCompat.setTransitionName(imgEvent, "toolbarImage");
+            adapter.onEventSelected(getAdapterPosition(), imgEvent);
         }
     }
 
-    private void onEventSelected(long itemId) {
+    private void onEventSelected(long itemId, ImageView imgEvent) {
         Event event = mEvents.get((int) itemId);
-        mFragment.onEventSelected(event);
+        mFragment.onEventSelected(event, imgEvent);
     }
 }

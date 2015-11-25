@@ -3,91 +3,87 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    tools:context=".activities.MainActivity">
+    tools:context=".activities.ProfileActivity">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout style="@style/Card.Wrapper.Details">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <RelativeLayout
+                style="@style/Card.Wrapper.Details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/imgProfile"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:src="@drawable/ic_account"
-                        android:layout_marginEnd="@dimen/card_inner_margin_horizontal"
-                        tools:civ_border_width="2dp"
-                        tools:civ_border_color="#FFEFEFEF"/>
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgProfile"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_account"
+                    android:layout_marginEnd="@dimen/card_inner_margin_horizontal"
+                    tools:civ_border_width="2dp"
+                    tools:civ_border_color="#FFEFEFEF"/>
 
-                    <TextView
-                        android:id="@+id/lblAboutMe"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toEndOf="@id/imgProfile"
-                        android:padding="4dp"
-                        android:text="About me"
-                        android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/lblAboutMe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/imgProfile"
+                    android:padding="4dp"
+                    android:text="@string/about_me"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/tvProfileAboutMe"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/lblAboutMe"
-                        android:layout_toEndOf="@id/imgProfile"
-                        android:padding="4dp"
-                        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " />
+                <TextView
+                    android:id="@+id/tvProfileAboutMe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lblAboutMe"
+                    android:layout_toEndOf="@id/imgProfile"
+                    android:padding="4dp"
+                    android:text="@string/loremipsum" />
 
-                </RelativeLayout>
-            </LinearLayout>
+            </RelativeLayout>
 
-            <LinearLayout style="@style/Card.Wrapper.Details">
+            <RelativeLayout
+                style="@style/Card.Wrapper.Details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/lblCars"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:text="@string/cars"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/lblCars"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="4dp"
-                        android:text="Cars"
-                        android:textStyle="bold" />
-
-                    <ImageView
-                        android:id="@+id/imgCar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/lblCars"
-                        android:layout_marginTop="8dp"
-                        android:src="@drawable/ic_car" />
+                <ImageView
+                    android:contentDescription="@string/car_icon"
+                    android:id="@+id/imgCar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/lblCars"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/ic_car" />
 
 
-                    <TextView
-                        android:id="@+id/tvProfileCarType"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignTop="@+id/imgCar"
-                        android:layout_marginStart="100dp"
-                        android:padding="4dp"
-                        android:text="Seat Ibiza" />
+                <TextView
+                    android:id="@+id/tvProfileCarType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/imgCar"
+                    android:layout_marginStart="100dp"
+                    android:padding="4dp"
+                    android:text="Seat Ibiza" />
 
-                    <TextView
-                        android:id="@+id/tvProfileCarLicense"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="100dp"
-                        android:layout_below="@id/tvProfileCarType"
-                        android:padding="4dp"
-                        android:text="1-ABC-123" />
+                <TextView
+                    android:id="@+id/tvProfileCarLicense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="100dp"
+                    android:layout_below="@id/tvProfileCarType"
+                    android:padding="4dp"
+                    android:text="1-ABC-123" />
 
-                </RelativeLayout>
-            </LinearLayout>
-
+            </RelativeLayout>
         </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

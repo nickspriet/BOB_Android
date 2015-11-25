@@ -7,15 +7,15 @@ import com.google.gson.annotations.SerializedName;
  * illyism
  * 17/11/15
  */
-public class APIResponse {
+class APIResponse {
     @SerializedName("statusCode")
     @Expose
-    public int statusCode;
+    private int statusCode;
     @SerializedName("message")
     @Expose
-    public String message;
+    private String message;
 
-    public APIResponse(int statusCode, String message) {
+    APIResponse(int statusCode, String message) {
         this.statusCode = statusCode;
         this.message = message;
     }

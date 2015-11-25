@@ -9,9 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.howest.nmct.bob.R;
-import com.howest.nmct.bob.activities.MainActivity;
+import com.howest.nmct.bob.activities.EventsActivity;
+import com.howest.nmct.bob.activities.NavigationActivity;
 import com.howest.nmct.bob.adapters.EventAdapter;
 import com.howest.nmct.bob.collections.Events;
 import com.howest.nmct.bob.collections.Rides;
@@ -26,8 +28,7 @@ import butterknife.ButterKnife;
  * Nick on 28/10/2015.
  */
 public class EventsFragment extends Fragment implements RideOptionSelectedListener {
-    @Bind(R.id.list)
-    RecyclerView recyclerView;
+    @Bind(R.id.list) RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -74,11 +75,10 @@ public class EventsFragment extends Fragment implements RideOptionSelectedListen
 
     @Override
     public void onDialogBobClick(Event event) {
-        MainActivity parentActivity = (MainActivity) getActivity();
-        Ride newRide = Ride.createRideFromEvent(event, parentActivity.mUser);
+        EventsActivity parentActivity = (EventsActivity) getActivity();
+        Ride newRide = Ride.createRideFromEvent(event, parentActivity.getUser());
         Rides.addRide(newRide);
-        parentActivity.navigateToRides();
-        parentActivity.navigatetoRideDetails(newRide);
+        parentActivity.navigateToRideDetails(newRide);
     }
 
     @Override
@@ -86,8 +86,8 @@ public class EventsFragment extends Fragment implements RideOptionSelectedListen
 
     }
 
-    public void onEventSelected(Event event) {
-        if (getView() == null) return;
-        ((MainActivity) getActivity()).navigateToEventDetails(event);
+    public void onEventSelected(Event event, ImageView imgEvent) {
+        ((NavigationActivity) getActivity())
+                .navigateToEventDetails(event, imgEvent);
     }
 }
