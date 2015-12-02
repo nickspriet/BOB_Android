@@ -42,10 +42,13 @@ public class User implements Parcelable {
     @SerializedName("link")
     @Expose
     public String link;
-    private boolean email;
+
+    @SerializedName("aboutMe")
+    @Expose
+    public String aboutMe;
 
     public User(String id, String facebookID, String name, String firstName, String lastName,
-                String picture, String cover, String link) {
+                String picture, String cover, String link, String aboutMe) {
         this.Id = id;
         this.facebookID = facebookID;
         this.name = name;
@@ -54,6 +57,7 @@ public class User implements Parcelable {
         this.picture = picture;
         this.cover = cover;
         this.link = link;
+        this.aboutMe = aboutMe;
     }
 
     @Override
@@ -71,6 +75,7 @@ public class User implements Parcelable {
         dest.writeString(picture);
         dest.writeString(cover);
         dest.writeString(link);
+        dest.writeString(aboutMe);
     }
 
     public User(Parcel in) {
@@ -82,6 +87,7 @@ public class User implements Parcelable {
         picture = in.readString();
         cover = in.readString();
         link = in.readString();
+        aboutMe = in.readString();
     }
 
     public static final Parcelable.Creator CREATOR =
@@ -107,11 +113,14 @@ public class User implements Parcelable {
         return cover;
     }
 
-    public boolean getEmail() {
-        return email;
-    }
-
     public String getPicture() {
         return picture;
+    }
+
+    public String getAboutMe() {
+        if (aboutMe != null) {
+            return aboutMe;
+        }
+        return "";
     }
 }
