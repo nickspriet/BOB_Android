@@ -6,10 +6,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.models.Event;
+
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -19,7 +22,26 @@ import butterknife.ButterKnife;
  */
 public class EventDetailsFragment extends Fragment {
     @Bind(R.id.tvEventDetailsAddress) TextView tvEventDetailsAddress;
-    @Bind(R.id.tvEventDetailsTotalTime) TextView tvEventDetailsTotalTime;
+    @Bind(R.id.tvEventDetailsStartTime) TextView tvEventDetailsStartTime;
+    @Bind(R.id.tvEventDetailsEndTime) TextView tvEventDetailsEndTime;
+    @Bind(R.id.tvEventDetailsFriendsAndGuests) TextView tvEventDetailsFriendsAndGuests;
+    @Bind(R.id.tvDescription) TextView tvDescription;
+
+    @Bind(R.id.btnGoing) Button btnGoing;
+    @Bind(R.id.btnInterested) Button btnInterested;
+    @Bind(R.id.btnNotGoing) Button btnNotGoing;
+
+    @Bind(R.id.bobBadge) View bobBadge;
+    @Bind(R.id.bobBadgeSeparator) View bobBadgeSeparator;
+
+    @Bind(R.id.endsAtContainer) View endsAtContainer;
+    @Bind(R.id.endsAtContainerSeparator) View endsAtContainerSeparator;
+
+    @Bind(R.id.startAtContainer) View startAtContainer;
+    @Bind(R.id.startAtContainerSeparator) View startAtContainerSeparator;
+
+    @Bind(R.id.locationContainer) View locationContainer;
+    @Bind(R.id.locationContainerSeparator) View locationContainerSeparator;
 
     private Event mEvent;
     public EventDetailsFragment() {}
@@ -48,8 +70,49 @@ public class EventDetailsFragment extends Fragment {
     private void initViews() {
         if (mEvent == null) return;
 
-        tvEventDetailsAddress.setText(mEvent.getEventAddress());
-        tvEventDetailsTotalTime.setText(mEvent.getEventDateFormat("EEE") + " " + mEvent.getEventDateFormat("FF") + " at " + mEvent.getEventDateFormat("hh:mm a"));
+        tvEventDetailsFriendsAndGuests.setText(String.format("%s are going.",
+                        mEvent.getAttendingCount()));
+
+        bobBadge.setVisibility(View.GONE);
+        bobBadgeSeparator.setVisibility(View.GONE);
+
+        btnGoing.setText(String.format("Going\n(%d)", mEvent.getAttendingCount()));
+        btnInterested.setText(String.format("Interested\n(%d)", mEvent.getInterestedCount()));
+        btnNotGoing.setText(String.format("Not Going\n(%d)", mEvent.getDeclinedCount()));
+
+        if (!mEvent.getAddress().isEmpty()) {
+            tvEventDetailsAddress.setText(mEvent.getAddress());
+        } else {
+            locationContainer.setVisibility(View.GONE);
+            locationContainerSeparator.setVisibility(View.GONE);
+        }
+
+
+        Date startTime = mEvent.getStartTime();
+        if (startTime != null) {
+            tvEventDetailsStartTime.setText(String.format("%s %s at %s",
+                    mEvent.getEventDateFormat("EEE", startTime),
+                    mEvent.getEventDateFormat("FF", startTime),
+                    mEvent.getEventDateFormat("hh:mm a", startTime)));
+        } else {
+            startAtContainer.setVisibility(View.GONE);
+            startAtContainerSeparator.setVisibility(View.GONE);
+        }
+
+        Date endTime = mEvent.getEndTime();
+        if (endTime != null) {
+            tvEventDetailsEndTime.setText(String.format("%s %s at %s",
+                    mEvent.getEventDateFormat("EEE", endTime),
+                    mEvent.getEventDateFormat("FF", endTime),
+                    mEvent.getEventDateFormat("hh:mm a", endTime)));
+        } else {
+            endsAtContainer.setVisibility(View.GONE);
+            endsAtContainerSeparator.setVisibility(View.GONE);
+        }
+
+        tvDescription.setText(mEvent.getDescription());
+
+
     }
 }
 

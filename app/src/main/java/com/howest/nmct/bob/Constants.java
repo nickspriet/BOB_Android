@@ -9,7 +9,8 @@ public class Constants {
     public static final String BACKEND_SCHEME = "http";
     private static final String BACKEND_BASEURL =  BACKEND_SCHEME + "://" + BACKEND_HOST;
     public static final String API_USER_LOGIN = BACKEND_BASEURL + "/user/login";
-    public static String API_USER_PROFILE = BACKEND_BASEURL + "/user/profile";
+    public static final String API_USER_PROFILE = BACKEND_BASEURL + "/user/profile";
+    public static final String API_USER_EVENTS = BACKEND_BASEURL + "/event";
 
     public static final String FACEBOOK_TOKEN = "com.howest.nmct.bob.FACEBOOK_TOKEN";
     public static final String FACEBOOK_USERID = "com.howest.nmct.bob.FACEBOOK_USERID";

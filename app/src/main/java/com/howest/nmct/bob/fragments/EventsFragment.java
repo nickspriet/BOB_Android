@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
  */
 public class EventsFragment extends Fragment implements RideOptionSelectedListener {
     @Bind(R.id.list) RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
+    public RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     public EventsFragment() {
@@ -42,16 +42,6 @@ public class EventsFragment extends Fragment implements RideOptionSelectedListen
         ButterKnife.bind(this, view);
         initViews();
         return view;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initData();
-    }
-
-    private void initData() {
-        Events.fetchData();
     }
 
     private void initViews() {

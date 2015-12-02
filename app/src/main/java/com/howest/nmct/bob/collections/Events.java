@@ -1,15 +1,36 @@
 package com.howest.nmct.bob.collections;
 
-import com.howest.nmct.bob.models.Event;
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
+import android.preference.PreferenceManager;
+import android.util.Log;
 
+import com.google.gson.Gson;
+import com.howest.nmct.bob.api.APIEventsResponse;
+import com.howest.nmct.bob.models.Event;
+import com.squareup.okhttp.Call;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
+
+import static com.howest.nmct.bob.Constants.BACKEND_HOST;
+import static com.howest.nmct.bob.Constants.BACKEND_SCHEME;
+import static com.howest.nmct.bob.Constants.BACKEND_TOKEN;
 
 /**
  * Nick on 28/10/2015.
  */
 public class Events {
-    private static final ArrayList<Event> events = new ArrayList<>();
+    private static Handler mainHandler = new Handler(Looper.getMainLooper());
+    private static ArrayList<Event> events = new ArrayList<>();
 
     public static ArrayList<Event> getEvents() {
         return events;
@@ -38,30 +59,56 @@ public class Events {
         }
     }
 
-    public static void fetchData() {
+    public static void addEvents(List<Event> events) {
+        Events.events.addAll(events);
+    }
+
+    public static void fetchData(final Activity activity) {
         if (events.size() != 0) return;
+        OkHttpClient okHttpClient = new OkHttpClient();
 
-        Event tomorrowland = new Event("1", "Tomorrowland", new Date(2015, 7, 24, 12, 0), "Schommelei, 2850 Boom");
-        tomorrowland.setEventImage("https://scontent-bru2-1.xx.fbcdn.net/hphotos-xta1/v/t1.0-9/10947321_10152829530009177_4534804258545577034_n.png?oh=9d7fe71ca09119d2f2f9481ced70a372&oe=56E4CDA7");
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        String token = preferences.getString(BACKEND_TOKEN, "");
 
-        Event gentseFeesten = new Event("2", "Gentse Feesten", new Date(2015, 8, 13, 12, 7), "Korenmarkt, 9000 Gent");
-        gentseFeesten.setEventImage("http://gentsefeesten.gent/sites/default/files/styles/eyecatcher/public/eyecatcher/image/Foto%2021%20mensenzee%20Korenmarkt.jpg?itok=5ci3hCrr");
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(BACKEND_SCHEME)
+                .encodedAuthority(BACKEND_HOST)
+                .appendPath("event")
+                .appendQueryParameter("token", token);
 
-        Event kiekenfuif = new Event("3", "Kiekenfuif", new Date(12, 11, 9, 9, 0), "Howest Obee - Graaf Karel de Goedelaan 5, 8500 Kortrijk");
-        kiekenfuif.setEventImage("https://scontent-bru2-1.xx.fbcdn.net/hphotos-xta1/t31.0-8/12079829_907950152574754_6218674705680497012_o.jpg");
+        Request request = new Request.Builder()
+                .url(builder.build().toString())
+                .get()
+                .build();
 
-        Event campusdagHowest = new Event("4", "Campusdag Howest", new Date(2014, 4, 26, 9, 0), "Howest - Graaf Karel de Goedelaan 5, 8500 Kortrijk");
-        campusdagHowest.setEventImage("https://scontent-bru2-1.xx.fbcdn.net/hphotos-xta1/t31.0-8/s2048x2048/1932576_10152127788918106_4924855659205408870_o.jpg");
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                Log.i("Events", "Call failed");
+            }
 
-        Event kulakKerstbal = new Event("5", "Campusdag Howest", new Date(2015, 12, 4, 10, 0), "Waregem expo - Zuiderlaan 20, 8790 Waregem");
-        kulakKerstbal.setEventImage("https://scontent-bru2-1.xx.fbcdn.net/hphotos-xpf1/v/t1.0-9/12188928_1518477605141668_219865140803850367_n.jpg?oh=03d8d196cc7163b8dff568167c479a14&oe=56F6461D");
+            @Override
+            public void onResponse(Response response) throws IOException {
+                String responseString = response.body().string();
+                Log.i("Events", responseString);
+                APIEventsResponse apiResponse = new Gson().fromJson(responseString, APIEventsResponse.class);
+                Log.i("Events", apiResponse.data.events.toString());
+                addEvents(apiResponse.data.events);
 
-        Events.addEvents(
-                tomorrowland,
-                gentseFeesten,
-                kiekenfuif,
-                campusdagHowest,
-                kulakKerstbal
-        );
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((EventsLoadedListener) activity).eventsLoaded(events);
+                    }
+                });
+            }
+        });
+    }
+
+
+
+    public interface EventsLoadedListener {
+        void eventsLoaded(ArrayList<Event> events);
     }
 }

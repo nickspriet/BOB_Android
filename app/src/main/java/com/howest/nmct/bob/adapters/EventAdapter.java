@@ -15,6 +15,7 @@ import com.howest.nmct.bob.models.Event;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -44,16 +45,17 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
     public void onBindViewHolder(ViewHolder holder, int position) {
         Event event = mEvents.get(position);
-        holder.tvEventDay.setText("" + event.getEventDateFormat("FF"));
-        holder.tvEventMonth.setText(event.getEventDateFormat("MMM").toUpperCase());
-        holder.tvEventName.setText(event.getEventName());
-        holder.tvEventInfo.setText(event.getEventDateFormat("E h a") + " " + event.getEventAddress());
-        holder.tvEventFriendsOrGuests.setText(event.getEventFriendsOrGuests());
+        Date startTime = event.getStartTime();
+        holder.tvEventDay.setText(event.getEventDateFormat("FF", startTime));
+        holder.tvEventMonth.setText(event.getEventDateFormat("MMM", startTime).toUpperCase());
+        holder.tvEventName.setText(event.getName());
+        holder.tvEventDate.setText(event.getEventDateFormat("E h a", startTime) );
+        holder.tvEventLocation.setText(event.getAddress());
 
         //set image via picasso
         Picasso p = Picasso.with(this.mActivity.getApplicationContext());
         p.setIndicatorsEnabled(true);
-        p.load(event.getEventImage())
+        p.load(event.getCover())
                 .fit()
                 .centerCrop()
                 .into(holder.imgEvent);
@@ -74,8 +76,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         @Bind(R.id.tvEventDay)  TextView tvEventDay;
         @Bind(R.id.tvEventMonth)  TextView tvEventMonth;
         @Bind(R.id.tvEventName)  TextView tvEventName;
-        @Bind(R.id.tvEventInfo)  TextView tvEventInfo;
-        @Bind(R.id.tvEventFriendsOrGuests)  TextView tvEventFriendsOrGuests;
+        @Bind(R.id.tvEventDate)  TextView tvEventDate;
+        @Bind(R.id.tvEventLocation)  TextView tvEventLocation;
 
         private final EventAdapter adapter;
 

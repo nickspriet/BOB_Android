@@ -52,4 +52,7 @@
     <string name="account">Account</string>
     <string name="calendar">Calendar</string>
     <string name="map_marker">Map Marker</string>
+    <string name="time">Time</string>
+    <string name="starts_at">Starts at</string>
+    <string name="ends_at">Ends At</string>
 </resources>

@@ -88,17 +88,18 @@
 
                     <TextView
                         style="@style/Card.Text.Meta"
-                        android:id="@+id/tvEventInfo"
+                        android:id="@+id/tvEventDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Sat 6:30 PM · Howest Obee · Kortrijk..." />
+                        android:text="Sat 6:30 PM" />
 
                     <TextView
                         style="@style/Card.Text.Meta"
-                        android:id="@+id/tvEventFriendsOrGuests"
+                        android:id="@+id/tvEventLocation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ilias, Nick and 9 other friends are going" />
+                        android:text="Kortrijk, Belgium" />
+
                 </LinearLayout>
 
             </LinearLayout>

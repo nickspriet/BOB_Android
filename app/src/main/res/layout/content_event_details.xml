@@ -16,9 +16,10 @@
                 android:layout_height="wrap_content"
                 android:text="27 are going (including 7 Bobs)" />
 
-            <View style="@style/Separator.Horizontal" />
+            <View android:id="@+id/bobBadgeSeparator" style="@style/Separator.Horizontal" />
 
             <LinearLayout
+                android:id="@+id/bobBadge"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,6 +49,7 @@
                 android:layout_height="wrap_content">
 
                 <Button
+                    android:id="@+id/btnGoing"
                     style="?android:buttonBarButtonStyle"
                     android:background="@drawable/button_background"
                     android:textColor="@android:color/white"
@@ -58,6 +60,7 @@
                     android:text="Going (52/140)" />
 
                 <Button
+                    android:id="@+id/btnInterested"
                     style="?android:buttonBarButtonStyle"
                     android:background="@drawable/button_background"
                     android:textColor="@android:color/white"
@@ -67,6 +70,7 @@
                     android:text="Interested (10/25)" />
 
                 <Button
+                    android:id="@+id/btnNotGoing"
                     style="?android:buttonBarButtonStyle"
                     android:background="@drawable/button_background"
                     android:textColor="@android:color/white"
@@ -77,9 +81,10 @@
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout style="@style/Card.Wrapper.Details">
+        <LinearLayout android:id="@+id/startAtContainerSeparator" style="@style/Card.Wrapper.Details">
 
             <LinearLayout
+                android:id="@+id/startAtContainer"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -89,18 +94,41 @@
                     style="@style/Card.Text.Meta.Label.Padded"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Time"/>
+                    android:text="@string/starts_at"/>
 
                 <TextView
-                    android:id="@+id/tvEventDetailsTotalTime"
+                    android:id="@+id/tvEventDetailsStartTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Oct 20 at 9:00pm to Oct 21 at 5:00am" />
             </LinearLayout>
 
-            <View style="@style/Separator.Horizontal" />
+            <View android:id="@+id/endsAtContainerSeparator" style="@style/Separator.Horizontal" />
 
             <LinearLayout
+                android:id="@+id/endsAtContainer"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/Card.Text.Meta.Label.Padded"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ends_at"/>
+
+                <TextView
+                    android:id="@+id/tvEventDetailsEndTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Oct 20 at 9:00pm to Oct 21 at 5:00am" />
+            </LinearLayout>
+
+            <View android:id="@+id/locationContainerSeparator" style="@style/Separator.Horizontal" />
+
+            <LinearLayout
+                android:id="@+id/locationContainer"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -120,22 +148,6 @@
 
             </LinearLayout>
 
-            <View style="@style/Separator.Horizontal" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tvEventDetailsOrganisator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="You are invited by Ilias Ismanalijev" />
-
-
-            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout style="@style/Card.Wrapper.Details">
@@ -147,7 +159,7 @@
                 android:text="Description" />
 
             <TextView
-                android:id="@+id/tvProfileAboutMe"
+                android:id="@+id/tvDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/loremipsum" />
