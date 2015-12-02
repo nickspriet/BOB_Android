@@ -61,8 +61,8 @@ public class EventDetailsActivity extends BaseActivity implements Callback {
 
     @Override
     protected void setupToolbar() {
-        setToolbarImage(mEvent.getEventImage(), this);
-        setToolbarTitle(mEvent.getEventName());
+        setToolbarImage(mEvent.getCover(), this);
+        setToolbarTitle(mEvent.getName());
         setHomeAsUp();
     }
 
