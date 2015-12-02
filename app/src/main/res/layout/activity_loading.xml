@@ -8,9 +8,33 @@
     android:id="@+id/loadingPanel"
     tools:context=".activities.LoginActivity">
 
-    <ProgressBar
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminate="true" />
+        android:layout_height="wrap_content">
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+
+        <TextView
+            android:id="@+id/errorMessage"
+            android:visibility="gone"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnTryAgain"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Try again">
+
+        </Button>
+    </LinearLayout>
+
 
 </RelativeLayout>

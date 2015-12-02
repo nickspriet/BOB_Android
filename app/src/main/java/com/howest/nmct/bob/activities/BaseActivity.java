@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -107,6 +108,7 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
         if (mToolbarImage != null) {
             Picasso p = Picasso.with(this);
             p.load(url)
+                    .noFade()
                     .fit()
                     .centerCrop()
                     .into(mToolbarImage);
@@ -118,6 +120,7 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
         if (mToolbarImage != null) {
             Picasso p = Picasso.with(this);
             p.load(url)
+                    .noFade()
                     .fit()
                     .centerCrop()
                     .into(mToolbarImage, callback);
@@ -126,10 +129,14 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
 
     @Override
     public void setToolbarTitle(String title) {
-        mToolbar.setTitle(title);
         mToolbarLayout.setTitle(title);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(title);
+    }
+
+    protected void setStatusBarTranslucent(boolean makeTranslucent) {
+        if (makeTranslucent) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
     }
 

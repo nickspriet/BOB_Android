@@ -5,8 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -32,6 +38,9 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 import static com.howest.nmct.bob.Constants.API_USER_LOGIN;
 import static com.howest.nmct.bob.Constants.BACKEND_HOST;
 import static com.howest.nmct.bob.Constants.BACKEND_SCHEME;
@@ -46,9 +55,15 @@ import static com.howest.nmct.bob.Constants.USER_PROFILE;
 
 public class LoginActivity extends AppCompatActivity {
 
+    @Bind(R.id.progress) ProgressBar progressBar;
+    @Bind(R.id.errorMessage) TextView errorMessage;
+    @Bind(R.id.btnTryAgain) Button btnTryAgain;
+
     //manage callbacks
     private CallbackManager callbackManager;
     private final OkHttpClient okHttpClient = new OkHttpClient();
+
+    private Handler mainHandler = new Handler(Looper.getMainLooper());
 
 
     @Override
@@ -149,8 +164,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Request request, IOException e) {
                 Log.i("LoginActivity", "Call failed");
-                // @TODO java.net.SocketTimeoutException - No internet connection
-                e.printStackTrace();
+                showError("No internet connection", e);
             }
 
             @Override
@@ -203,8 +217,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Request request, IOException e) {
                 Log.i("LoginActivity", "Call failed");
-                // @TODO java.net.SocketTimeoutException - No internet connection
-                e.printStackTrace();
+                showError("No internet connection", e);
             }
 
             @Override
@@ -267,5 +280,38 @@ public class LoginActivity extends AppCompatActivity {
         AppEventsLogger.deactivateApp(this);
     }
 
+    @OnClick(R.id.btnTryAgain)
+    void onTryAgainClick() {
+        btnTryAgain.setVisibility(View.GONE);
+        errorMessage.setVisibility(View.GONE);
+        checkSavedToken();
+    }
+
+    private void showError(final String message, final IOException e) {
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Log.e("LoginActivity", message);
+                Log.e("LoginActivity", e.getMessage());
+                btnTryAgain = (Button) findViewById(R.id.btnTryAgain);
+                errorMessage = (TextView) findViewById(R.id.errorMessage);
+                progressBar = (ProgressBar) findViewById(R.id.progress);
+
+                if (btnTryAgain != null && errorMessage != null && progressBar != null) {
+                    errorMessage.setVisibility(View.VISIBLE);
+                    errorMessage.setText(message);
+                    btnTryAgain.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+
+                    btnTryAgain.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onTryAgainClick();
+                        }
+                    });
+                }
+            }
+        });
+    }
 
 }
