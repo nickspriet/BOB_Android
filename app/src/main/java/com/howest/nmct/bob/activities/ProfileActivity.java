@@ -16,6 +16,12 @@ public class ProfileActivity extends BaseActivity {
     private ProfileFragment mFragment;
 
     @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStatusBarTranslucent(true);
+    }
+
+    @Override
     protected int getContentLayout() {
         return R.layout.activity_main_expanded;
     }
