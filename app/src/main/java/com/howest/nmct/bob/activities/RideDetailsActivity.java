@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.fragments.RideDetailsFragment;
 import com.howest.nmct.bob.models.Ride;
+import com.squareup.picasso.Callback;
 
 import java.util.List;
 
@@ -15,9 +16,16 @@ import static com.howest.nmct.bob.Constants.RIDE;
  * illyism
  * 24/11/15
  */
-public class RideDetailsActivity extends BaseActivity {
+public class RideDetailsActivity extends BaseActivity implements Callback {
     private Ride mRide;
     private RideDetailsFragment mFragment;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        postponeEnterTransition();
+        setStatusBarTranslucent(true);
+    }
 
     @Override
     protected int getContentLayout() {
@@ -54,8 +62,24 @@ public class RideDetailsActivity extends BaseActivity {
 
     @Override
     protected void setupToolbar() {
-        setToolbarImage(mRide.getImage());
+        setToolbarImage(mRide.getImage(), this);
         setToolbarTitle(mRide.getTitle());
         setHomeAsUp();
+    }
+
+    /**
+     * Picasso Callback
+     */
+    @Override
+    public void onSuccess() {
+        scheduleStartPostponedTransition(findViewById(R.id.toolbarImage));
+    }
+
+    /**
+     * Picasso Callback
+     */
+    @Override
+    public void onError() {
+        scheduleStartPostponedTransition(findViewById(R.id.toolbarImage));
     }
 }
