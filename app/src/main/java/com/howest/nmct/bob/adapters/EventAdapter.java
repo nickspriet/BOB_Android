@@ -46,7 +46,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         Event event = mEvents.get(position);
         Date startTime = event.getStartTime();
-        holder.tvEventDay.setText(event.getEventDateFormat("FF", startTime));
+        holder.tvEventDay.setText(event.getEventDateFormat("dd", startTime));
         holder.tvEventMonth.setText(event.getEventDateFormat("MMM", startTime).toUpperCase());
         holder.tvEventName.setText(event.getName());
         holder.tvEventDate.setText(event.getEventDateFormat("E h a", startTime) );

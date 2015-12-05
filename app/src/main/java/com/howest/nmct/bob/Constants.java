@@ -5,7 +5,7 @@ package com.howest.nmct.bob;
  * 17/11/15
  */
 public class Constants {
-    public static final String BACKEND_HOST = "bob.il.ly";
+    public static final String BACKEND_HOST = "bob.il.ly"; //bob.il.ly
     public static final String BACKEND_SCHEME = "http";
     private static final String BACKEND_BASEURL =  BACKEND_SCHEME + "://" + BACKEND_HOST;
     public static final String API_USER_LOGIN = BACKEND_BASEURL + "/user/login";
@@ -28,7 +28,7 @@ public class Constants {
     public final static String ACTIVITY_EVENTS = "com.howest.nmct.bob.ACTIVITY_EVENTS";
     public final static String ACTIVITY_FEED = "com.howest.nmct.bob.ACTIVITY_FEED";
     public final static String ACTIVITY_PROFILE = "com.howest.nmct.bob.ACTIVITY_PROFILE";
-    public final static String ACTIVITY_RIDES = "com.howest.nmct.bob.ACTIVITY_RIDES";
+    public final static String ACTIVITY_RIDES = "com.howest.nmct.bob.A  CTIVITY_RIDES";
     public final static String ACTIVITY_EVENT_DETAILS = "com.howest.nmct.bob.ACTIVITY_EVENT_DETAILS";
     public final static String ACTIVITY_RIDE_DETAILS = "com.howest.nmct.bob.ACTIVITY_RIDE_DETAILS";
 }
