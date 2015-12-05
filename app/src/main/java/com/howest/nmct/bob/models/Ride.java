@@ -110,7 +110,7 @@ public class Ride implements Parcelable {
      * @return Ride
      */
     public static Ride createRideFromEvent(Event event, User driver) {
-        Ride ride = new Ride("-1", event.getId(), driver, event.getEventName(), event.getEventDate().toString(), event.getEventAddress());
+        Ride ride = new Ride("-1", event.getId(), driver, event.getName(), event.getStartTime().toString(), event.getAddress());
         ride.addApprovedUser(driver);
         return ride;
     }

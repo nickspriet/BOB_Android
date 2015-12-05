@@ -20,4 +20,5 @@
     <dimen name="card_button_margin">8dp</dimen>
 
     <dimen name="badge_margin">4dp</dimen>
+    <dimen name="toolbar_image_height">160dp</dimen>
 </resources>

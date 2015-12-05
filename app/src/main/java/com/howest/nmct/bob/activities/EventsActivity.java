@@ -5,20 +5,21 @@ import android.support.v4.app.Fragment;
 
 import com.howest.nmct.bob.collections.Events;
 import com.howest.nmct.bob.fragments.EventsFragment;
+import com.howest.nmct.bob.models.Event;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * illyism
  * 24/11/15
  */
-public class EventsActivity extends BaseActivity {
+public class EventsActivity extends BaseActivity implements Events.EventsLoadedListener {
     private EventsFragment mFragment;
 
     @Override
     protected void initData(Bundle activityData) {
-        if (Events.getEvents().size() == 0)
-            Events.fetchData();
+        Events.fetchData(this);
     }
 
     @Override
@@ -36,4 +37,8 @@ public class EventsActivity extends BaseActivity {
         setToolbarTitle("Events");
     }
 
+    @Override
+    public void eventsLoaded(ArrayList<Event> events) {
+        mFragment.mAdapter.notifyDataSetChanged();
+    }
 }

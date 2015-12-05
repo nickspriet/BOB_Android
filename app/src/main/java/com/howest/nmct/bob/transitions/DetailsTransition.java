@@ -1,4 +1,4 @@
-package com.howest.nmct.bob;
+package com.howest.nmct.bob.transitions;
 
 import android.transition.ChangeBounds;
 import android.transition.ChangeImageTransform;

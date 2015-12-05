@@ -17,9 +17,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.howest.nmct.bob.R;
@@ -101,24 +101,6 @@ public abstract class NavigationActivity extends AppCompatActivity
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Events when selecting an item in the options
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        } else {
-            throw new Error(String.format("Options Item not specified: %s", item));
-        }
     }
 
     @Override
@@ -281,6 +263,33 @@ public abstract class NavigationActivity extends AppCompatActivity
 
         ActivityCompat.startActivity(this,
                 i, transitionActivityOptions.toBundle());
+    }
+
+    /**
+     * Schedules the shared element transition to be started immediately
+     * after the shared element has been measured and laid out within the
+     * activity's view hierarchy. Some common places where it might make
+     * sense to call this method are:
+     *
+     * (1) Inside a Fragment's onCreateView() method (if the shared element
+     *     lives inside a Fragment hosted by the called Activity).
+     *
+     * (2) Inside a Picasso Callback object (if you need to wait for Picasso to
+     *     asynchronously load/scale a bitmap before the transition can begin).
+     *
+     * (3) Inside a LoaderCallback's onLoadFinished() method (if the shared
+     *     element depends on data queried by a Loader).
+     */
+    protected void scheduleStartPostponedTransition(final View sharedElement) {
+        sharedElement.getViewTreeObserver().addOnPreDrawListener(
+                new ViewTreeObserver.OnPreDrawListener() {
+                    @Override
+                    public boolean onPreDraw() {
+                        sharedElement.getViewTreeObserver().removeOnPreDrawListener(this);
+                        startPostponedEnterTransition();
+                        return true;
+                    }
+                });
     }
 
 

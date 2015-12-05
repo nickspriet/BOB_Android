@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.activities.ProfileActivity;
@@ -22,6 +23,7 @@ import butterknife.ButterKnife;
  */
 public class ProfileFragment extends Fragment {
     @Bind(R.id.imgProfile) ImageView imgProfile;
+    @Bind(R.id.tvProfileAboutMe) TextView tvProfileAboutMe;
 
     public ProfileFragment() {
     }
@@ -46,6 +48,11 @@ public class ProfileFragment extends Fragment {
                 .fit()
                 .centerCrop()
                 .into(imgProfile);
+
+        if (!user.getAboutMe().isEmpty()) {
+            tvProfileAboutMe.setText(user.getAboutMe());
+        }
+
     }
 
 }

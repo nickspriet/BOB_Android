@@ -1,12 +1,18 @@
 package com.howest.nmct.bob.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -32,6 +38,9 @@ import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 import static com.howest.nmct.bob.Constants.API_USER_LOGIN;
 import static com.howest.nmct.bob.Constants.BACKEND_HOST;
 import static com.howest.nmct.bob.Constants.BACKEND_SCHEME;
@@ -46,9 +55,15 @@ import static com.howest.nmct.bob.Constants.USER_PROFILE;
 
 public class LoginActivity extends AppCompatActivity {
 
+    @Bind(R.id.progress) ProgressBar progressBar;
+    @Bind(R.id.errorMessage) TextView errorMessage;
+    @Bind(R.id.btnTryAgain) Button btnTryAgain;
+
     //manage callbacks
     private CallbackManager callbackManager;
     private final OkHttpClient okHttpClient = new OkHttpClient();
+
+    private Handler mainHandler = new Handler(Looper.getMainLooper());
 
 
     @Override
@@ -62,9 +77,10 @@ public class LoginActivity extends AppCompatActivity {
      * Checks if there is a Facebook or a backend token saved.
      */
     private void checkSavedToken() {
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        String fbToken = sharedPreferences.getString(FACEBOOK_TOKEN, "");
-        String backendToken = sharedPreferences.getString(BACKEND_TOKEN, "");
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String fbToken = preferences.getString(FACEBOOK_TOKEN, "");
+        String backendToken = preferences.getString(BACKEND_TOKEN, "");
+        Log.i("LoginActivity", "Checking saved token");
 
         if (fbToken.isEmpty() && AccessToken.getCurrentAccessToken() != null ) {
             Log.i("LoginActivity", "No tokens saved - Saving token");
@@ -129,8 +145,8 @@ public class LoginActivity extends AppCompatActivity {
      * Do a call to the backend to get a profile.
      */
     private void getProfile() {
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        String token = sharedPreferences.getString(BACKEND_TOKEN, "");
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String token = preferences.getString(BACKEND_TOKEN, "");
 
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(BACKEND_SCHEME)
@@ -149,8 +165,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Request request, IOException e) {
                 Log.i("LoginActivity", "Call failed");
-                // @TODO java.net.SocketTimeoutException - No internet connection
-                e.printStackTrace();
+                showError("No internet connection", e);
             }
 
             @Override
@@ -158,10 +173,17 @@ public class LoginActivity extends AppCompatActivity {
                 String responseString = response.body().string();
                 Log.i("LoginActivity", responseString);
                 APILoginResponse apiResponse = new Gson().fromJson(responseString, APILoginResponse.class);
-                onLoggedIn(apiResponse.data.user);
+                if (apiResponse.statusCode == 200) {
+                    onLoggedIn(apiResponse.data.user);
+                } else {
+                    // Might be an incorrect backend token
+                    preferences.edit().remove(BACKEND_TOKEN).apply();
+                    showError("Cannot find user");
+                }
             }
         });
     }
+
 
     /**
      * Save the Facebook token in our SharedPreferences
@@ -169,8 +191,8 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void saveToken(AccessToken accessToken) {
         Log.i("LoginActivity", "Saving Facebook token");
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        sharedPreferences.edit()
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences.edit()
                 .putString(FACEBOOK_TOKEN, accessToken.getToken())
                 .putString(FACEBOOK_USERID, accessToken.getUserId())
                 .putString(FACEBOOK_EXPIRES, accessToken.getExpires().toString())
@@ -183,12 +205,12 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void syncToken() {
         Log.i("LoginActivity", "Syncing Facebook token");
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         RequestBody body = new FormEncodingBuilder()
-                .add(FACEBOOK_TOKEN, sharedPreferences.getString(FACEBOOK_TOKEN, ""))
-                .add(FACEBOOK_USERID, sharedPreferences.getString(FACEBOOK_USERID, ""))
-                .add(FACEBOOK_EXPIRES, sharedPreferences.getString(FACEBOOK_EXPIRES, ""))
+                .add(FACEBOOK_TOKEN, preferences.getString(FACEBOOK_TOKEN, ""))
+                .add(FACEBOOK_USERID, preferences.getString(FACEBOOK_USERID, ""))
+                .add(FACEBOOK_EXPIRES, preferences.getString(FACEBOOK_EXPIRES, ""))
                 .add(DEVICE_TYPE, "android")
                 .add(DEVICE_MODEL, android.os.Build.MODEL)
                 .build();
@@ -203,8 +225,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Request request, IOException e) {
                 Log.i("LoginActivity", "Call failed");
-                // @TODO java.net.SocketTimeoutException - No internet connection
-                e.printStackTrace();
+                showError("No internet connection", e);
             }
 
             @Override
@@ -224,8 +245,8 @@ public class LoginActivity extends AppCompatActivity {
         Log.i("LoggedIn", apiAuthenticatedResponse.data.user.name);
 
         // Save the backend token
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        sharedPreferences.edit()
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences.edit()
                 .putString(BACKEND_TOKEN, apiAuthenticatedResponse.data.token)
                 .apply();
 
@@ -265,6 +286,45 @@ public class LoginActivity extends AppCompatActivity {
 
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
+    }
+
+    @OnClick(R.id.btnTryAgain)
+    void onTryAgainClick() {
+        btnTryAgain.setVisibility(View.GONE);
+        errorMessage.setVisibility(View.GONE);
+        checkSavedToken();
+    }
+
+    private void showError(final String message, final IOException e) {
+        Log.e("LoginActivity", e.getMessage());
+        showError(message);
+    }
+
+    private void showError(final String message) {
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Log.e("LoginActivity", message);
+
+                btnTryAgain = (Button) findViewById(R.id.btnTryAgain);
+                errorMessage = (TextView) findViewById(R.id.errorMessage);
+                progressBar = (ProgressBar) findViewById(R.id.progress);
+
+                if (btnTryAgain != null && errorMessage != null && progressBar != null) {
+                    errorMessage.setVisibility(View.VISIBLE);
+                    errorMessage.setText(message);
+                    btnTryAgain.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+
+                    btnTryAgain.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onTryAgainClick();
+                        }
+                    });
+                }
+            }
+        });
     }
 
 
