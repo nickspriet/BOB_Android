@@ -5,86 +5,60 @@ import android.os.Parcelable;
 import android.text.Html;
 import android.text.Spanned;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * illyism
  * 21/10/15
  */
 public class Ride implements Parcelable {
-    private String id;
-    private String eventId;
-    private String title;
-    private String date;
-    private String image;
+    @SerializedName("_id")
+    @Expose
+    public String id;
+
+    @SerializedName("driver")
+    @Expose
+    public User driver;
+
+    @SerializedName("approved")
+    @Expose
+    public List<String> approvedList = new ArrayList<>();
+
+    @SerializedName("requests")
+    @Expose
+    public List<String> requestsList = new ArrayList<>();
+
+    @SerializedName("description")
+    @Expose
+    public String description;
+
+    @SerializedName("startTime")
+    @Expose
+    public String startTime;
+
+    @SerializedName("endTime")
+    @Expose
+    public String endTime;
+
+    @SerializedName("place")
+    @Expose
+    public Place place;
+
+    @SerializedName("event")
+    @Expose
+    public Event event;
     private String address;
-    private int requests;
-    private List<String> approvedList = new ArrayList<>();
-    private User driver;
 
-    public Ride(String id, String eventId, User user, String title, String date, String address) {
-        this.id = id;
-        this.eventId = eventId;
-        this.driver = user;
-        this.title = title;
-        this.date = date;
-        this.address = address;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public int getRequests() {
-        return requests;
-    }
-
-    public void setRequests(int requests) {
-        this.requests = requests;
-    }
-
-    public int getApproved() {
-        if (approvedList != null) {
-            return approvedList.size();
-        }
-        return 0;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public Ride(User driver, Event event) {
+        this.driver = driver;
+        this.event = event;
     }
 
     public Boolean isSelfDriver(User otherUser) {
@@ -94,27 +68,6 @@ public class Ride implements Parcelable {
     public Boolean isApproved(User user) {
         return approvedList != null && approvedList.contains(user.getId());
     }
-
-    public void setApprovedList(List<String> approvedList) {
-        this.approvedList = approvedList;
-    }
-
-    public void addApprovedUser(User user) {
-        this.approvedList.add(user.getId());
-    }
-
-    /**
-     * Sets Title, Date, Address for a Ride
-     * @param event the event to copy data from
-     * @param driver The driver of the new ride
-     * @return Ride
-     */
-    public static Ride createRideFromEvent(Event event, User driver) {
-        Ride ride = new Ride("-1", event.getId(), driver, event.getName(), event.getStartTime().toString(), event.getAddress());
-        ride.addApprovedUser(driver);
-        return ride;
-    }
-
 
     public static Spanned formatApprovalStatus(Ride ride, User user) {
         if (ride.isSelfDriver(user)) {
@@ -142,22 +95,26 @@ public class Ride implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
-        dest.writeString(eventId);
         dest.writeParcelable(driver, flags);
-        dest.writeString(title);
-        dest.writeString(date);
-        dest.writeString(address);
-        dest.writeString(image);
+        dest.writeStringList(approvedList);
+        dest.writeStringList(requestsList);
+        dest.writeString(description);
+        dest.writeString(startTime);
+        dest.writeString(endTime);
+        dest.writeParcelable(place, flags);
+        dest.writeParcelable(event, flags);
     }
 
     public Ride(Parcel in) {
         id = in.readString();
-        eventId = in.readString();
         driver = in.readParcelable(User.class.getClassLoader());
-        title = in.readString();
-        date = in.readString();
-        address = in.readString();
-        image = in.readString();
+        in.readStringList(approvedList);
+        in.readStringList(requestsList);
+        description = in.readString();
+        startTime = in.readString();
+        endTime = in.readString();
+        place = in.readParcelable(Place.class.getClassLoader());
+        event = in.readParcelable(Event.class.getClassLoader());
     }
 
     public static final Parcelable.Creator CREATOR =
@@ -170,4 +127,49 @@ public class Ride implements Parcelable {
                     return new Ride[size];
                 }
             };
+
+    public int getApproved() {
+        if (approvedList == null) return 0;
+        return approvedList.size();
+    }
+
+    public int getRequests() {
+        if (requestsList == null) return 0;
+        return requestsList.size();
+    }
+
+    public String getAddress() {
+        if (place != null && place.location != null) {
+            return place.location.toString();
+        }
+        return event.getAddress();
+    }
+
+    public Date getStartTime() {
+        if (startTime == null) return event.getStartTime();
+        try {
+            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US).parse(startTime);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        Ride otherRide = (Ride) o;
+        return otherRide != null && this.getId().equals(otherRide.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getId().hashCode();
+    }
 }

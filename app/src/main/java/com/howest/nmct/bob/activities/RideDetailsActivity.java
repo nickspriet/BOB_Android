@@ -62,8 +62,8 @@ public class RideDetailsActivity extends BaseActivity implements Callback {
 
     @Override
     protected void setupToolbar() {
-        setToolbarImage(mRide.getImage(), this);
-        setToolbarTitle(mRide.getTitle());
+        setToolbarImage(mRide.event.getCover(), this);
+        setToolbarTitle(mRide.event.getName());
         setHomeAsUp();
     }
 

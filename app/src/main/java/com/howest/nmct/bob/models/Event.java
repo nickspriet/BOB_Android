@@ -246,4 +246,15 @@ public class Event implements Parcelable {
     public String getDescription() {
         return description;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        Event otherEvent = (Event) o;
+        return otherEvent != null && this.getId().equals(otherEvent.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getId().hashCode();
+    }
 }

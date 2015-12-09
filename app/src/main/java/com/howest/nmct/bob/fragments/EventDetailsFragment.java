@@ -10,12 +10,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
+import com.howest.nmct.bob.activities.EventDetailsActivity;
 import com.howest.nmct.bob.models.Event;
 
 import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -111,8 +113,24 @@ public class EventDetailsFragment extends Fragment {
         }
 
         tvDescription.setText(mEvent.getDescription());
+    }
 
+    @OnClick(R.id.btnGoing)
+    public void onBtnGoingClick() {
+        EventDetailsActivity activity = (EventDetailsActivity) getActivity();
+        activity.onGoing();
+    }
 
+    @OnClick(R.id.btnInterested)
+    public void onBtnInterestedClick() {
+        EventDetailsActivity activity = (EventDetailsActivity) getActivity();
+        activity.onInterested();
+    }
+
+    @OnClick(R.id.btnGoing)
+    public void onBtnNotGoingClick() {
+        EventDetailsActivity activity = (EventDetailsActivity) getActivity();
+        activity.onNotGoing();
     }
 }
 

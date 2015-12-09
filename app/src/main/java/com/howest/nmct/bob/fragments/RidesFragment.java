@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
  */
 public class RidesFragment extends Fragment {
     @Bind(R.id.list) RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
+    public RideAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     public RidesFragment() {

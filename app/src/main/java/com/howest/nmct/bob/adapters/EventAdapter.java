@@ -16,6 +16,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,14 +28,14 @@ import butterknife.OnClick;
  */
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
 
-    private final ArrayList<Event> mEvents;
+    private ArrayList<Event> mEvents;
     private final BaseActivity mActivity;
     private final EventsFragment mFragment;
 
-    public EventAdapter(EventsFragment eventsFragment, ArrayList<Event> events) {
+    public EventAdapter(EventsFragment eventsFragment, LinkedHashSet<Event> events) {
         this.mActivity = (BaseActivity) eventsFragment.getActivity();
         this.mFragment = eventsFragment;
-        this.mEvents = events;
+        this.mEvents = new ArrayList<>(events);
     }
 
     @Override
@@ -66,9 +67,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         return mEvents.size();
     }
 
-    private void onEventGoing(int adapterPosition) {
-        Event event = mEvents.get(adapterPosition);
-        mFragment.onShowCreateRideDialog(event);
+    public void setEvents(LinkedHashSet<Event> events) {
+        this.mEvents = new ArrayList<>(events);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -86,13 +86,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             this.adapter = adapter;
             ButterKnife.bind(this, view);
         }
-
-        /*
-        @OnClick(R.id.btnEventGoing)
-        public void onEventGoing() {
-            adapter.onEventGoing(getAdapterPosition());
-        }
-        */
 
         @OnClick(R.id.cardView)
         public void onCardClicked() {
