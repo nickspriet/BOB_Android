@@ -34,6 +34,7 @@ public class EditProfileActivity extends BaseActivity {
     @Override
     protected void setupToolbar() {
         setToolbarTitle(getUser().getName());
+        setHomeAsUp();
     }
 
     @Override
