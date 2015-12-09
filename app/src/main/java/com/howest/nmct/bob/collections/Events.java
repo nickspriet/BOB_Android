@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.howest.nmct.bob.api.APIEventsResponse;
+import com.howest.nmct.bob.interfaces.EventsLoadedListener;
 import com.howest.nmct.bob.models.Event;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
@@ -18,8 +19,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
 
 import static com.howest.nmct.bob.Constants.BACKEND_HOST;
 import static com.howest.nmct.bob.Constants.BACKEND_SCHEME;
@@ -30,9 +30,9 @@ import static com.howest.nmct.bob.Constants.BACKEND_TOKEN;
  */
 public class Events {
     private static Handler mainHandler = new Handler(Looper.getMainLooper());
-    private static ArrayList<Event> events = new ArrayList<>();
+    private static LinkedHashSet<Event> events = new LinkedHashSet<>();
 
-    public static ArrayList<Event> getEvents() {
+    public static LinkedHashSet<Event> getEvents() {
         return events;
     }
 
@@ -49,22 +49,11 @@ public class Events {
         return foundEvent;
     }
 
-    public static void addEvent(Event event) {
-        events.add(event);
-    }
-
-    public static void addEvents(Event... events) {
-        for (Event event : events) {
-            addEvent(event);
-        }
-    }
-
-    public static void addEvents(List<Event> events) {
+    public static void addEvents(LinkedHashSet<Event> events) {
         Events.events.addAll(events);
     }
 
     public static void fetchData(final Activity activity) {
-        if (events.size() != 0) return;
         OkHttpClient okHttpClient = new OkHttpClient();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
@@ -104,11 +93,5 @@ public class Events {
                 });
             }
         });
-    }
-
-
-
-    public interface EventsLoadedListener {
-        void eventsLoaded(ArrayList<Event> events);
     }
 }

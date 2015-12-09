@@ -2,7 +2,7 @@ package com.howest.nmct.bob.api;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.howest.nmct.bob.models.Event;
+import com.howest.nmct.bob.models.Ride;
 
 import java.util.LinkedHashSet;
 
@@ -10,23 +10,23 @@ import java.util.LinkedHashSet;
  * illyism
  * 02/12/15
  */
-public class APIEventsResponse extends APIResponse {
+public class APIRidesResponse extends APIResponse {
     @SerializedName("data")
     @Expose
     public APIData data;
 
-    public APIEventsResponse(int statusCode, String message, APIData data) {
+    public APIRidesResponse(int statusCode, String message, APIData data) {
         super(statusCode, message);
         this.data = data;
     }
 
     public class APIData {
-        @SerializedName("events")
+        @SerializedName("rides")
         @Expose
-        public LinkedHashSet<Event> events;
+        public LinkedHashSet<Ride> rides;
 
-        public APIData(LinkedHashSet<Event> events) {
-            this.events = events;
+        public APIData(LinkedHashSet<Ride> events) {
+            this.rides = events;
         }
     }
 }

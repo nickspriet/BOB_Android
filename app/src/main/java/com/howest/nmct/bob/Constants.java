@@ -11,24 +11,33 @@ public class Constants {
     public static final String API_USER_LOGIN = BACKEND_BASEURL + "/user/login";
     public static final String API_USER_PROFILE = BACKEND_BASEURL + "/user/profile";
     public static final String API_USER_EVENTS = BACKEND_BASEURL + "/event";
+    public static final String API_EVENT_CREATE = BACKEND_BASEURL + "/ride";
 
     public static final String FACEBOOK_TOKEN = "com.howest.nmct.bob.FACEBOOK_TOKEN";
     public static final String FACEBOOK_USERID = "com.howest.nmct.bob.FACEBOOK_USERID";
     public static final String FACEBOOK_PERMISSIONS = "com.howest.nmct.bob.FACEBOOK_PERMISSIONS";
-    public static final String FACEBOOK_EXPIRES = "com.howest.nmct.bob.FACEBOOK_EXPIRES";
 
+    public static final String FACEBOOK_EXPIRES = "com.howest.nmct.bob.FACEBOOK_EXPIRES";
     public static final String BACKEND_TOKEN = "com.howest.nmct.bob.BACKEND_TOKEN";
     public static final String DEVICE_TYPE = "com.howest.nmct.bob.DEVICE_TYPE";
-    public static final String DEVICE_MODEL = "com.howest.nmct.bob.DEVICE_MODEL";
 
+    public static final String DEVICE_MODEL = "com.howest.nmct.bob.DEVICE_MODEL";
     public static final String USER_PROFILE = "com.howest.nmct.bob.USER_PROFILE";
     public static final String EVENT = "com.howest.nmct.bob.EVENT";
-    public static final String RIDE = "com.howest.nmct.bob.RIDE";
 
+    public static final String RIDE = "com.howest.nmct.bob.RIDE";
     public final static String ACTIVITY_EVENTS = "com.howest.nmct.bob.ACTIVITY_EVENTS";
     public final static String ACTIVITY_FEED = "com.howest.nmct.bob.ACTIVITY_FEED";
     public final static String ACTIVITY_PROFILE = "com.howest.nmct.bob.ACTIVITY_PROFILE";
     public final static String ACTIVITY_RIDES = "com.howest.nmct.bob.ACTIVITY_RIDES";
     public final static String ACTIVITY_EVENT_DETAILS = "com.howest.nmct.bob.ACTIVITY_EVENT_DETAILS";
+
     public final static String ACTIVITY_RIDE_DETAILS = "com.howest.nmct.bob.ACTIVITY_RIDE_DETAILS";
+
+    public final static int REQUEST_EDIT = 1000;
+    public final static int RESULTS_CLOSE = 0;
+    public final static int RESULTS_OK = 1;
+    public final static String RESULT_USER = "com.howest.nmct.bob.RESULT_USER";
+
+    public final static String TOOLBAR_TRANSITION_NAME = "toolbar";
 }

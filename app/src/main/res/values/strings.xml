@@ -55,4 +55,6 @@
     <string name="time">Time</string>
     <string name="starts_at">Starts at</string>
     <string name="ends_at">Ends At</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="ride">Ride</string>
 </resources>

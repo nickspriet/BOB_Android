@@ -5,16 +5,17 @@ import android.support.v4.app.Fragment;
 
 import com.howest.nmct.bob.collections.Events;
 import com.howest.nmct.bob.fragments.EventsFragment;
+import com.howest.nmct.bob.interfaces.EventsLoadedListener;
 import com.howest.nmct.bob.models.Event;
 
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
  * illyism
  * 24/11/15
  */
-public class EventsActivity extends BaseActivity implements Events.EventsLoadedListener {
+public class EventsActivity extends BaseActivity implements EventsLoadedListener {
     private EventsFragment mFragment;
 
     @Override
@@ -27,18 +28,15 @@ public class EventsActivity extends BaseActivity implements Events.EventsLoadedL
         List<Fragment> frags = getSupportFragmentManager().getFragments();
         if (frags != null)
             mFragment = (EventsFragment) frags.get(0);
-        if (mFragment == null)
+        if (mFragment == null) {
             mFragment = new EventsFragment();
-        addFragmentToContainer(mFragment);
+            addFragmentToContainer(mFragment);
+        }
     }
 
     @Override
-    protected void setupToolbar() {
-        setToolbarTitle("Events");
-    }
-
-    @Override
-    public void eventsLoaded(ArrayList<Event> events) {
+    public void eventsLoaded(LinkedHashSet<Event> events) {
+        mFragment.mAdapter.setEvents(events);
         mFragment.mAdapter.notifyDataSetChanged();
     }
 }

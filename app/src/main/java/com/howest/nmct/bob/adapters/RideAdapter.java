@@ -28,6 +28,7 @@ import com.howest.nmct.bob.views.AutoHeightViewPager;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import butterknife.Bind;
@@ -38,21 +39,28 @@ import butterknife.OnClick;
  * Adapter for the RecyclerView
  */
 public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
-    private final ArrayList<Ride> mRides;
+    private ArrayList<Ride> mRides;
     private final BaseActivity mActivity;
     private final RidesFragment mFragment;
+
+    public void setRides(LinkedHashSet<Ride> rides) {
+        this.mRides = new ArrayList<>(rides);
+    }
 
     private enum SwipedState {
         SHOWING_PRIMARY_CONTENT,
         SHOWING_SECONDARY_CONTENT
     }
-    private final List<SwipedState> mItemSwipedStates;
+    private List<SwipedState> mItemSwipedStates;
 
-    public RideAdapter(RidesFragment ridesFragment, ArrayList<Ride> rides) {
-        mActivity = (BaseActivity) ridesFragment.getActivity();
-        mFragment = ridesFragment;
-        mRides = rides;
+    public RideAdapter(RidesFragment ridesFragment, LinkedHashSet<Ride> rides) {
+        this.mActivity = (BaseActivity) ridesFragment.getActivity();
+        this.mFragment = ridesFragment;
+        this.mRides = new ArrayList<>(rides);
+        resetSwipeStates();
+    }
 
+    public void resetSwipeStates() {
         mItemSwipedStates = new ArrayList<>();
         for (int i = 0; i < mRides.size(); i++) {
             mItemSwipedStates.add(i, SwipedState.SHOWING_PRIMARY_CONTENT);
@@ -106,17 +114,13 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         Ride ride = mRides.get(position);
 
         // Fill in details
-        holder.rideTitle.setText(ride.getTitle());
-        holder.locationDetails.setText(Html.fromHtml(String.format("<b>%s</b> in <b>%s</b>", ride.getAddress(), ride.getDate())));
+        holder.rideTitle.setText(ride.event.getName());
+        holder.locationDetails.setText(Html.fromHtml(String.format("<b>%s</b> in <b>%s</b>", ride.getAddress(), ride.getStartTime())));
         holder.approvalStatus.setText(Ride.formatApprovalStatus(ride, profile));
         holder.ridePerson.setText(ride.getDriver().getName());
 
         Picasso p = Picasso.with(mActivity);
-        // Red = Network
-        // Blue = Disk
-        // Green = Memory
-        p.setIndicatorsEnabled(true);
-        p.load(ride.getImage())
+        p.load(ride.event.getCover())
                 .fit()
                 .centerCrop()
                 .placeholder(R.drawable.ic_image)

@@ -37,7 +37,6 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
         super.initNavigation();
         initDrawerHeader();
         initData(savedInstanceState != null ? savedInstanceState : getIntent().getExtras());
-        setupToolbar();
         initFragment();
     }
 
@@ -46,11 +45,22 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
         return R.layout.activity_main;
     }
     protected abstract void initData(Bundle bundle);
-    protected abstract void setupToolbar();
     protected abstract void initFragment();
 
     private User mUser;
     public User getUser() {
+        return mUser;
+    }
+
+    /**
+     * Set new values for the user, only allowed if it is the same user
+     * @param user the User with new values
+     * @return User the current User
+     */
+    protected User setUser(User user) {
+        if (mUser.getId().equals(user.getId())) {
+            mUser = user;
+        }
         return mUser;
     }
 
@@ -129,6 +139,7 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
 
     @Override
     public void setToolbarTitle(String title) {
+        if (mToolbarLayout == null) return;
         mToolbarLayout.setTitle(title);
     }
 

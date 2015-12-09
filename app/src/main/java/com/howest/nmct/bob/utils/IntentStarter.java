@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.howest.nmct.bob.models.User;
+
 import java.util.Locale;
 
 /**
@@ -17,15 +19,24 @@ public class IntentStarter {
         context.startActivity(intent);
     }
 
-    public static void openFacebookProfile(Context context, String facebookUserId) {
+    /**
+     * Opens a Facebook profile.
+     * Opens the Facebook app if there is one
+     * Otherwise, open in the browser
+     * @param context context
+     * @param facebookUser The User to open the profile for
+     */
+    public static void openFacebookProfile(Context context, User facebookUser) {
         Intent facebookIntent;
+
         try {
             context.getPackageManager().getPackageInfo("com.facebook.katana", 0);
-            String facebookScheme = "fb://profile/" + facebookUserId;
+            String facebookScheme = "fb://profile?app_scoped_user_id=" + facebookUser.getFacebookID();
             facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(facebookScheme));
         } catch (Exception e) {
-            facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/profile.php?id=" + facebookUserId));
+            facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(facebookUser.getLink()));
         }
+
         context.startActivity(facebookIntent);
     }
 }

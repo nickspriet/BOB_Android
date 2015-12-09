@@ -105,6 +105,14 @@ public class User implements Parcelable {
         return Id;
     }
 
+    public String getFacebookID() {
+        return facebookID;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
     public String getName() {
         return name;
     }
@@ -122,5 +130,9 @@ public class User implements Parcelable {
             return aboutMe;
         }
         return "";
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
     }
 }

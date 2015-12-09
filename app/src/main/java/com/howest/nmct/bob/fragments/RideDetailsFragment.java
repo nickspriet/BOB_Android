@@ -10,9 +10,11 @@ import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.models.Ride;
+import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * illyism
@@ -21,6 +23,9 @@ import butterknife.ButterKnife;
 public class RideDetailsFragment extends Fragment {
     @Bind(R.id.address) TextView tvAddress;
     @Bind(R.id.date) TextView tvDate;
+    @Bind(R.id.description) TextView tvDescription;
+    @Bind(R.id.imgDriverProfile) CircleImageView imgDriverProfile;
+    @Bind(R.id.tvDriverName) TextView tvDriverName;
 
     private Ride mRide;
 
@@ -33,7 +38,7 @@ public class RideDetailsFragment extends Fragment {
         return fragment;
     }
 
-    private void setRide(Ride ride) {
+    public void setRide(Ride ride) {
         this.mRide = ride;
     }
 
@@ -42,7 +47,6 @@ public class RideDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.content_ride_details, container, false);
-
         ButterKnife.bind(this, view);
         initViews();
         return view;
@@ -52,6 +56,15 @@ public class RideDetailsFragment extends Fragment {
         if (mRide == null) return;
 
         tvAddress.setText(mRide.getAddress());
-        tvDate.setText(mRide.getDate());
+        tvDate.setText(mRide.getStartTime().toString());
+        tvDescription.setText(mRide.getDescription());
+        tvDriverName.setText(mRide.driver.getName());
+
+        Picasso p = Picasso.with(getActivity());
+        p.load(mRide.driver.getPicture())
+                .fit()
+                .centerCrop()
+                .into(imgDriverProfile);
+
     }
 }

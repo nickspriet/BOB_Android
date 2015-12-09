@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:clickable="true">
@@ -61,31 +62,38 @@
                 style="@style/Card.Text.Meta.Label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/license_plate" />
+                android:text="@string/driver" />
 
-            <TextView
-                style="@style/Card.Text.Meta"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="1-ABC-123" />
+                android:gravity="center_vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgDriverProfile"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_account"
+                    android:layout_marginEnd="@dimen/card_inner_margin_horizontal"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#AACFCFCF"/>
+
+
+                <TextView
+                    android:id="@+id/tvDriverName"
+                    style="@style/Card.Text.Meta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account"
+                    android:layout_alignParentEnd="false" />
+
+            </RelativeLayout>
+
+
 
             <View style="@style/Separator.Horizontal" />
-
-            <TextView
-                style="@style/Card.Text.Meta.Label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/car_description" />
-
-            <TextView
-                style="@style/Card.Text.Meta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Red Volkswagen A1" />
-
-        </LinearLayout>
-
-        <LinearLayout style="@style/Card.Wrapper.Details">
 
             <TextView
                 style="@style/Card.Text.Meta.Label"

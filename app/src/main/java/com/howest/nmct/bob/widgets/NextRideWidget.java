@@ -7,9 +7,12 @@ import android.widget.RemoteViews;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.collections.Rides;
+import com.howest.nmct.bob.interfaces.RidesLoadedListener;
 import com.howest.nmct.bob.models.Ride;
 import com.howest.nmct.bob.models.User;
 import com.squareup.picasso.Picasso;
+
+import java.util.LinkedHashSet;
 
 /**
  * Implementation of App Widget functionality.
@@ -22,23 +25,27 @@ public class NextRideWidget extends AppWidgetProvider {
             "https://www.facebook.com/IliasIsmanalijev", "about");
 
     @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        Rides.fetchData();
-        mRide = Rides.getRides().get(0);
+    public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
+        Rides.fetchData(context, new RidesLoadedListener() {
+            @Override
+            public void ridesLoaded(LinkedHashSet<Ride> rides) {
+                mRide = Rides.getRides().iterator().next();
 
-        // final int N = appWidgetIds.length;
-        for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
-        }
+                // final int N = appWidgetIds.length;
+                for (int appWidgetId : appWidgetIds) {
+                    updateAppWidget(context, appWidgetManager, appWidgetId);
+                }
 
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.next_ride_widget);
-        Picasso picasso = Picasso.with(context);
-        if (!mRide.getImage().isEmpty()) {
-            picasso.load(mRide.getImage())
-                    .resize(200, 200)
-                    .centerCrop()
-                    .into(views, R.id.ride_image, appWidgetIds);
-        }
+                RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.next_ride_widget);
+                Picasso picasso = Picasso.with(context);
+                if (!mRide.event.getCover().isEmpty()) {
+                    picasso.load(mRide.event.getCover())
+                            .resize(200, 200)
+                            .centerCrop()
+                            .into(views, R.id.ride_image, appWidgetIds);
+                }
+            }
+        });
     }
 
 
@@ -58,7 +65,7 @@ public class NextRideWidget extends AppWidgetProvider {
 
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.next_ride_widget);
-        views.setTextViewText(R.id.ride_title, mRide.getTitle());
+        views.setTextViewText(R.id.ride_title, mRide.event.getName());
         views.setTextViewText(R.id.location_details, mRide.getAddress());
         views.setTextViewText(R.id.approval_status, Ride.formatApprovalStatus(mRide, mProfile));
 

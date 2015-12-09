@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
-import com.howest.nmct.bob.activities.ProfileActivity;
+import com.howest.nmct.bob.activities.EditProfileActivity;
 import com.howest.nmct.bob.models.User;
 import com.squareup.picasso.Picasso;
 
@@ -19,26 +19,26 @@ import butterknife.ButterKnife;
 
 /**
  * illyism
- * 21/10/15
+ * 09/12/15
  */
-public class ProfileFragment extends Fragment {
+public class EditProfileFragment extends Fragment {
     @Bind(R.id.imgProfile) ImageView imgProfile;
     @Bind(R.id.tvProfileAboutMe) TextView tvProfileAboutMe;
 
-    public ProfileFragment() {
+    public EditProfileFragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.content_profile, container, false);
+        View view = inflater.inflate(R.layout.content_profile_edit, container, false);
         ButterKnife.bind(this, view);
         initViews();
         return view;
     }
 
-    public void initViews() {
-        ProfileActivity parentActivity = (ProfileActivity) getActivity();
+    private void initViews() {
+        EditProfileActivity parentActivity = (EditProfileActivity) getActivity();
         User user = parentActivity.getUser();
 
         Picasso p = Picasso.with(getActivity());
@@ -50,7 +50,18 @@ public class ProfileFragment extends Fragment {
         if (!user.getAboutMe().isEmpty()) {
             tvProfileAboutMe.setText(user.getAboutMe());
         }
-
     }
 
+    /**
+     * Get the User from the parent activity and add the values from the EditTexts
+     * @return User The user with new values
+     */
+    public User getUser() {
+        EditProfileActivity parentActivity = (EditProfileActivity) getActivity();
+        User user = parentActivity.getUser();
+
+        user.setAboutMe(tvProfileAboutMe.getText().toString());
+
+        return user;
+    }
 }

@@ -5,20 +5,23 @@ import android.support.v4.app.Fragment;
 
 import com.howest.nmct.bob.collections.Rides;
 import com.howest.nmct.bob.fragments.RidesFragment;
+import com.howest.nmct.bob.interfaces.RidesLoadedListener;
+import com.howest.nmct.bob.models.Ride;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+
 
 /**
  * illyism
  * 24/11/15
  */
-public class RidesActivity extends BaseActivity {
+public class RidesActivity extends BaseActivity implements RidesLoadedListener {
     private RidesFragment mFragment;
 
     @Override
     protected void initData(Bundle activityData) {
-        if (Rides.getRides().size() == 0)
-            Rides.fetchData();
+        Rides.fetchData(this, this);
     }
 
     @Override
@@ -26,13 +29,16 @@ public class RidesActivity extends BaseActivity {
         List<Fragment> frags = getSupportFragmentManager().getFragments();
         if (frags != null)
             mFragment = (RidesFragment) frags.get(0);
-        if (mFragment == null)
+        if (mFragment == null) {
             mFragment = new RidesFragment();
-        addFragmentToContainer(mFragment);
+            addFragmentToContainer(mFragment);
+        }
     }
 
     @Override
-    protected void setupToolbar() {
-        setToolbarTitle("Rides");
+    public void ridesLoaded(LinkedHashSet<Ride> rides) {
+        mFragment.mAdapter.setRides(rides);
+        mFragment.mAdapter.resetSwipeStates();
+        mFragment.mAdapter.notifyDataSetChanged();
     }
 }
