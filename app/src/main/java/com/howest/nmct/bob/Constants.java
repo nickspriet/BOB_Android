@@ -31,4 +31,10 @@ public class Constants {
     public final static String ACTIVITY_RIDES = "com.howest.nmct.bob.ACTIVITY_RIDES";
     public final static String ACTIVITY_EVENT_DETAILS = "com.howest.nmct.bob.ACTIVITY_EVENT_DETAILS";
     public final static String ACTIVITY_RIDE_DETAILS = "com.howest.nmct.bob.ACTIVITY_RIDE_DETAILS";
+
+    public final static int REQUEST_EDIT = 1000;
+
+    public final static int RESULTS_CLOSE = 0;
+    public final static int RESULTS_OK = 1;
+    public final static String RESULT_USER = "com.howest.nmct.bob.RESULT_USER";
 }

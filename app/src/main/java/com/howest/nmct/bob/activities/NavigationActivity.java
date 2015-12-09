@@ -33,6 +33,7 @@ import static com.howest.nmct.bob.Constants.ACTIVITY_FEED;
 import static com.howest.nmct.bob.Constants.ACTIVITY_PROFILE;
 import static com.howest.nmct.bob.Constants.ACTIVITY_RIDES;
 import static com.howest.nmct.bob.Constants.EVENT;
+import static com.howest.nmct.bob.Constants.REQUEST_EDIT;
 import static com.howest.nmct.bob.Constants.RIDE;
 
 /**
@@ -263,6 +264,23 @@ public abstract class NavigationActivity extends AppCompatActivity
 
         ActivityCompat.startActivity(this,
                 i, transitionActivityOptions.toBundle());
+    }
+
+    /**
+     * Starts the EditProfileActivity
+     */
+    public void navigateToEditProfile() {
+        Intent i = new Intent(this, EditProfileActivity.class);
+        addDataToIntent(i);
+
+        Pair toolbar = new Pair<>(mToolbarLayout, "Toolbar");
+
+        ActivityOptionsCompat transitionActivityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this, toolbar);
+
+        ActivityCompat.startActivityForResult(this, i, REQUEST_EDIT,
+                transitionActivityOptions.toBundle());
     }
 
     /**

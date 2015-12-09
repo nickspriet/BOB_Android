@@ -54,6 +54,18 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
         return mUser;
     }
 
+    /**
+     * Set new values for the user, only allowed if it is the same user
+     * @param user the User with new values
+     * @return User the current User
+     */
+    protected User setUser(User user) {
+        if (mUser.getId().equals(user.getId())) {
+            mUser = user;
+        }
+        return mUser;
+    }
+
     private void initUserData(Bundle savedInstanceState, Bundle extras) {
         if (savedInstanceState != null)
             mUser = savedInstanceState.getParcelable(USER_PROFILE);
