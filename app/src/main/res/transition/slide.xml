@@ -7,7 +7,6 @@
         <target android:excludeId="@android:id/navigationBarBackground"/>
         <target android:excludeId="@id/toolbarLayout"/>
         <target android:excludeId="@id/toolbar"/>
-        <target android:excludeId="@id/toolbarOverlay"/>
         <target android:excludeId="@id/nav_view"/>
         <target android:excludeId="@id/appbarLayout"/>
     </targets>

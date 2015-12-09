@@ -42,8 +42,6 @@ public class EditProfileFragment extends Fragment {
         User user = parentActivity.getUser();
 
         Picasso p = Picasso.with(getActivity());
-        p.setIndicatorsEnabled(true);
-
         p.load(user.getPicture())
                 .fit()
                 .centerCrop()

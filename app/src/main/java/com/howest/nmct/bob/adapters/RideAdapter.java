@@ -120,10 +120,6 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         holder.ridePerson.setText(ride.getDriver().getName());
 
         Picasso p = Picasso.with(mActivity);
-        // Red = Network
-        // Blue = Disk
-        // Green = Memory
-        p.setIndicatorsEnabled(true);
         p.load(ride.event.getCover())
                 .fit()
                 .centerCrop()

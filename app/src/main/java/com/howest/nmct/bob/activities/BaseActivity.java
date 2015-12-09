@@ -139,9 +139,8 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
 
     @Override
     public void setToolbarTitle(String title) {
-        if (mToolbarLayout != null) {
-            mToolbarLayout.setTitle(title);
-        }
+        if (mToolbarLayout == null) return;
+        mToolbarLayout.setTitle(title);
     }
 
     protected void setStatusBarTranslucent(boolean makeTranslucent) {
