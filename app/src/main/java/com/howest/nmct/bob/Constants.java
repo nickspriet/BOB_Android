@@ -38,4 +38,6 @@ public class Constants {
     public final static int RESULTS_CLOSE = 0;
     public final static int RESULTS_OK = 1;
     public final static String RESULT_USER = "com.howest.nmct.bob.RESULT_USER";
+
+    public final static String TOOLBAR_TRANSITION_NAME = "toolbar";
 }

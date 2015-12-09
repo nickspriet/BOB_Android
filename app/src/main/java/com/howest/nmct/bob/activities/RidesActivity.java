@@ -29,14 +29,10 @@ public class RidesActivity extends BaseActivity implements RidesLoadedListener {
         List<Fragment> frags = getSupportFragmentManager().getFragments();
         if (frags != null)
             mFragment = (RidesFragment) frags.get(0);
-        if (mFragment == null)
+        if (mFragment == null) {
             mFragment = new RidesFragment();
-        addFragmentToContainer(mFragment);
-    }
-
-    @Override
-    protected void setupToolbar() {
-        setToolbarTitle("Rides");
+            addFragmentToContainer(mFragment);
+        }
     }
 
     @Override

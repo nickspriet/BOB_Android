@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -35,6 +36,7 @@ import static com.howest.nmct.bob.Constants.ACTIVITY_RIDES;
 import static com.howest.nmct.bob.Constants.EVENT;
 import static com.howest.nmct.bob.Constants.REQUEST_EDIT;
 import static com.howest.nmct.bob.Constants.RIDE;
+import static com.howest.nmct.bob.Constants.TOOLBAR_TRANSITION_NAME;
 
 /**
  * illyism
@@ -45,7 +47,8 @@ public abstract class NavigationActivity extends AppCompatActivity
 
     private static final String SELECTED_MENU_ITEM_ID = "selectedMenuItemId";
 
-    @Bind(R.id.toolbarLayout) CollapsingToolbarLayout mToolbarLayout;
+    @Nullable @Bind(R.id.toolbarLayout) CollapsingToolbarLayout mToolbarLayout;
+    @Bind(R.id.appbarLayout) AppBarLayout appBarLayout;
     @Bind(R.id.toolbar) Toolbar mToolbar;
     @Nullable @Bind(R.id.toolbarImage) ImageView mToolbarImage;
     @Bind(R.id.drawer_layout) DrawerLayout mDrawerLayout;
@@ -143,22 +146,18 @@ public abstract class NavigationActivity extends AppCompatActivity
 
     public void navigateToProfile() {
         navigateToActivity(ACTIVITY_PROFILE);
-        mToolbarLayout.setTitle("Profile");
     }
 
     public void navigateToRides() {
         navigateToActivity(ACTIVITY_RIDES);
-        mToolbarLayout.setTitle("Rides");
     }
 
     public void navigateToEvents() {
         navigateToActivity(ACTIVITY_EVENTS);
-        mToolbarLayout.setTitle("Events");
     }
 
     public void navigateToFeed() {
         navigateToActivity(ACTIVITY_FEED);
-        mToolbarLayout.setTitle("Feed");
     }
 
     /**
@@ -214,7 +213,8 @@ public abstract class NavigationActivity extends AppCompatActivity
         Intent i = new Intent(this, RideDetailsActivity.class);
         addDataToIntent(i);
         i.putExtra(RIDE, ride);
-        Pair toolbar = new Pair<>(mToolbarLayout, "Toolbar");
+
+        Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
 
         ActivityOptionsCompat transitionActivityOptions =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(
@@ -235,7 +235,7 @@ public abstract class NavigationActivity extends AppCompatActivity
         i.putExtra(RIDE, ride);
 
         Pair image = new Pair<>(imageView, ViewCompat.getTransitionName(imageView));
-        Pair toolbar = new Pair<>(mToolbarLayout, "Toolbar");
+        Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
 
         ActivityOptionsCompat transitionActivityOptions =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(
@@ -256,11 +256,26 @@ public abstract class NavigationActivity extends AppCompatActivity
         i.putExtra(EVENT, event);
 
         Pair image = new Pair<>(imageView, ViewCompat.getTransitionName(imageView));
-        Pair toolbar = new Pair<>(mToolbarLayout, "Toolbar");
+        Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
 
         ActivityOptionsCompat transitionActivityOptions =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(
                         this, image, toolbar);
+
+        ActivityCompat.startActivity(this,
+                i, transitionActivityOptions.toBundle());
+    }
+
+    public void navigateToEventDetails(Event event) {
+        Intent i = new Intent(this, EventDetailsActivity.class);
+        addDataToIntent(i);
+        i.putExtra(EVENT, event);
+
+        Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
+
+        ActivityOptionsCompat transitionActivityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this, toolbar);
 
         ActivityCompat.startActivity(this,
                 i, transitionActivityOptions.toBundle());
@@ -273,7 +288,7 @@ public abstract class NavigationActivity extends AppCompatActivity
         Intent i = new Intent(this, EditProfileActivity.class);
         addDataToIntent(i);
 
-        Pair toolbar = new Pair<>(mToolbarLayout, "Toolbar");
+        Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
 
         ActivityOptionsCompat transitionActivityOptions =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(

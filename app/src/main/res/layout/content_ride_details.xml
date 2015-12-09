@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:clickable="true">
@@ -75,7 +76,9 @@
                     android:src="@drawable/ic_account"
                     android:layout_marginEnd="@dimen/card_inner_margin_horizontal"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_alignParentEnd="true"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#AACFCFCF"/>
 
 
                 <TextView

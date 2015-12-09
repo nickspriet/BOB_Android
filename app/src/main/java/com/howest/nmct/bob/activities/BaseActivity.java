@@ -37,7 +37,6 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
         super.initNavigation();
         initDrawerHeader();
         initData(savedInstanceState != null ? savedInstanceState : getIntent().getExtras());
-        setupToolbar();
         initFragment();
     }
 
@@ -46,7 +45,6 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
         return R.layout.activity_main;
     }
     protected abstract void initData(Bundle bundle);
-    protected abstract void setupToolbar();
     protected abstract void initFragment();
 
     private User mUser;
@@ -141,7 +139,9 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
 
     @Override
     public void setToolbarTitle(String title) {
-        mToolbarLayout.setTitle(title);
+        if (mToolbarLayout != null) {
+            mToolbarLayout.setTitle(title);
+        }
     }
 
     protected void setStatusBarTranslucent(boolean makeTranslucent) {

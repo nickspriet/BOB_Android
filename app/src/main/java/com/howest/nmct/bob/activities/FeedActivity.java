@@ -15,22 +15,16 @@ public class FeedActivity extends BaseActivity {
     private FeedFragment mFragment;
 
     @Override
-    protected void initData(Bundle activityData) {
-
-    }
+    protected void initData(Bundle activityData) {}
 
     @Override
     protected void initFragment() {
         List<Fragment> frags = getSupportFragmentManager().getFragments();
         if (frags != null)
             mFragment = (FeedFragment) frags.get(0);
-        if (mFragment == null)
+        if (mFragment == null) {
             mFragment = new FeedFragment();
-        addFragmentToContainer(mFragment);
-    }
-
-    @Override
-    protected void setupToolbar() {
-        setToolbarTitle("Events");
+            addFragmentToContainer(mFragment);
+        }
     }
 }

@@ -28,14 +28,10 @@ public class EventsActivity extends BaseActivity implements EventsLoadedListener
         List<Fragment> frags = getSupportFragmentManager().getFragments();
         if (frags != null)
             mFragment = (EventsFragment) frags.get(0);
-        if (mFragment == null)
+        if (mFragment == null) {
             mFragment = new EventsFragment();
-        addFragmentToContainer(mFragment);
-    }
-
-    @Override
-    protected void setupToolbar() {
-        setToolbarTitle("Events");
+            addFragmentToContainer(mFragment);
+        }
     }
 
     @Override

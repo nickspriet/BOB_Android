@@ -55,7 +55,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
         //set image via picasso
         Picasso p = Picasso.with(this.mActivity.getApplicationContext());
-        p.setIndicatorsEnabled(true);
         p.load(event.getCover())
                 .fit()
                 .centerCrop()

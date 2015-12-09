@@ -53,15 +53,19 @@ public class RideDetailsActivity extends BaseActivity implements Callback {
     @Override
     protected void initFragment() {
         List<Fragment> frags = getSupportFragmentManager().getFragments();
-        if (frags != null)
+        if (frags != null) {
             mFragment = (RideDetailsFragment) frags.get(0);
-        if (mFragment == null)
+            mFragment.setRide(mRide);
+        }
+        if (mFragment == null) {
             mFragment = RideDetailsFragment.newInstance(mRide);
-        addFragmentToContainer(mFragment);
+            addFragmentToContainer(mFragment);
+        }
     }
 
     @Override
-    protected void setupToolbar() {
+    protected void onStart() {
+        super.onStart();
         setToolbarImage(mRide.event.getCover(), this);
         setToolbarTitle(mRide.event.getName());
         setHomeAsUp();

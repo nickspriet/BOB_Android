@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <slide xmlns:android="http://schemas.android.com/apk/res/android"
-    android:duration="300"
-    android:startDelay="100"
+    android:duration="400"
     android:slideEdge="bottom">
     <targets>
         <target android:excludeId="@android:id/statusBarBackground"/>
@@ -10,5 +9,6 @@
         <target android:excludeId="@id/toolbar"/>
         <target android:excludeId="@id/toolbarOverlay"/>
         <target android:excludeId="@id/nav_view"/>
+        <target android:excludeId="@id/appbarLayout"/>
     </targets>
 </slide>

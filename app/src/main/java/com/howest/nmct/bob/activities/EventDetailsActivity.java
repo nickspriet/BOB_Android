@@ -34,7 +34,6 @@ public class EventDetailsActivity extends BaseActivity implements Callback,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         postponeEnterTransition();
-        setStatusBarTranslucent(true);
     }
 
     @Override
@@ -65,13 +64,15 @@ public class EventDetailsActivity extends BaseActivity implements Callback,
         List<Fragment> frags = getSupportFragmentManager().getFragments();
         if (frags != null)
             mFragment = (EventDetailsFragment) frags.get(0);
-        if (mFragment == null)
+        if (mFragment == null) {
             mFragment = EventDetailsFragment.newInstance(mEvent);
-        addFragmentToContainer(mFragment);
+            addFragmentToContainer(mFragment);
+        }
     }
 
     @Override
-    protected void setupToolbar() {
+    protected void onStart() {
+        super.onStart();
         setToolbarImage(mEvent.getCover(), this);
         setToolbarTitle(mEvent.getName());
         setHomeAsUp();

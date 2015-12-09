@@ -39,9 +39,9 @@
                         android:contentDescription="@string/ride_image"
                         android:id="@+id/ride_image"
                         android:src="@android:color/black"
-                        android:transitionName="MyTransition"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
+
                     <TextView
                         style="@style/Header.Text.Title"
                         android:text="21 Oct"

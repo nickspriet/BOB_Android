@@ -32,7 +32,8 @@ public class EditProfileActivity extends BaseActivity {
     protected void initData(Bundle activityData) {}
 
     @Override
-    protected void setupToolbar() {
+    protected void onStart() {
+        super.onStart();
         setToolbarTitle(getUser().getName());
         setHomeAsUp();
     }
@@ -42,9 +43,10 @@ public class EditProfileActivity extends BaseActivity {
         List<Fragment> frags = getSupportFragmentManager().getFragments();
         if (frags != null)
             mFragment = (EditProfileFragment) frags.get(0);
-        if (mFragment == null)
+        if (mFragment == null) {
             mFragment = new EditProfileFragment();
-        addFragmentToContainer(mFragment);
+            addFragmentToContainer(mFragment);
+        }
     }
 
     @Override

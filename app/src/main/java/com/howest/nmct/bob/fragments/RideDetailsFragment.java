@@ -38,7 +38,7 @@ public class RideDetailsFragment extends Fragment {
         return fragment;
     }
 
-    private void setRide(Ride ride) {
+    public void setRide(Ride ride) {
         this.mRide = ride;
     }
 
@@ -47,7 +47,6 @@ public class RideDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.content_ride_details, container, false);
-
         ButterKnife.bind(this, view);
         initViews();
         return view;

@@ -38,22 +38,22 @@ public class ProfileActivity extends BaseActivity {
     }
 
     @Override
-    protected void initData(Bundle activityData) {
-
-    }
+    protected void initData(Bundle activityData) {}
 
     @Override
     protected void initFragment() {
         List<Fragment> frags = getSupportFragmentManager().getFragments();
         if (frags != null)
             mFragment = (ProfileFragment) frags.get(0);
-        if (mFragment == null)
+        if (mFragment == null) {
             mFragment = new ProfileFragment();
-        addFragmentToContainer(mFragment);
+            addFragmentToContainer(mFragment);
+        }
     }
 
     @Override
-    protected void setupToolbar() {
+    protected void onStart() {
+        super.onStart();
         setToolbarImage(getUser().getCover());
         setToolbarTitle(getUser().getName());
     }

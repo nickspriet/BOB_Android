@@ -14,7 +14,9 @@ import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.activities.NavigationActivity;
 import com.howest.nmct.bob.activities.RidesActivity;
 import com.howest.nmct.bob.adapters.RideAdapter;
+import com.howest.nmct.bob.collections.Events;
 import com.howest.nmct.bob.collections.Rides;
+import com.howest.nmct.bob.models.Event;
 import com.howest.nmct.bob.models.Ride;
 import com.howest.nmct.bob.utils.IntentStarter;
 
@@ -75,6 +77,8 @@ public class RidesFragment extends Fragment {
     }
 
     public void onRideEventClick(Ride ride) {
-        ((RidesActivity) getActivity()).navigateToEvents();
+        Event selectedEvent = Events.getEvent(ride.event.getId());
+        if (selectedEvent == null) selectedEvent = ride.event;
+        ((RidesActivity) getActivity()).navigateToEventDetails(selectedEvent);
     }
 }
