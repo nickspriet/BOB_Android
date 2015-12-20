@@ -17,7 +17,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -33,6 +32,7 @@ import static com.howest.nmct.bob.Constants.ACTIVITY_EVENTS;
 import static com.howest.nmct.bob.Constants.ACTIVITY_FEED;
 import static com.howest.nmct.bob.Constants.ACTIVITY_PROFILE;
 import static com.howest.nmct.bob.Constants.ACTIVITY_RIDES;
+import static com.howest.nmct.bob.Constants.ACTIVITY_SETTINGS;
 import static com.howest.nmct.bob.Constants.EVENT;
 import static com.howest.nmct.bob.Constants.REQUEST_EDIT;
 import static com.howest.nmct.bob.Constants.RIDE;
@@ -124,20 +124,19 @@ public abstract class NavigationActivity extends AppCompatActivity
     private void updateNavigation(int itemId) {
         switch (itemId) {
             case R.id.nav_feed:
-                Log.d("NavigationDrawer", "Click Feed");
                 navigateToFeed();
                 break;
             case R.id.nav_events:
-                Log.d("NavigationDrawer", "Click Events");
                 navigateToEvents();
                 break;
             case R.id.nav_rides:
-                Log.d("NavigationDrawer", "Click Rides");
                 navigateToRides();
                 break;
             case R.id.nav_profile:
-                Log.d("NavigationDrawer", "Click Profile");
                 navigateToProfile();
+                break;
+            case R.id.nav_settings:
+                navigateToSettings();
                 break;
             default:
                 throw new Error(String.format("Navigation Item not specified: %s", itemId));
@@ -146,6 +145,10 @@ public abstract class NavigationActivity extends AppCompatActivity
 
     public void navigateToProfile() {
         navigateToActivity(ACTIVITY_PROFILE);
+    }
+
+    public void navigateToSettings() {
+        navigateToActivity(ACTIVITY_SETTINGS);
     }
 
     public void navigateToRides() {
@@ -178,6 +181,9 @@ public abstract class NavigationActivity extends AppCompatActivity
                 break;
             case ACTIVITY_RIDES:
                 i = new Intent(this, RidesActivity.class);
+                break;
+            case ACTIVITY_SETTINGS:
+                i = new Intent(this, SettingsActivity.class);
                 break;
             default:
                 throw new Error("Invalid activityName");

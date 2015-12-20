@@ -163,6 +163,18 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
                 .commit();
     }
 
+    /**
+     * Adds a fragment to the container framelayout
+     * @param fragment A fragment that will be shown
+     */
+    void addFragmentToContainer(android.app.Fragment fragment) {
+        getFragmentManager().popBackStack();
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, fragment)
+                .commit();
+    }
+
     @Override
     protected void addDataToIntent(Intent i) {
         i.putExtra(USER_PROFILE, mUser);

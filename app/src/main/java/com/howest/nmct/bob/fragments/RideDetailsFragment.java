@@ -52,7 +52,7 @@ public class RideDetailsFragment extends Fragment {
         return view;
     }
 
-    private void initViews() {
+    public void initViews() {
         if (mRide == null) return;
 
         tvAddress.setText(mRide.getAddress());

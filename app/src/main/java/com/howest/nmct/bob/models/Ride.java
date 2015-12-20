@@ -7,6 +7,7 @@ import android.text.Spanned;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.howest.nmct.bob.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ public class Ride implements Parcelable {
     @Expose
     public Event event;
     private String address;
+    private boolean link;
 
     public Ride(User driver, Event event) {
         this.driver = driver;
@@ -171,5 +173,9 @@ public class Ride implements Parcelable {
     @Override
     public int hashCode() {
         return this.getId().hashCode();
+    }
+
+    public String getLink() {
+        return Constants.BACKEND_BASEURL + "/ride/" + getId();
     }
 }

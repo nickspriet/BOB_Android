@@ -4,29 +4,27 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.howest.nmct.bob.models.Ride;
 
-import java.util.LinkedHashSet;
-
 /**
  * illyism
- * 02/12/15
+ * 16/12/15
  */
-public class APIRidesResponse extends APIResponse {
+public class APIRideResponse extends APIResponse {
     @SerializedName("data")
     @Expose
     public APIData data;
 
-    public APIRidesResponse(int statusCode, String message, APIData data) {
+    public APIRideResponse(int statusCode, String message, APIData data) {
         super(statusCode, message);
         this.data = data;
     }
 
     public class APIData {
-        @SerializedName("rides")
+        @SerializedName("ride")
         @Expose
-        public LinkedHashSet<Ride> rides;
+        public Ride ride;
 
-        public APIData(LinkedHashSet<Ride> rides) {
-            this.rides = rides;
+        public APIData(Ride ride) {
+            this.ride = ride;
         }
     }
 }

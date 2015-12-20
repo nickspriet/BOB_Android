@@ -9,7 +9,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.howest.nmct.bob.Constants;
 import com.howest.nmct.bob.api.APIResponse;
 import com.howest.nmct.bob.api.APIRidesResponse;
 import com.howest.nmct.bob.interfaces.ResponseListener;
@@ -27,6 +26,7 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.util.LinkedHashSet;
 
+import static com.howest.nmct.bob.Constants.API_RIDE_CREATE;
 import static com.howest.nmct.bob.Constants.BACKEND_HOST;
 import static com.howest.nmct.bob.Constants.BACKEND_SCHEME;
 import static com.howest.nmct.bob.Constants.BACKEND_TOKEN;
@@ -69,7 +69,7 @@ public class Rides {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                Log.i("Events", "Call failed");
+                Log.i("Rides", "Call failed");
             }
 
             @Override
@@ -101,7 +101,7 @@ public class Rides {
                 .build();
 
         Request request = new Request.Builder()
-                .url(Constants.API_EVENT_CREATE)
+                .url(API_RIDE_CREATE)
                 .post(body)
                 .build();
 
