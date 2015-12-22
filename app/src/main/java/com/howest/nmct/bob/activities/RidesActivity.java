@@ -20,7 +20,12 @@ public class RidesActivity extends BaseActivity implements RidesLoadedListener {
     private RidesFragment mFragment;
 
     @Override
-    protected void initData(Bundle activityData) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initData();
+    }
+
+    protected void initData() {
         Rides.fetchData(this, this);
     }
 

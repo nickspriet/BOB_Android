@@ -34,6 +34,7 @@ public class EventDetailsActivity extends BaseActivity implements Callback,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         postponeEnterTransition();
+        initData(savedInstanceState);
     }
 
     @Override
@@ -41,7 +42,6 @@ public class EventDetailsActivity extends BaseActivity implements Callback,
         return R.layout.activity_main_expanded;
     }
 
-    @Override
     protected void initData(Bundle activityData) {
         mEvent = activityData.getParcelable(EVENT);
         if (mEvent == null) throw new Error("No Event in EventDetailsActivity");

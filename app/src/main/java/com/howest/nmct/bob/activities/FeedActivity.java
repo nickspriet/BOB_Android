@@ -1,6 +1,5 @@
 package com.howest.nmct.bob.activities;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.howest.nmct.bob.fragments.FeedFragment;
@@ -13,9 +12,6 @@ import java.util.List;
  */
 public class FeedActivity extends BaseActivity {
     private FeedFragment mFragment;
-
-    @Override
-    protected void initData(Bundle activityData) {}
 
     @Override
     protected void initFragment() {

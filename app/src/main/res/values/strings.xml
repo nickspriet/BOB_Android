@@ -68,4 +68,7 @@
     <string name="pref_misc_title">BOB</string>
     <string name="pref_notifications">Notifications</string>
     <string name="pref_notifications_summ">Receive notifications?</string>
+    <string name="no_events">No events</string>
+    <string name="failed_loading">Failed loading</string>
+    <string name="loading_events">Loading events...</string>
 </resources>

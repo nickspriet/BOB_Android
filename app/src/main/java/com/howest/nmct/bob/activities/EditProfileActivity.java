@@ -1,7 +1,6 @@
 package com.howest.nmct.bob.activities;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,9 +26,6 @@ public class EditProfileActivity extends BaseActivity {
     protected int getContentLayout() {
         return R.layout.activity_main;
     }
-
-    @Override
-    protected void initData(Bundle activityData) {}
 
     @Override
     protected void onStart() {

@@ -38,9 +38,6 @@ public class ProfileActivity extends BaseActivity {
     }
 
     @Override
-    protected void initData(Bundle activityData) {}
-
-    @Override
     protected void initFragment() {
         List<Fragment> frags = getSupportFragmentManager().getFragments();
         if (frags != null)

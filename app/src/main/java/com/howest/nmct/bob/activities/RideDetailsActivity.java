@@ -133,7 +133,6 @@ public class RideDetailsActivity extends BaseActivity implements Callback {
         return R.layout.activity_main_expanded;
     }
 
-    @Override
     protected void initData(Bundle activityData) {
         mRide = activityData.getParcelable(RIDE);
         if (mRide == null) throw new Error("No Ride in RideDetailsActivity");

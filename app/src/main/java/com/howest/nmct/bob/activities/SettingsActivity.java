@@ -1,7 +1,5 @@
 package com.howest.nmct.bob.activities;
 
-import android.os.Bundle;
-
 import com.howest.nmct.bob.fragments.SettingsFragment;
 
 /**
@@ -10,11 +8,6 @@ import com.howest.nmct.bob.fragments.SettingsFragment;
  */
 public class SettingsActivity extends BaseActivity {
     SettingsFragment mFragment;
-
-    @Override
-    protected void initData(Bundle bundle) {
-
-    }
 
     @Override
     protected void initFragment() {

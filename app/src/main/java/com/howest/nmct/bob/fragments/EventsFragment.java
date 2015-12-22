@@ -9,12 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.activities.NavigationActivity;
 import com.howest.nmct.bob.adapters.EventAdapter;
 import com.howest.nmct.bob.collections.Events;
+import com.howest.nmct.bob.interfaces.EventsLoadedListener;
 import com.howest.nmct.bob.models.Event;
+
+import java.io.IOException;
+import java.util.LinkedHashSet;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,8 +27,9 @@ import butterknife.ButterKnife;
 /**
  * Nick on 28/10/2015.
  */
-public class EventsFragment extends Fragment {
+public class EventsFragment extends Fragment implements EventsLoadedListener {
     @Bind(R.id.list) RecyclerView recyclerView;
+    @Bind(R.id.empty_view) TextView emptyView;
     public EventAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
@@ -63,5 +69,30 @@ public class EventsFragment extends Fragment {
     public void onEventSelected(Event event, ImageView imgEvent) {
         ((NavigationActivity) getActivity())
                 .navigateToEventDetails(event, imgEvent);
+    }
+
+    public void startLoading() {
+        emptyView.setText(R.string.loading_events);
+    }
+
+    @Override
+    public void failedLoading(IOException e) {
+        emptyView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+        emptyView.setText(R.string.failed_loading);
+    }
+
+    @Override
+    public void eventsLoaded(LinkedHashSet<Event> events) {
+        if (events == null || events.isEmpty()) {
+            emptyView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+            emptyView.setText(R.string.no_events);
+        } else {
+            emptyView.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+            mAdapter.setEvents(events);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }

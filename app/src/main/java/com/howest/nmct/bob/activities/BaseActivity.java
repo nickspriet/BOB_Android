@@ -36,7 +36,6 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
         initUserData(savedInstanceState, getIntent().getExtras());
         super.initNavigation();
         initDrawerHeader();
-        initData(savedInstanceState != null ? savedInstanceState : getIntent().getExtras());
         initFragment();
     }
 
@@ -44,7 +43,6 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
     protected int getContentLayout() {
         return R.layout.activity_main;
     }
-    protected abstract void initData(Bundle bundle);
     protected abstract void initFragment();
 
     private User mUser;

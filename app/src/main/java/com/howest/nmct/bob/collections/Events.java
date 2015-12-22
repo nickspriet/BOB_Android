@@ -1,6 +1,6 @@
 package com.howest.nmct.bob.collections;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Handler;
@@ -53,10 +53,10 @@ public class Events {
         Events.events.addAll(events);
     }
 
-    public static void fetchData(final Activity activity) {
+    public static void fetchData(Context context, final EventsLoadedListener listener) {
         OkHttpClient okHttpClient = new OkHttpClient();
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String token = preferences.getString(BACKEND_TOKEN, "");
 
         Uri.Builder builder = new Uri.Builder();
@@ -71,10 +71,17 @@ public class Events {
                 .build();
 
         Call call = okHttpClient.newCall(request);
+        listener.startLoading();
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(Request request, IOException e) {
+            public void onFailure(Request request, final IOException e) {
                 Log.i("Events", "Call failed");
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        listener.failedLoading(e);
+                    }
+                });
             }
 
             @Override
@@ -88,7 +95,7 @@ public class Events {
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        ((EventsLoadedListener) activity).eventsLoaded(events);
+                        listener.eventsLoaded(events);
                     }
                 });
             }
