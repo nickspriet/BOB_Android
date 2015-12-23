@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static com.howest.nmct.bob.data.EventsContract.EventsEntry;
+import static com.howest.nmct.bob.data.EventsContract.EventEntry;
 import static com.howest.nmct.bob.data.EventsContract.PlaceEntry;
 
 /**
@@ -21,26 +21,26 @@ public class EventsDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        final String SQL_CREATE_EVENTS_TABLE = "CREATE TABLE " + EventsEntry.TABLE_NAME + " (" +
-                EventsEntry._ID + " TEXT PRIMARY KEY," +
-                EventsEntry.COLUMN_NAME + " TEXT NOT NULL, " +
-                EventsEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
-                EventsEntry.COLUMN_START_TIME + " INTEGER NOT NULL, " +
-                EventsEntry.COLUMN_UPDATED_TIME + " INTEGER NOT NULL, " +
-                EventsEntry.COLUMN_END_TIME + " INTEGER NOT NULL, " +
-                EventsEntry.COLUMN_COVER + " TEXT NOT NULL, " +
-                EventsEntry.COLUMN_PICTURE + " TEXT NOT NULL, " +
-                EventsEntry.COLUMN_ATTENDING_COUNT + " INTEGER NOT NULL, " +
-                EventsEntry.COLUMN_DECLINED_COUNT + " INTEGER NOT NULL, " +
-                EventsEntry.COLUMN_INTERESTED_COUNT + " INTEGER NOT NULL, " +
-                EventsEntry.COLUMN_NOREPLY_COUNT + " INTEGER NOT NULL, " +
-                EventsEntry.COLUMN_OWNER + " TEXT NOT NULL, " +
-                EventsEntry.COLUMN_CAN_GUESTS_INVITE + " INTEGER NOT NULL, " +
-                EventsEntry.COLUMN_GUEST_LIST_ENABLED + " INTEGER NOT NULL, " +
-                EventsEntry.COLUMN_RSVP_STATUS + " TEXT NOT NULL, " +
-                EventsEntry.COLUMN_PLACE_ID + " TEXT NOT NULL, " +
+        final String SQL_CREATE_EVENTS_TABLE = "CREATE TABLE " + EventEntry.TABLE_NAME + " (" +
+                EventEntry._ID + " TEXT PRIMARY KEY," +
+                EventsContract.EventEntry.COLUMN_NAME + " TEXT NOT NULL, " +
+                EventsContract.EventEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
+                EventEntry.COLUMN_START_TIME + " INTEGER NOT NULL, " +
+                EventsContract.EventEntry.COLUMN_UPDATED_TIME + " INTEGER NOT NULL, " +
+                EventEntry.COLUMN_END_TIME + " INTEGER NOT NULL, " +
+                EventEntry.COLUMN_COVER + " TEXT NOT NULL, " +
+                EventEntry.COLUMN_PICTURE + " TEXT NOT NULL, " +
+                EventEntry.COLUMN_ATTENDING_COUNT + " INTEGER NOT NULL, " +
+                EventEntry.COLUMN_DECLINED_COUNT + " INTEGER NOT NULL, " +
+                EventsContract.EventEntry.COLUMN_INTERESTED_COUNT + " INTEGER NOT NULL, " +
+                EventEntry.COLUMN_NOREPLY_COUNT + " INTEGER NOT NULL, " +
+                EventEntry.COLUMN_OWNER + " TEXT NOT NULL, " +
+                EventEntry.COLUMN_CAN_GUESTS_INVITE + " INTEGER NOT NULL, " +
+                EventEntry.COLUMN_GUEST_LIST_ENABLED + " INTEGER NOT NULL, " +
+                EventEntry.COLUMN_RSVP_STATUS + " TEXT NOT NULL, " +
+                EventEntry.COLUMN_PLACE_ID + " TEXT NOT NULL, " +
 
-                " FOREIGN KEY (" + EventsEntry.COLUMN_PLACE_ID + ") REFERENCES " +
+                " FOREIGN KEY (" + EventEntry.COLUMN_PLACE_ID + ") REFERENCES " +
                 PlaceEntry.TABLE_NAME + " (" + PlaceEntry._ID + "));";
 
         db.execSQL(SQL_CREATE_EVENTS_TABLE);
@@ -61,7 +61,7 @@ public class EventsDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + EventsEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + EventEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + PlaceEntry.TABLE_NAME);
         onCreate(db);
     }

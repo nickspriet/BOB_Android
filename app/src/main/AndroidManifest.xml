@@ -110,6 +110,10 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/next_ride_widget_info" />
         </receiver>
+        
+        <provider
+            android:authorities="com.howest.nmct.bob"
+            android:name=".data.EventProvider" />
     </application>
-
+    
 </manifest>
