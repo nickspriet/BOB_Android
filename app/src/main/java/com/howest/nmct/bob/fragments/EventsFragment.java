@@ -21,6 +21,7 @@ import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.activities.NavigationActivity;
 import com.howest.nmct.bob.adapters.EventAdapter;
 import com.howest.nmct.bob.data.EventsContract.EventEntry;
+import com.howest.nmct.bob.data.EventsContract.PlaceEntry;
 import com.howest.nmct.bob.interfaces.EventsLoadedListener;
 
 import java.io.IOException;
@@ -40,16 +41,18 @@ public class EventsFragment extends Fragment implements EventsLoadedListener,
     private static final int URL_LOADER = 0;
 
     private static final String[] EVENT_COLUMNS = {
-            EventEntry._ID,
-            EventEntry.COLUMN_NAME,
+            EventEntry.TABLE_NAME + "." + EventEntry._ID,
+            EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_NAME,
             EventEntry.COLUMN_START_TIME,
-            EventEntry.COLUMN_COVER
+            EventEntry.COLUMN_COVER,
+            PlaceEntry.TABLE_NAME + "." + PlaceEntry.COLUMN_NAME
     };
 
     public static final int COL_EVENT_ID = 0;
     public static final int COL_EVENT_NAME = 1;
     public static final int COL_EVENT_START_TIME = 2;
     public static final int COL_EVENT_COVER = 3;
+    public static final int COL_PLACE_NAME = 4;
 
     public EventsFragment() {
     }

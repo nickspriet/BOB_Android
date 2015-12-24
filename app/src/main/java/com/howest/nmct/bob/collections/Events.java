@@ -11,8 +11,10 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.howest.nmct.bob.api.APIEventsResponse;
 import com.howest.nmct.bob.data.EventsContract.EventEntry;
+import com.howest.nmct.bob.data.EventsContract.PlaceEntry;
 import com.howest.nmct.bob.interfaces.EventsLoadedListener;
 import com.howest.nmct.bob.models.Event;
+import com.howest.nmct.bob.models.Place;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
@@ -87,6 +89,10 @@ public class Events {
                 Log.i("Events", responseString);
                 APIEventsResponse apiResponse = new Gson().fromJson(responseString, APIEventsResponse.class);
                 Log.i("Events", apiResponse.data.events.toString());
+
+                context.getContentResolver().bulkInsert(
+                        PlaceEntry.CONTENT_URI,
+                        Place.asContentValues(apiResponse.data.events));
 
                 context.getContentResolver().bulkInsert(
                         EventEntry.CONTENT_URI,

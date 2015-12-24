@@ -44,7 +44,7 @@ public class Location implements Parcelable {
      * @param country Country of the location
      * @param city City of the location
      */
-    public Location(String city, String country, float latitude, float longitude, String street, String zip) {
+    public Location(String street, String zip, String city, String country, float longitude, float latitude) {
         this.city = city;
         this.country = country;
         this.latitude = latitude;
@@ -55,6 +55,7 @@ public class Location implements Parcelable {
 
     @Override
     public String toString() {
+        if (street == null && city == null && country == null) return null;
         if (street == null || street.isEmpty()) {
             return city + ", " + country;
         }

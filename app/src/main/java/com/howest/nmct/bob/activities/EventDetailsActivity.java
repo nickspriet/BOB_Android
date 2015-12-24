@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.collections.Rides;
-import com.howest.nmct.bob.data.EventsContract;
+import com.howest.nmct.bob.data.EventsContract.EventEntry;
 import com.howest.nmct.bob.fragments.CreateRideDialogFragment;
 import com.howest.nmct.bob.fragments.EventDetailsFragment;
 import com.howest.nmct.bob.interfaces.EventActionsListener;
@@ -138,7 +138,7 @@ public class EventDetailsActivity extends BaseActivity implements RideOptionSele
             case URL_LOADER:
                 return new CursorLoader(
                         this,
-                        EventsContract.EventEntry.buildEventUri(mEventId),
+                        EventEntry.buildEventUri(mEventId),
                         null,
                         null,
                         null,

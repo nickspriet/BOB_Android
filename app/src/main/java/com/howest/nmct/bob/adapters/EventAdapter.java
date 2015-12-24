@@ -50,9 +50,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         holder.tvEventMonth.setText(Event.formatDate("MMM", startTime).toUpperCase());
         holder.tvEventName.setText(mCursor.getString(EventsFragment.COL_EVENT_NAME));
         holder.tvEventDate.setText(Event.formatDate("E h a", startTime) );
-        // holder.tvEventLocation.setText(event.getAddress());
 
-        //set image via picasso
+        String locationName = mCursor.getString(EventsFragment.COL_PLACE_NAME);
+        if (locationName != null && !locationName.isEmpty()) {
+            holder.tvEventLocation.setText(locationName);
+            holder.tvEventLocation.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvEventLocation.setVisibility(View.GONE);
+        }
+
         Picasso p = Picasso.with(this.mActivity.getApplicationContext());
         p.load(mCursor.getString(EventsFragment.COL_EVENT_COVER))
                 .fit()

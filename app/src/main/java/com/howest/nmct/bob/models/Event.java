@@ -163,8 +163,8 @@ public class Event implements Parcelable {
     }
 
     public String getAddress() {
-        if (place != null && place.location != null) {
-            return place.location.toString();
+        if (place != null) {
+            return place.toString();
         } else {
             return "";
         }
@@ -332,6 +332,8 @@ public class Event implements Parcelable {
         newEvent.canGuestsInvite = data.getInt(indexcanGuestsInvite) == 1;
         newEvent.guestListEnabled = data.getInt(indexguestListEnabled) == 1;
         newEvent.rsvpStatus = data.getString(indexrsvpStatus);
+
+        newEvent.place = Place.createFromCursor(data);
 
         return newEvent;
     }
