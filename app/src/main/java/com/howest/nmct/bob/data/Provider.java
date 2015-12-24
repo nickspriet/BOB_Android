@@ -6,25 +6,27 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import com.howest.nmct.bob.data.EventsContract.EventEntry;
-import com.howest.nmct.bob.data.EventsContract.PlaceEntry;
+import com.howest.nmct.bob.data.Contracts.EventEntry;
+import com.howest.nmct.bob.data.Contracts.PlaceEntry;
+import com.howest.nmct.bob.data.Contracts.UserEntry;
 
 /**
  * illyism
  * 22/12/15
  */
-public class EventProvider extends ContentProvider {
+public class Provider extends ContentProvider {
     private static final UriMatcher sUriMatcher = buildUriMatcher();
-    private EventsDbHelper mOpenHelper;
+    private DatabaseHelper mOpenHelper;
 
     static final int EVENT = 100;
     static final int EVENT_ID = 101;
     static final int PLACE = 300;
     static final int PLACE_ID = 301;
+    static final int USER = 400;
+    static final int USER_ID = 401;
 
     static final String sEventWithPlace = EventEntry.TABLE_NAME + " LEFT OUTER JOIN " +
             PlaceEntry.TABLE_NAME +
@@ -34,16 +36,18 @@ public class EventProvider extends ContentProvider {
 
     static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(EventsContract.CONTENT_AUTHORITY, EventsContract.PATH_EVENT, EVENT);
-        uriMatcher.addURI(EventsContract.CONTENT_AUTHORITY, EventsContract.PATH_EVENT + "/*", EVENT_ID);
-        uriMatcher.addURI(EventsContract.CONTENT_AUTHORITY, EventsContract.PATH_PLACE, PLACE);
-        uriMatcher.addURI(EventsContract.CONTENT_AUTHORITY, EventsContract.PATH_PLACE + "/*", PLACE_ID);
+        uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_EVENT, EVENT);
+        uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_EVENT + "/*", EVENT_ID);
+        uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_PLACE, PLACE);
+        uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_PLACE + "/*", PLACE_ID);
+        uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_USER, USER);
+        uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_USER + "/*", USER_ID);
         return uriMatcher;
     }
 
     @Override
     public boolean onCreate() {
-        mOpenHelper = new EventsDbHelper(getContext());
+        mOpenHelper = new DatabaseHelper(getContext());
         return true;
     }
 
@@ -60,6 +64,10 @@ public class EventProvider extends ContentProvider {
                 return PlaceEntry.CONTENT_TYPE;
             case PLACE_ID:
                 return PlaceEntry.CONTENT_ITEM_TYPE;
+            case USER:
+                return UserEntry.CONTENT_TYPE;
+            case USER_ID:
+                return UserEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -73,7 +81,16 @@ public class EventProvider extends ContentProvider {
             // "event/*"
             case EVENT_ID:
             {
-                retCursor = getEventById(uri, projection, selection, selectionArgs, sortOrder);
+                final String eventId = uri.getPathSegments().get(1);
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        sEventWithPlace,
+                        projection,
+                        "(" + EventEntry.TABLE_NAME + "." + EventEntry._ID + "=?)",
+                        new String[] { eventId },
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
             }
             // "place"
@@ -102,24 +119,25 @@ public class EventProvider extends ContentProvider {
                 );
                 break;
             }
+            // "user"
+            case USER_ID: {
+                final String userId = uri.getPathSegments().get(1);
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        UserEntry.TABLE_NAME,
+                        projection,
+                        "(" + UserEntry._ID + "=?)",
+                        new String[] { userId },
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
         return retCursor;
-    }
-
-    private Cursor getEventById(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables(sEventWithPlace);
-        qb.appendWhere("(" + EventEntry.TABLE_NAME + "." + EventEntry._ID + " = " + uri.getPathSegments().get(1) + ")");
-        return qb.query(mOpenHelper.getReadableDatabase(),
-                projection,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                sortOrder);
     }
 
     @Override
@@ -141,6 +159,14 @@ public class EventProvider extends ContentProvider {
                 long _id = db.insert(PlaceEntry.TABLE_NAME, null, values);
                 if (_id > 0)
                     returnUri = PlaceEntry.buildPlaceUri(Long.toString(_id));
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case USER: {
+                long _id = db.insertWithOnConflict(UserEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+                if ( _id > 0 )
+                    returnUri = UserEntry.buildUserUri(Long.toString(_id));
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
@@ -176,6 +202,13 @@ public class EventProvider extends ContentProvider {
                         selectionArgs
                 );
                 break;
+            case USER:
+                deletedRows = db.delete(
+                        UserEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs
+                );
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -207,6 +240,23 @@ public class EventProvider extends ContentProvider {
                         values,
                         selection,
                         selectionArgs
+                );
+                break;
+            case USER:
+                updatedRows = db.update(
+                        UserEntry.TABLE_NAME,
+                        values,
+                        selection,
+                        selectionArgs
+                );
+                break;
+            case USER_ID:
+                final String userId = uri.getPathSegments().get(1);
+                updatedRows = db.update(
+                        UserEntry.TABLE_NAME,
+                        values,
+                        "(" + UserEntry._ID + " = ?)",
+                        new String[] {userId}
                 );
                 break;
             default:

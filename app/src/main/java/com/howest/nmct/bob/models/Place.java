@@ -7,8 +7,8 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.howest.nmct.bob.data.EventsContract.EventEntry;
-import com.howest.nmct.bob.data.EventsContract.PlaceEntry;
+import com.howest.nmct.bob.data.Contracts.EventEntry;
+import com.howest.nmct.bob.data.Contracts.PlaceEntry;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;

@@ -22,36 +22,36 @@ public class TestUtilities extends AndroidTestCase {
 
     public static ContentValues getEventContentValues(String eventId, String placeId) {
         ContentValues testValues = new ContentValues();
-        testValues.put(EventsContract.EventEntry._ID, eventId);
-        testValues.put(EventsContract.EventEntry.COLUMN_NAME, "Test Event");
-        testValues.put(EventsContract.EventEntry.COLUMN_DESCRIPTION, "Event Description");
-        testValues.put(EventsContract.EventEntry.COLUMN_START_TIME, new Date().getTime());
-        testValues.put(EventsContract.EventEntry.COLUMN_UPDATED_TIME, new Date().getTime());
-        testValues.put(EventsContract.EventEntry.COLUMN_END_TIME, new Date().getTime());
-        testValues.put(EventsContract.EventEntry.COLUMN_COVER, "http://cover.jpg");
-        testValues.put(EventsContract.EventEntry.COLUMN_PICTURE, "http://picture.jpg");
-        testValues.put(EventsContract.EventEntry.COLUMN_ATTENDING_COUNT, 10);
-        testValues.put(EventsContract.EventEntry.COLUMN_DECLINED_COUNT, 10);
-        testValues.put(EventsContract.EventEntry.COLUMN_INTERESTED_COUNT, 10);
-        testValues.put(EventsContract.EventEntry.COLUMN_NOREPLY_COUNT, 10);
-        testValues.put(EventsContract.EventEntry.COLUMN_OWNER, "owner");
-        testValues.put(EventsContract.EventEntry.COLUMN_CAN_GUESTS_INVITE, true);
-        testValues.put(EventsContract.EventEntry.COLUMN_GUEST_LIST_ENABLED, true);
-        testValues.put(EventsContract.EventEntry.COLUMN_RSVP_STATUS, "attending");
-        testValues.put(EventsContract.EventEntry.COLUMN_PLACE_ID, placeId);
+        testValues.put(Contracts.EventEntry._ID, eventId);
+        testValues.put(Contracts.EventEntry.COLUMN_NAME, "Test Event");
+        testValues.put(Contracts.EventEntry.COLUMN_DESCRIPTION, "Event Description");
+        testValues.put(Contracts.EventEntry.COLUMN_START_TIME, new Date().getTime());
+        testValues.put(Contracts.EventEntry.COLUMN_UPDATED_TIME, new Date().getTime());
+        testValues.put(Contracts.EventEntry.COLUMN_END_TIME, new Date().getTime());
+        testValues.put(Contracts.EventEntry.COLUMN_COVER, "http://cover.jpg");
+        testValues.put(Contracts.EventEntry.COLUMN_PICTURE, "http://picture.jpg");
+        testValues.put(Contracts.EventEntry.COLUMN_ATTENDING_COUNT, 10);
+        testValues.put(Contracts.EventEntry.COLUMN_DECLINED_COUNT, 10);
+        testValues.put(Contracts.EventEntry.COLUMN_INTERESTED_COUNT, 10);
+        testValues.put(Contracts.EventEntry.COLUMN_NOREPLY_COUNT, 10);
+        testValues.put(Contracts.EventEntry.COLUMN_OWNER, "owner");
+        testValues.put(Contracts.EventEntry.COLUMN_CAN_GUESTS_INVITE, true);
+        testValues.put(Contracts.EventEntry.COLUMN_GUEST_LIST_ENABLED, true);
+        testValues.put(Contracts.EventEntry.COLUMN_RSVP_STATUS, "attending");
+        testValues.put(Contracts.EventEntry.COLUMN_PLACE_ID, placeId);
         return testValues;
     }
 
     public static ContentValues getPlaceContentValues(String placeId) {
         ContentValues testValues = new ContentValues();
-        testValues.put(EventsContract.PlaceEntry._ID, placeId);
-        testValues.put(EventsContract.PlaceEntry.COLUMN_NAME, "Kortrijk");
+        testValues.put(Contracts.PlaceEntry._ID, placeId);
+        testValues.put(Contracts.PlaceEntry.COLUMN_NAME, "Kortrijk");
         return testValues;
     }
 
     public static long insertPlace(Context mContext, ContentValues placeContentValues) {
-        SQLiteDatabase db = new EventsDbHelper(mContext).getWritableDatabase();
-        long placeRowId = db.insert(EventsContract.PlaceEntry.TABLE_NAME, null, placeContentValues);
+        SQLiteDatabase db = new DatabaseHelper(mContext).getWritableDatabase();
+        long placeRowId = db.insert(Contracts.PlaceEntry.TABLE_NAME, null, placeContentValues);
         assertTrue("Error: Failure to insert Values", placeRowId != -1);
         return placeRowId;
     }

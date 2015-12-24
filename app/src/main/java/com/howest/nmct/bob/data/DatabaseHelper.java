@@ -4,35 +4,43 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static com.howest.nmct.bob.data.EventsContract.EventEntry;
-import static com.howest.nmct.bob.data.EventsContract.PlaceEntry;
+import com.howest.nmct.bob.data.Contracts.UserEntry;
+
+import static com.howest.nmct.bob.data.Contracts.EventEntry;
+import static com.howest.nmct.bob.data.Contracts.PlaceEntry;
 
 /**
  * illyism
  * 21/12/15
  */
-public class EventsDbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 2;
-    static final String DATABASE_NAME = "events.db";
+public class DatabaseHelper extends SQLiteOpenHelper {
+    private static final int DATABASE_VERSION = 3;
+    public static final String DATABASE_NAME = "bob.db";
 
-    public EventsDbHelper(Context context) {
+    public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        createEventsTable(db);
+        createPlaceTable(db);
+        createUserTable(db);
+    }
+
+    private void createEventsTable(SQLiteDatabase db) {
         final String SQL_CREATE_EVENTS_TABLE = "CREATE TABLE " + EventEntry.TABLE_NAME + " (" +
                 EventEntry._ID + " TEXT PRIMARY KEY," +
-                EventsContract.EventEntry.COLUMN_NAME + " TEXT NOT NULL, " +
-                EventsContract.EventEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
+                EventEntry.COLUMN_NAME + " TEXT NOT NULL, " +
+                EventEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
                 EventEntry.COLUMN_START_TIME + " INTEGER NOT NULL, " +
-                EventsContract.EventEntry.COLUMN_UPDATED_TIME + " INTEGER NOT NULL, " +
+                EventEntry.COLUMN_UPDATED_TIME + " INTEGER NOT NULL, " +
                 EventEntry.COLUMN_END_TIME + " INTEGER, " +
                 EventEntry.COLUMN_COVER + " TEXT NOT NULL, " +
                 EventEntry.COLUMN_PICTURE + " TEXT NOT NULL, " +
                 EventEntry.COLUMN_ATTENDING_COUNT + " INTEGER NOT NULL, " +
                 EventEntry.COLUMN_DECLINED_COUNT + " INTEGER NOT NULL, " +
-                EventsContract.EventEntry.COLUMN_INTERESTED_COUNT + " INTEGER NOT NULL, " +
+                EventEntry.COLUMN_INTERESTED_COUNT + " INTEGER NOT NULL, " +
                 EventEntry.COLUMN_NOREPLY_COUNT + " INTEGER NOT NULL, " +
                 EventEntry.COLUMN_OWNER + " TEXT NOT NULL, " +
                 EventEntry.COLUMN_CAN_GUESTS_INVITE + " INTEGER NOT NULL, " +
@@ -44,7 +52,9 @@ public class EventsDbHelper extends SQLiteOpenHelper {
                 PlaceEntry.TABLE_NAME + " (" + PlaceEntry._ID + "));";
 
         db.execSQL(SQL_CREATE_EVENTS_TABLE);
+    }
 
+    private void createPlaceTable(SQLiteDatabase db) {
         final String SQL_CREATE_PLACE_TABLE = "CREATE TABLE " + PlaceEntry.TABLE_NAME + " (" +
                 PlaceEntry._ID +  " TEXT PRIMARY KEY, " +
                 PlaceEntry.COLUMN_NAME + " TEXT, " +
@@ -56,13 +66,28 @@ public class EventsDbHelper extends SQLiteOpenHelper {
                 PlaceEntry.COLUMN_LOCATION_LATITUDE + " REAL)";
 
         db.execSQL(SQL_CREATE_PLACE_TABLE);
+    }
 
+    private void createUserTable(SQLiteDatabase db) {
+        final String SQL_CREATE_USER_TABLE = "CREATE TABLE " + UserEntry.TABLE_NAME + " (" +
+                UserEntry._ID + " TEXT PRIMARY KEY," +
+                UserEntry.COLUMN_FACEBOOKID + " TEXT NOT NULL, " +
+                UserEntry.COLUMN_NAME + " TEXT NOT NULL, " +
+                UserEntry.COLUMN_FIRSTNAME + " TEXT NOT NULL, " +
+                UserEntry.COLUMN_LASTNAME + " TEXT NOT NULL, " +
+                UserEntry.COLUMN_PICTURE + " TEXT NOT NULL, " +
+                UserEntry.COLUMN_COVER + " TEXT NOT NULL, " +
+                UserEntry.COLUMN_LINK + " TEXT NOT NULL, " +
+                UserEntry.COLUMN_ABOUTME + " TEXT)";
+
+        db.execSQL(SQL_CREATE_USER_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + EventEntry.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + PlaceEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + UserEntry.TABLE_NAME);
         onCreate(db);
     }
 }

@@ -113,7 +113,7 @@
         
         <provider
             android:authorities="com.howest.nmct.bob"
-            android:name=".data.EventProvider" />
+            android:name=".data.Provider" />
     </application>
     
 </manifest>

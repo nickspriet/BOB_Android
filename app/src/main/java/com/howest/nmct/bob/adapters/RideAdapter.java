@@ -116,7 +116,6 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         // Fill in details
         holder.rideTitle.setText(ride.event.getName());
         holder.locationDetails.setText(Html.fromHtml(String.format("<b>%s</b> in <b>%s</b>", ride.getAddress(), ride.getStartTime())));
-        holder.approvalStatus.setText(Ride.formatApprovalStatus(ride, profile));
         holder.ridePerson.setText(ride.getDriver().getName());
 
         Picasso p = Picasso.with(mActivity);
@@ -126,12 +125,15 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
                 .placeholder(R.drawable.ic_image)
                 .into(holder.rideImage);
 
-        // Hide or show elements depending on approval and driver status
-        setUsernameColor(holder.ridePerson, ride.isSelfDriver(profile));
-        setVisibility(holder.locationDetails, ride.isSelfDriver(profile) || ride.isApproved(profile));
-        setVisibility(holder.driverButton, !ride.isSelfDriver(profile));
-        setVisibility(holder.mapButton, ride.isSelfDriver(profile) || ride.isApproved(profile));
-        setVisibility(holder.guestsButton, ride.isSelfDriver(profile) || ride.isApproved(profile));
+        if (profile != null) {
+            holder.approvalStatus.setText(Ride.formatApprovalStatus(ride, profile));
+            // Hide or show elements depending on approval and driver status
+            setUsernameColor(holder.ridePerson, ride.isSelfDriver(profile));
+            setVisibility(holder.locationDetails, ride.isSelfDriver(profile) || ride.isApproved(profile));
+            setVisibility(holder.driverButton, !ride.isSelfDriver(profile));
+            setVisibility(holder.mapButton, ride.isSelfDriver(profile) || ride.isApproved(profile));
+            setVisibility(holder.guestsButton, ride.isSelfDriver(profile) || ride.isApproved(profile));
+        }
 
         // Set up viewpager
         holder.view.setCurrentItem(mItemSwipedStates.get(position).ordinal());

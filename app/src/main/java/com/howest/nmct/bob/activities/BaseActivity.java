@@ -1,21 +1,32 @@
 package com.howest.nmct.bob.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
+import com.howest.nmct.bob.data.Contracts.UserEntry;
 import com.howest.nmct.bob.interfaces.ToolbarController;
 import com.howest.nmct.bob.models.User;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.Arrays;
+
 import butterknife.ButterKnife;
 
+import static com.howest.nmct.bob.Constants.USER_ID;
 import static com.howest.nmct.bob.Constants.USER_PROFILE;
 
 /**
@@ -24,7 +35,10 @@ import static com.howest.nmct.bob.Constants.USER_PROFILE;
  * - Controls the toolbar images and title with ToolbarController
  * - Contains one fragment
  */
-public abstract class BaseActivity extends NavigationActivity implements ToolbarController {
+public abstract class BaseActivity extends NavigationActivity implements ToolbarController,
+        LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final int USER_LOADER = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +47,8 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
         setContentView(getContentLayout());
         ButterKnife.bind(this);
 
-        initUserData(savedInstanceState, getIntent().getExtras());
+        initUserData(savedInstanceState);
         super.initNavigation();
-        initDrawerHeader();
         initFragment();
     }
 
@@ -56,17 +69,25 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
      * @return User the current User
      */
     protected User setUser(User user) {
-        if (mUser.getId().equals(user.getId())) {
+        if (mUser == null || mUser.getId().equals(user.getId())) {
             mUser = user;
+            getContentResolver().notifyChange(UserEntry.buildUserUri(mUser.getId()), null);
         }
         return mUser;
     }
 
-    private void initUserData(Bundle savedInstanceState, Bundle extras) {
-        if (savedInstanceState != null)
+    private void initUserData(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
             mUser = savedInstanceState.getParcelable(USER_PROFILE);
-        if (mUser == null)
-            mUser = extras.getParcelable(USER_PROFILE);
+            if (mUser != null) initDrawerHeader();
+        }
+        if (mUser == null) {
+            getSupportLoaderManager().initLoader(USER_LOADER, null, this);
+        }
+    }
+
+    public void reloadUser() {
+        getSupportLoaderManager().restartLoader(USER_LOADER, null, this);
     }
 
     @Override
@@ -178,4 +199,32 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
         i.putExtra(USER_PROFILE, mUser);
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        switch (id) {
+            case USER_LOADER:
+                final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                String userId = preferences.getString(USER_ID, "");
+                return new CursorLoader(this, UserEntry.buildUserUri(userId), null, null, null, null);
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (!data.moveToFirst()) {
+            Log.e("BaseActivity", "No user found " + data.getColumnCount() + " "
+                    + Arrays.toString(data.getColumnNames()));
+            data.close();
+            navigatetoLogin();
+            return;
+        }
+        setUser(User.createFromCursor(data));
+        data.close();
+        initDrawerHeader();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {}
 }

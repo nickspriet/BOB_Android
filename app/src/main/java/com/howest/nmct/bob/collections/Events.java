@@ -10,8 +10,8 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.howest.nmct.bob.api.APIEventsResponse;
-import com.howest.nmct.bob.data.EventsContract.EventEntry;
-import com.howest.nmct.bob.data.EventsContract.PlaceEntry;
+import com.howest.nmct.bob.data.Contracts.EventEntry;
+import com.howest.nmct.bob.data.Contracts.PlaceEntry;
 import com.howest.nmct.bob.interfaces.EventsLoadedListener;
 import com.howest.nmct.bob.models.Event;
 import com.howest.nmct.bob.models.Place;

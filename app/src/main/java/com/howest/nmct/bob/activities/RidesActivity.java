@@ -1,15 +1,23 @@
 package com.howest.nmct.bob.activities;
 
+import android.content.SharedPreferences;
+import android.database.ContentObserver;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 
 import com.howest.nmct.bob.collections.Rides;
+import com.howest.nmct.bob.data.Contracts;
 import com.howest.nmct.bob.fragments.RidesFragment;
 import com.howest.nmct.bob.interfaces.RidesLoadedListener;
 import com.howest.nmct.bob.models.Ride;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+
+import static com.howest.nmct.bob.Constants.USER_ID;
 
 
 /**
@@ -19,10 +27,24 @@ import java.util.List;
 public class RidesActivity extends BaseActivity implements RidesLoadedListener {
     private RidesFragment mFragment;
 
+    private Handler mainHandler = new Handler(Looper.getMainLooper());
+    ContentObserver userObserver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initData();
+
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String userId = preferences.getString(USER_ID, "");
+        userObserver = new UserObserver(mainHandler);
+        getContentResolver().registerContentObserver(Contracts.UserEntry.buildUserUri(userId), false, userObserver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getContentResolver().unregisterContentObserver(userObserver);
     }
 
     protected void initData() {
@@ -45,5 +67,18 @@ public class RidesActivity extends BaseActivity implements RidesLoadedListener {
         mFragment.mAdapter.setRides(rides);
         mFragment.mAdapter.resetSwipeStates();
         mFragment.mAdapter.notifyDataSetChanged();
+    }
+
+    class UserObserver extends ContentObserver {
+        public UserObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            mFragment.mAdapter.resetSwipeStates();
+            mFragment.mAdapter.notifyDataSetChanged();
+        }
     }
 }

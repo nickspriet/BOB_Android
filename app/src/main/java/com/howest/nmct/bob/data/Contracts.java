@@ -8,12 +8,13 @@ import android.provider.BaseColumns;
  * illyism
  * 21/12/15
  */
-public class EventsContract {
+public class Contracts {
     public static final String CONTENT_AUTHORITY = "com.howest.nmct.bob";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    public static final String PATH_EVENT= "event";
+    public static final String PATH_EVENT = "event";
     public static final String PATH_PLACE = "place";
+    public static final String PATH_USER = "user";
 
     public static final class EventEntry implements BaseColumns {
         public static final String TABLE_NAME = "events";
@@ -46,7 +47,6 @@ public class EventsContract {
         public static Uri buildEventUri(String id) {
             return Uri.withAppendedPath(CONTENT_URI, id);
         }
-
     }
 
     public static final class PlaceEntry implements BaseColumns {
@@ -68,6 +68,31 @@ public class EventsContract {
                 ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_PLACE;
 
         public static Uri buildPlaceUri(String id) {
+            return Uri.withAppendedPath(CONTENT_URI, id);
+        }
+    }
+
+    public static final class UserEntry implements BaseColumns {
+        public static final String TABLE_NAME = "user";
+        public static final String COLUMN_FACEBOOKID = "facebookid";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_FIRSTNAME = "firstname";
+        public static final String COLUMN_LASTNAME = "lastname";
+        public static final String COLUMN_PICTURE = "picture";
+        public static final String COLUMN_COVER = "cover";
+        public static final String COLUMN_LINK = "link";
+        public static final String COLUMN_ABOUTME = "aboutme";
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_USER).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_USER;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_USER;
+
+
+        public static Uri buildUserUri(String id) {
             return Uri.withAppendedPath(CONTENT_URI, id);
         }
     }

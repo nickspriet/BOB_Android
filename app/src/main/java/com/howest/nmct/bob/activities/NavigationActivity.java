@@ -1,9 +1,12 @@
 package com.howest.nmct.bob.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -17,12 +20,15 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.howest.nmct.bob.R;
+import com.howest.nmct.bob.data.Contracts;
+import com.howest.nmct.bob.data.DatabaseHelper;
 import com.howest.nmct.bob.models.Event;
 import com.howest.nmct.bob.models.Ride;
 
@@ -33,10 +39,12 @@ import static com.howest.nmct.bob.Constants.ACTIVITY_FEED;
 import static com.howest.nmct.bob.Constants.ACTIVITY_PROFILE;
 import static com.howest.nmct.bob.Constants.ACTIVITY_RIDES;
 import static com.howest.nmct.bob.Constants.ACTIVITY_SETTINGS;
+import static com.howest.nmct.bob.Constants.BACKEND_TOKEN;
 import static com.howest.nmct.bob.Constants.EVENT;
 import static com.howest.nmct.bob.Constants.REQUEST_EDIT;
 import static com.howest.nmct.bob.Constants.RIDE;
 import static com.howest.nmct.bob.Constants.TOOLBAR_TRANSITION_NAME;
+import static com.howest.nmct.bob.Constants.USER_ID;
 
 /**
  * illyism
@@ -301,6 +309,25 @@ public abstract class NavigationActivity extends AppCompatActivity
 
         ActivityCompat.startActivityForResult(this, i, REQUEST_EDIT,
                 transitionActivityOptions.toBundle());
+    }
+
+    /**
+     * Clears all saved user data
+     * Navigate to Login
+     */
+    public void navigatetoLogin() {
+        Log.d("NavigationActivity", "Navigating to login - killing user dat");
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences.edit().remove(BACKEND_TOKEN).remove(USER_ID).apply();
+
+        SQLiteDatabase db = new DatabaseHelper(this).getWritableDatabase();
+        db.delete(Contracts.UserEntry.TABLE_NAME, null, null);
+        db.delete(Contracts.PlaceEntry.TABLE_NAME, null, null);
+        db.delete(Contracts.EventEntry.TABLE_NAME, null, null);
+
+        Intent i = new Intent(this, LoginActivity.class);
+        startActivity(i);
+        finish();
     }
 
     /**

@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.activities.BaseActivity;
-import com.howest.nmct.bob.data.EventsContract;
+import com.howest.nmct.bob.data.Contracts;
 import com.howest.nmct.bob.fragments.EventsFragment;
 import com.howest.nmct.bob.models.Event;
 import com.squareup.picasso.Picasso;
@@ -108,7 +108,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
     private void onEventSelected(int itemId, ImageView imgEvent) {
         mCursor.moveToPosition(itemId);
-        int idIndex = mCursor.getColumnIndex(EventsContract.EventEntry._ID);
+        int idIndex = mCursor.getColumnIndex(Contracts.EventEntry._ID);
         mFragment.onEventSelected(mCursor.getString(idIndex), imgEvent);
     }
 }

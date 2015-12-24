@@ -20,8 +20,8 @@ import android.widget.Toast;
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.activities.NavigationActivity;
 import com.howest.nmct.bob.adapters.EventAdapter;
-import com.howest.nmct.bob.data.EventsContract.EventEntry;
-import com.howest.nmct.bob.data.EventsContract.PlaceEntry;
+import com.howest.nmct.bob.data.Contracts.EventEntry;
+import com.howest.nmct.bob.data.Contracts.PlaceEntry;
 import com.howest.nmct.bob.interfaces.EventsLoadedListener;
 
 import java.io.IOException;

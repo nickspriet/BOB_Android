@@ -2,6 +2,7 @@ package com.howest.nmct.bob.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +28,7 @@ import com.google.gson.Gson;
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.api.APIAuthenticatedResponse;
 import com.howest.nmct.bob.api.APILoginResponse;
+import com.howest.nmct.bob.data.Contracts.UserEntry;
 import com.howest.nmct.bob.models.User;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
@@ -51,7 +53,7 @@ import static com.howest.nmct.bob.Constants.FACEBOOK_EXPIRES;
 import static com.howest.nmct.bob.Constants.FACEBOOK_PERMISSIONS;
 import static com.howest.nmct.bob.Constants.FACEBOOK_TOKEN;
 import static com.howest.nmct.bob.Constants.FACEBOOK_USERID;
-import static com.howest.nmct.bob.Constants.USER_PROFILE;
+import static com.howest.nmct.bob.Constants.USER_ID;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -141,10 +143,37 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
+     * Check if a profile is in the database, otherwise get it from the backend
+     */
+    private void getProfile() {
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String userId = preferences.getString(USER_ID, "");
+
+        if (userId.isEmpty()) {
+            getProfileFromBackend();
+            return;
+        }
+
+        Cursor c = getContentResolver().query(UserEntry.buildUserUri(userId), null, null, null, null);
+
+        if (c != null && c.moveToFirst()) {
+            int indexId = c.getColumnIndex(UserEntry._ID);
+            String dbUserId = c.getString(indexId);
+            if (dbUserId.equals(userId)) {
+                onLoggedIn();
+            }
+            c.close();
+            return;
+        }
+
+        getProfileFromBackend();
+    }
+
+    /**
      * User already has a token from our backend.
      * Do a call to the backend to get a profile.
      */
-    private void getProfile() {
+    private void getProfileFromBackend() {
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String token = preferences.getString(BACKEND_TOKEN, "");
 
@@ -174,7 +203,14 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i("LoginActivity", responseString);
                 APILoginResponse apiResponse = new Gson().fromJson(responseString, APILoginResponse.class);
                 if (apiResponse.statusCode == 200) {
-                    onLoggedIn(apiResponse.data.user);
+                    getContentResolver().insert(UserEntry.CONTENT_URI,
+                            User.asContentValues(apiResponse.data.user));
+
+                    preferences.edit()
+                            .putString(USER_ID, apiResponse.data.user.getId())
+                            .apply();
+
+                    onLoggedIn();
                 } else {
                     // Might be an incorrect backend token
                     preferences.edit().remove(BACKEND_TOKEN).apply();
@@ -248,19 +284,22 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         preferences.edit()
                 .putString(BACKEND_TOKEN, apiAuthenticatedResponse.data.token)
+                .putString(USER_ID, apiAuthenticatedResponse.data.user.getId())
                 .apply();
 
+        // Save the user
+        getContentResolver().insert(UserEntry.CONTENT_URI,
+                User.asContentValues(apiAuthenticatedResponse.data.user));
+
         // Start the app
-        onLoggedIn(apiAuthenticatedResponse.data.user);
+        onLoggedIn();
     }
 
     /**
      * User has logged in. Start the next activity.
-     * @param user profile
      */
-    private void onLoggedIn(User user) {
+    private void onLoggedIn() {
         Intent i = new Intent(this, FeedActivity.class);
-        i.putExtra(USER_PROFILE, user);
         startActivity(i);
         finish();
     }

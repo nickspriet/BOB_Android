@@ -1,13 +1,19 @@
 package com.howest.nmct.bob.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.ContentObserver;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.howest.nmct.bob.R;
+import com.howest.nmct.bob.data.Contracts.UserEntry;
 import com.howest.nmct.bob.fragments.ProfileFragment;
 import com.howest.nmct.bob.models.User;
 import com.howest.nmct.bob.utils.IntentStarter;
@@ -17,7 +23,7 @@ import java.util.List;
 import static com.howest.nmct.bob.Constants.REQUEST_EDIT;
 import static com.howest.nmct.bob.Constants.RESULTS_CLOSE;
 import static com.howest.nmct.bob.Constants.RESULTS_OK;
-import static com.howest.nmct.bob.Constants.RESULT_USER;
+import static com.howest.nmct.bob.Constants.USER_ID;
 
 /**
  * illyism
@@ -26,10 +32,24 @@ import static com.howest.nmct.bob.Constants.RESULT_USER;
 public class ProfileActivity extends BaseActivity {
     private ProfileFragment mFragment;
 
+    private Handler mainHandler = new Handler(Looper.getMainLooper());
+    ContentObserver userObserver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStatusBarTranslucent(true);
+
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String userId = preferences.getString(USER_ID, "");
+        userObserver = new UserObserver(mainHandler);
+        getContentResolver().registerContentObserver(UserEntry.buildUserUri(userId), false, userObserver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getContentResolver().unregisterContentObserver(userObserver);
     }
 
     @Override
@@ -46,13 +66,6 @@ public class ProfileActivity extends BaseActivity {
             mFragment = new ProfileFragment();
             addFragmentToContainer(mFragment);
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        setToolbarImage(getUser().getCover());
-        setToolbarTitle(getUser().getName());
     }
 
     @Override
@@ -85,13 +98,26 @@ public class ProfileActivity extends BaseActivity {
                     break;
                 case RESULTS_OK:
                     Toast.makeText(this, "Edit Saved", Toast.LENGTH_LONG).show();
-                    User user = data.getExtras().getParcelable(RESULT_USER);
-                    setUser(user);
-                    mFragment.initViews();
+                    reloadUser();
                     break;
             }
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    class UserObserver extends ContentObserver {
+        public UserObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            User u = getUser();
+            setToolbarImage(u.getCover());
+            setToolbarTitle(u.getName());
+            mFragment.initViews();
+        }
     }
 }

@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.collections.Rides;
-import com.howest.nmct.bob.data.EventsContract.EventEntry;
+import com.howest.nmct.bob.data.Contracts.EventEntry;
 import com.howest.nmct.bob.fragments.CreateRideDialogFragment;
 import com.howest.nmct.bob.fragments.EventDetailsFragment;
 import com.howest.nmct.bob.interfaces.EventActionsListener;

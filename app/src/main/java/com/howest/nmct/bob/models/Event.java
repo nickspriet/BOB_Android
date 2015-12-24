@@ -7,7 +7,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.howest.nmct.bob.data.EventsContract.EventEntry;
+import com.howest.nmct.bob.data.Contracts.EventEntry;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

@@ -10,8 +10,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.test.AndroidTestCase;
 
-import com.howest.nmct.bob.data.EventsContract.EventEntry;
-import com.howest.nmct.bob.data.EventsContract.PlaceEntry;
+import com.howest.nmct.bob.data.Contracts.EventEntry;
+import com.howest.nmct.bob.data.Contracts.PlaceEntry;
 
 /**
  * illyism
@@ -54,7 +54,7 @@ public class TestEventProvider extends AndroidTestCase {
     }
 
     public void deleteAllRecordsFromDB() {
-        EventsDbHelper dbHelper = new EventsDbHelper(mContext);
+        DatabaseHelper dbHelper = new DatabaseHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         db.delete(EventEntry.TABLE_NAME, null, null);
@@ -74,7 +74,7 @@ public class TestEventProvider extends AndroidTestCase {
         // We define the component name based on the package name from the context and the
         // EventsProvider class.
         ComponentName componentName = new ComponentName(mContext.getPackageName(),
-                EventProvider.class.getName());
+                Provider.class.getName());
         try {
             // Fetch the provider info using the component name from the PackageManager
             // This throws an exception if the provider isn't registered.
@@ -82,8 +82,8 @@ public class TestEventProvider extends AndroidTestCase {
 
             // Make sure that the registered authority matches the authority from the Contract.
             assertEquals("Error: EventsProvider registered with authority: " + providerInfo.authority +
-                    " instead of authority: " + EventsContract.CONTENT_AUTHORITY,
-                    providerInfo.authority, EventsContract.CONTENT_AUTHORITY);
+                    " instead of authority: " + Contracts.CONTENT_AUTHORITY,
+                    providerInfo.authority, Contracts.CONTENT_AUTHORITY);
         } catch (PackageManager.NameNotFoundException e) {
             // I guess the provider isn't registered correctly.
             assertTrue("Error: EventsProvider not registered at " + mContext.getPackageName(),
@@ -107,7 +107,7 @@ public class TestEventProvider extends AndroidTestCase {
 
     public void testEventQuery() {
          // insert our test records into the database
-        EventsDbHelper dbHelper = new EventsDbHelper(mContext);
+        DatabaseHelper dbHelper = new DatabaseHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues placeContentValues = TestUtilities.getPlaceContentValues("321");

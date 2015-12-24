@@ -11,7 +11,7 @@ public class TestEventsContract extends AndroidTestCase {
     private static final String TEST_EVENT_ID = "123";
 
     public void testBuildUri() {
-        Uri eventUri = EventsContract.EventEntry.buildEventUri(TEST_EVENT_ID);
+        Uri eventUri = Contracts.EventEntry.buildEventUri(TEST_EVENT_ID);
         assertNotNull("Error: Null Uri returned.",  eventUri);
         assertEquals("Error: Event id not properly appended to the end of the Uri",
                 TEST_EVENT_ID, eventUri.getLastPathSegment());
