@@ -204,7 +204,7 @@ public class RideDetailsActivity extends BaseActivity implements Callback {
         if (id == R.id.event) {
             Event selectedEvent = Events.getEvent(mRide.event.getId());
             if (selectedEvent == null) selectedEvent = mRide.event;
-            navigateToEventDetails(selectedEvent, (ImageView) findViewById(R.id.toolbarImage));
+            navigateToEventDetails(selectedEvent.getId(), (ImageView) findViewById(R.id.toolbarImage));
             return true;
         }
         return super.onOptionsItemSelected(item);

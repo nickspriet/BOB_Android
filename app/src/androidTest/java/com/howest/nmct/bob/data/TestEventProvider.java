@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.test.AndroidTestCase;
-import android.util.Log;
 
 import com.howest.nmct.bob.data.EventsContract.EventEntry;
 import com.howest.nmct.bob.data.EventsContract.PlaceEntry;
@@ -157,10 +156,6 @@ public class TestEventProvider extends AndroidTestCase {
         Cursor placeCursor = mContext.getContentResolver().query(PlaceEntry.CONTENT_URI, null, null, null, null);
 
         assertTrue("Empty cursor returned", placeCursor.moveToFirst());
-
-        for (int i = 0; i < placeCursor.getColumnCount(); i++) {
-            Log.d(LOG_TAG, i + " = " + placeCursor.getString(i));
-        }
 
         TestUtilities.TestContentObserver tco = TestUtilities.getTestContentObserver();
         placeCursor.registerContentObserver(tco);

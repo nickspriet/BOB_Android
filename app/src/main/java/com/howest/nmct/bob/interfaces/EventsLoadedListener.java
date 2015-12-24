@@ -1,9 +1,6 @@
 package com.howest.nmct.bob.interfaces;
 
-import com.howest.nmct.bob.models.Event;
-
 import java.io.IOException;
-import java.util.LinkedHashSet;
 
 /**
  * illyism
@@ -12,5 +9,4 @@ import java.util.LinkedHashSet;
 public interface EventsLoadedListener {
     void startLoading();
     void failedLoading(IOException e);
-    void eventsLoaded(LinkedHashSet<Event> events);
 }

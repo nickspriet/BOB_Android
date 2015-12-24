@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import com.howest.nmct.bob.R;
+import com.howest.nmct.bob.interfaces.RideOptionSelectedListener;
 import com.howest.nmct.bob.models.Event;
 
 /**
@@ -41,10 +42,5 @@ public class CreateRideDialogFragment extends DialogFragment {
                     }
                 });
         return builder.create();
-    }
-
-    public interface RideOptionSelectedListener {
-        void onDialogBobClick(Event mEvent);
-        void onDialogNotBobClick(Event mEvent);
     }
 }

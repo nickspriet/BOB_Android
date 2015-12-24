@@ -12,7 +12,7 @@ import static com.howest.nmct.bob.data.EventsContract.PlaceEntry;
  * 21/12/15
  */
 public class EventsDbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     static final String DATABASE_NAME = "events.db";
 
     public EventsDbHelper(Context context) {
@@ -27,7 +27,7 @@ public class EventsDbHelper extends SQLiteOpenHelper {
                 EventsContract.EventEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL, " +
                 EventEntry.COLUMN_START_TIME + " INTEGER NOT NULL, " +
                 EventsContract.EventEntry.COLUMN_UPDATED_TIME + " INTEGER NOT NULL, " +
-                EventEntry.COLUMN_END_TIME + " INTEGER NOT NULL, " +
+                EventEntry.COLUMN_END_TIME + " INTEGER, " +
                 EventEntry.COLUMN_COVER + " TEXT NOT NULL, " +
                 EventEntry.COLUMN_PICTURE + " TEXT NOT NULL, " +
                 EventEntry.COLUMN_ATTENDING_COUNT + " INTEGER NOT NULL, " +
@@ -38,7 +38,7 @@ public class EventsDbHelper extends SQLiteOpenHelper {
                 EventEntry.COLUMN_CAN_GUESTS_INVITE + " INTEGER NOT NULL, " +
                 EventEntry.COLUMN_GUEST_LIST_ENABLED + " INTEGER NOT NULL, " +
                 EventEntry.COLUMN_RSVP_STATUS + " TEXT NOT NULL, " +
-                EventEntry.COLUMN_PLACE_ID + " TEXT NOT NULL, " +
+                EventEntry.COLUMN_PLACE_ID + " TEXT, " +
 
                 " FOREIGN KEY (" + EventEntry.COLUMN_PLACE_ID + ") REFERENCES " +
                 PlaceEntry.TABLE_NAME + " (" + PlaceEntry._ID + "));";

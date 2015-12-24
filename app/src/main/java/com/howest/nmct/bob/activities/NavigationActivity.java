@@ -253,13 +253,12 @@ public abstract class NavigationActivity extends AppCompatActivity
 
     /**
      * Starts the EventDetailsActivity and inserts the Event bundle with a transition
-     * @param event The Event
      * @param imageView The View that is shared
      */
-    public void navigateToEventDetails(Event event, ImageView imageView) {
+    public void navigateToEventDetails(String eventId, ImageView imageView) {
         Intent i = new Intent(this, EventDetailsActivity.class);
         addDataToIntent(i);
-        i.putExtra(EVENT, event);
+        i.putExtra(EVENT, eventId);
 
         Pair image = new Pair<>(imageView, ViewCompat.getTransitionName(imageView));
         Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
@@ -275,7 +274,7 @@ public abstract class NavigationActivity extends AppCompatActivity
     public void navigateToEventDetails(Event event) {
         Intent i = new Intent(this, EventDetailsActivity.class);
         addDataToIntent(i);
-        i.putExtra(EVENT, event);
+        i.putExtra(EVENT, event.getId());
 
         Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
 

@@ -1,13 +1,18 @@
 package com.howest.nmct.bob.models;
 
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.howest.nmct.bob.data.EventsContract.EventEntry;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Locale;
 
 /**
@@ -122,6 +127,8 @@ public class Event implements Parcelable {
         this.place = place;
     }
 
+    public Event() {}
+
     public String getId() {
         return id;
     }
@@ -134,22 +141,21 @@ public class Event implements Parcelable {
         return name;
     }
 
-    public Date getStartTime() {
-        if (startTime == null) return null;
+    public static Date parseDate(String dateString) {
+        if (dateString == null) return null;
         try {
-            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US).parse(startTime);
+            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US).parse(dateString);
         } catch (Exception e) {
             return null;
         }
     }
 
+    public Date getStartTime() {
+        return parseDate(startTime);
+    }
+
     public Date getEndTime() {
-        if (endTime == null) return null;
-        try {
-            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US).parse(endTime);
-        } catch (Exception e) {
-            return null;
-        }
+        return parseDate(endTime);
     }
 
     public String getCover() {
@@ -164,7 +170,7 @@ public class Event implements Parcelable {
         }
     }
 
-    public String getEventDateFormat(String datePattern, Date date) {
+    public static String formatDate(String datePattern, Date date) {
         if (date == null) return "";
         SimpleDateFormat sdf = new SimpleDateFormat(datePattern, Locale.US);
         return sdf.format(date);
@@ -256,5 +262,77 @@ public class Event implements Parcelable {
     @Override
     public int hashCode() {
         return this.getId().hashCode();
+    }
+
+    public static ContentValues[] asContentValues(LinkedHashSet<Event> events) {
+        ContentValues[] values = new ContentValues[events.size()];
+        int i = 0;
+        for (Iterator<Event> iter = events.iterator(); iter.hasNext(); i++) {
+            values[i] = asContentValues(iter.next());
+        }
+        return values;
+    }
+
+    public static ContentValues asContentValues(Event e) {
+        ContentValues values = new ContentValues();
+        values.put(EventEntry._ID, e.id);
+        values.put(EventEntry.COLUMN_NAME, e.name);
+        values.put(EventEntry.COLUMN_DESCRIPTION, e.description);
+        values.put(EventEntry.COLUMN_START_TIME, e.startTime);
+        values.put(EventEntry.COLUMN_UPDATED_TIME, e.updatedTime);
+        values.put(EventEntry.COLUMN_END_TIME, e.endTime);
+        values.put(EventEntry.COLUMN_COVER, e.cover);
+        values.put(EventEntry.COLUMN_PICTURE, e.picture);
+        values.put(EventEntry.COLUMN_ATTENDING_COUNT, e.attendingCount);
+        values.put(EventEntry.COLUMN_DECLINED_COUNT, e.declinedCount);
+        values.put(EventEntry.COLUMN_INTERESTED_COUNT, e.interestedCount);
+        values.put(EventEntry.COLUMN_NOREPLY_COUNT, e.noreplyCount);
+        values.put(EventEntry.COLUMN_OWNER, e.owner.name);
+        values.put(EventEntry.COLUMN_CAN_GUESTS_INVITE, e.canGuestsInvite);
+        values.put(EventEntry.COLUMN_GUEST_LIST_ENABLED, e.guestListEnabled);
+        values.put(EventEntry.COLUMN_RSVP_STATUS, e.rsvpStatus);
+        if (e.place != null)
+            values.put(EventEntry.COLUMN_PLACE_ID, e.place.id);
+        return values;
+    }
+
+    public static Event createFromCursor(Cursor data) {
+        Event newEvent = new Event();
+
+        int indexId = data.getColumnIndex(EventEntry._ID);
+        int indexName = data.getColumnIndex(EventEntry.COLUMN_NAME);
+        int indexdescription = data.getColumnIndex(EventEntry.COLUMN_DESCRIPTION);
+        int indexstartTime = data.getColumnIndex(EventEntry.COLUMN_START_TIME);
+        int indexupdatedTime = data.getColumnIndex(EventEntry.COLUMN_UPDATED_TIME);
+        int indexendTime = data.getColumnIndex(EventEntry.COLUMN_END_TIME);
+        int indexcover = data.getColumnIndex(EventEntry.COLUMN_COVER);
+        int indexpicture = data.getColumnIndex(EventEntry.COLUMN_PICTURE);
+        int indexattendingCount = data.getColumnIndex(EventEntry.COLUMN_ATTENDING_COUNT);
+        int indexdeclinedCount = data.getColumnIndex(EventEntry.COLUMN_DECLINED_COUNT);
+        int indexinterestedCount = data.getColumnIndex(EventEntry.COLUMN_INTERESTED_COUNT);
+        int indexnoreplyCount = data.getColumnIndex(EventEntry.COLUMN_NOREPLY_COUNT);
+        int indexowner = data.getColumnIndex(EventEntry.COLUMN_OWNER);
+        int indexcanGuestsInvite = data.getColumnIndex(EventEntry.COLUMN_CAN_GUESTS_INVITE);
+        int indexguestListEnabled = data.getColumnIndex(EventEntry.COLUMN_GUEST_LIST_ENABLED);
+        int indexrsvpStatus = data.getColumnIndex(EventEntry.COLUMN_RSVP_STATUS);
+
+        newEvent.id = data.getString(indexId);
+        newEvent.name = data.getString(indexName);
+        newEvent.description = data.getString(indexdescription);
+        newEvent.startTime = data.getString(indexstartTime);
+        newEvent.updatedTime = data.getString(indexupdatedTime);
+        newEvent.endTime = data.getString(indexendTime);
+        newEvent.cover = data.getString(indexcover);
+        newEvent.picture = data.getString(indexpicture);
+        newEvent.attendingCount = data.getInt(indexattendingCount);
+        newEvent.declinedCount = data.getInt(indexdeclinedCount);
+        newEvent.interestedCount = data.getInt(indexinterestedCount);
+        newEvent.noreplyCount = data.getInt(indexnoreplyCount);
+        newEvent.owner = new Owner("0", data.getString(indexowner));
+        newEvent.canGuestsInvite = data.getInt(indexcanGuestsInvite) == 1;
+        newEvent.guestListEnabled = data.getInt(indexguestListEnabled) == 1;
+        newEvent.rsvpStatus = data.getString(indexrsvpStatus);
+
+        return newEvent;
     }
 }

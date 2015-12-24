@@ -2,6 +2,7 @@ package com.howest.nmct.bob.fragments;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
-import com.howest.nmct.bob.activities.EventDetailsActivity;
+import com.howest.nmct.bob.interfaces.EventActionsListener;
 import com.howest.nmct.bob.models.Event;
 
 import java.util.Date;
@@ -46,6 +47,8 @@ public class EventDetailsFragment extends Fragment {
     @Bind(R.id.locationContainerSeparator) View locationContainerSeparator;
 
     private Event mEvent;
+    private EventActionsListener mListener;
+
     public EventDetailsFragment() {}
 
     public static EventDetailsFragment newInstance(Event event) {
@@ -58,12 +61,18 @@ public class EventDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.content_event_details, container, false);
         ButterKnife.bind(this, v);
-        initViews();
         return v;
     }
 
-    private void setEvent(Event event) {
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mListener = (EventActionsListener) getActivity();
+    }
+
+    public void setEvent(Event event) {
         this.mEvent = event;
+        initViews();
     }
 
     private void initViews() {
@@ -86,13 +95,12 @@ public class EventDetailsFragment extends Fragment {
             locationContainerSeparator.setVisibility(View.GONE);
         }
 
-
         Date startTime = mEvent.getStartTime();
         if (startTime != null) {
             tvEventDetailsStartTime.setText(String.format("%s %s at %s",
-                    mEvent.getEventDateFormat("EEE", startTime),
-                    mEvent.getEventDateFormat("FF", startTime),
-                    mEvent.getEventDateFormat("hh:mm a", startTime)));
+                    Event.formatDate("EEE", startTime),
+                    Event.formatDate("FF", startTime),
+                    Event.formatDate("hh:mm a", startTime)));
         } else {
             startAtContainer.setVisibility(View.GONE);
             startAtContainerSeparator.setVisibility(View.GONE);
@@ -101,9 +109,9 @@ public class EventDetailsFragment extends Fragment {
         Date endTime = mEvent.getEndTime();
         if (endTime != null) {
             tvEventDetailsEndTime.setText(String.format("%s %s at %s",
-                    mEvent.getEventDateFormat("EEE", endTime),
-                    mEvent.getEventDateFormat("FF", endTime),
-                    mEvent.getEventDateFormat("hh:mm a", endTime)));
+                    Event.formatDate("EEE", endTime),
+                    Event.formatDate("FF", endTime),
+                    Event.formatDate("hh:mm a", endTime)));
         } else {
             endsAtContainer.setVisibility(View.GONE);
             endsAtContainerSeparator.setVisibility(View.GONE);
@@ -114,20 +122,17 @@ public class EventDetailsFragment extends Fragment {
 
     @OnClick(R.id.btnGoing)
     public void onBtnGoingClick() {
-        EventDetailsActivity activity = (EventDetailsActivity) getActivity();
-        activity.onGoing();
+        if (mListener != null) mListener.onGoing();
     }
 
     @OnClick(R.id.btnInterested)
     public void onBtnInterestedClick() {
-        EventDetailsActivity activity = (EventDetailsActivity) getActivity();
-        activity.onInterested();
+        if (mListener != null) mListener.onInterested();
     }
 
     @OnClick(R.id.btnGoing)
     public void onBtnNotGoingClick() {
-        EventDetailsActivity activity = (EventDetailsActivity) getActivity();
-        activity.onNotGoing();
+        if (mListener != null) mListener.onNotGoing();
     }
 }
 

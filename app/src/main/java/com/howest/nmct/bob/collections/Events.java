@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.howest.nmct.bob.api.APIEventsResponse;
+import com.howest.nmct.bob.data.EventsContract.EventEntry;
 import com.howest.nmct.bob.interfaces.EventsLoadedListener;
 import com.howest.nmct.bob.models.Event;
 import com.squareup.okhttp.Call;
@@ -49,11 +50,7 @@ public class Events {
         return foundEvent;
     }
 
-    public static void addEvents(LinkedHashSet<Event> events) {
-        Events.events.addAll(events);
-    }
-
-    public static void fetchData(Context context, final EventsLoadedListener listener) {
+    public static void fetchData(final Context context, final EventsLoadedListener listener) {
         OkHttpClient okHttpClient = new OkHttpClient();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -90,15 +87,12 @@ public class Events {
                 Log.i("Events", responseString);
                 APIEventsResponse apiResponse = new Gson().fromJson(responseString, APIEventsResponse.class);
                 Log.i("Events", apiResponse.data.events.toString());
-                addEvents(apiResponse.data.events);
 
-                mainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        listener.eventsLoaded(events);
-                    }
-                });
+                context.getContentResolver().bulkInsert(
+                        EventEntry.CONTENT_URI,
+                        Event.asContentValues(apiResponse.data.events));
             }
         });
     }
+
 }
