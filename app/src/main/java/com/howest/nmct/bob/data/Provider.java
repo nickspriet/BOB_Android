@@ -11,7 +11,9 @@ import android.support.annotation.NonNull;
 
 import com.howest.nmct.bob.data.Contracts.EventEntry;
 import com.howest.nmct.bob.data.Contracts.PlaceEntry;
+import com.howest.nmct.bob.data.Contracts.RideEntry;
 import com.howest.nmct.bob.data.Contracts.UserEntry;
+import com.howest.nmct.bob.data.Contracts.UserRideEntry;
 
 /**
  * illyism
@@ -23,6 +25,10 @@ public class Provider extends ContentProvider {
 
     static final int EVENT = 100;
     static final int EVENT_ID = 101;
+    static final int RIDE = 200;
+    static final int RIDE_ID = 201;
+    static final int USER_RIDE = 250;
+    static final int USER_RIDE_ID = 251;
     static final int PLACE = 300;
     static final int PLACE_ID = 301;
     static final int USER = 400;
@@ -31,13 +37,28 @@ public class Provider extends ContentProvider {
     static final String sEventWithPlace = EventEntry.TABLE_NAME + " LEFT OUTER JOIN " +
             PlaceEntry.TABLE_NAME +
             " ON " + EventEntry.COLUMN_PLACE_ID +
-            " = " + PlaceEntry.TABLE_NAME +
-            "." + PlaceEntry._ID;
+            " = " + PlaceEntry.TABLE_NAME + "." + PlaceEntry._ID;
+
+    static final String sRideWithUserEventPlace = RideEntry.TABLE_NAME +
+            " LEFT OUTER JOIN " +
+                EventEntry.TABLE_NAME +
+                " ON " + RideEntry.TABLE_NAME + "." + RideEntry.COLUMN_EVENT_ID +
+                " = " + EventEntry.TABLE_NAME + "." + EventEntry._ID +
+            " LEFT OUTER JOIN " +
+                UserEntry.TABLE_NAME +
+                " ON " + RideEntry.TABLE_NAME + "." + RideEntry.COLUMN_DRIVER_ID +
+                " = " + UserEntry.TABLE_NAME + "." + UserEntry._ID +
+            " LEFT OUTER JOIN " +
+                PlaceEntry.TABLE_NAME +
+                " ON " + RideEntry.TABLE_NAME + "." + RideEntry.COLUMN_PLACE_ID +
+                " = " + PlaceEntry.TABLE_NAME + "." + PlaceEntry._ID;
 
     static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_EVENT, EVENT);
         uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_EVENT + "/*", EVENT_ID);
+        uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_RIDE, RIDE);
+        uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_RIDE + "/*", RIDE_ID);
         uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_PLACE, PLACE);
         uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_PLACE + "/*", PLACE_ID);
         uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_USER, USER);
@@ -60,6 +81,14 @@ public class Provider extends ContentProvider {
                 return EventEntry.CONTENT_TYPE;
             case EVENT_ID:
                 return EventEntry.CONTENT_ITEM_TYPE;
+            case RIDE:
+                return RideEntry.CONTENT_TYPE;
+            case RIDE_ID:
+                return RideEntry.CONTENT_ITEM_TYPE;
+            case USER_RIDE:
+                return UserRideEntry.CONTENT_TYPE;
+            case USER_RIDE_ID:
+                return UserRideEntry.CONTENT_ITEM_TYPE;
             case PLACE:
                 return PlaceEntry.CONTENT_TYPE;
             case PLACE_ID:
@@ -93,6 +122,21 @@ public class Provider extends ContentProvider {
                 );
                 break;
             }
+            // "ride/*"
+            case RIDE_ID:
+            {
+                final String rideId = uri.getPathSegments().get(1);
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        sRideWithUserEventPlace,
+                        projection,
+                        "(" + RideEntry.TABLE_NAME + "." + RideEntry._ID + "=?)",
+                        new String[] {rideId},
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
             // "place"
             case PLACE: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
@@ -110,6 +154,19 @@ public class Provider extends ContentProvider {
             case EVENT: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         sEventWithPlace,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+            // "ride"
+            case RIDE: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        sRideWithUserEventPlace,
                         projection,
                         selection,
                         selectionArgs,
@@ -155,6 +212,14 @@ public class Provider extends ContentProvider {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
             }
+            case RIDE: {
+                long _id = db.insert(RideEntry.TABLE_NAME, null, values);
+                if (_id > 0)
+                    returnUri = RideEntry.buildRideUri(Long.toString(_id));
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
             case PLACE: {
                 long _id = db.insert(PlaceEntry.TABLE_NAME, null, values);
                 if (_id > 0)
@@ -191,6 +256,13 @@ public class Provider extends ContentProvider {
             case EVENT:
                 deletedRows = db.delete(
                         EventEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs
+                );
+                break;
+            case RIDE:
+                deletedRows = db.delete(
+                        RideEntry.TABLE_NAME,
                         selection,
                         selectionArgs
                 );
@@ -232,6 +304,23 @@ public class Provider extends ContentProvider {
                         values,
                         selection,
                         selectionArgs
+                );
+                break;
+            case RIDE:
+                updatedRows = db.update(
+                        RideEntry.TABLE_NAME,
+                        values,
+                        selection,
+                        selectionArgs
+                );
+                break;
+            case RIDE_ID:
+                final String rideId = uri.getPathSegments().get(1);
+                updatedRows = db.update(
+                        RideEntry.TABLE_NAME,
+                        values,
+                        "(" + RideEntry._ID + " =?)",
+                        new String[] {rideId}
                 );
                 break;
             case PLACE:
@@ -280,6 +369,36 @@ public class Provider extends ContentProvider {
                 try {
                     for (ContentValues value : values) {
                         long _id = db.insertWithOnConflict(EventEntry.TABLE_NAME, null, value, SQLiteDatabase.CONFLICT_REPLACE);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
+            case RIDE:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insertWithOnConflict(RideEntry.TABLE_NAME, null, value, SQLiteDatabase.CONFLICT_REPLACE);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
+            case USER_RIDE:
+                db.beginTransaction();
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insertWithOnConflict(UserRideEntry.TABLE_NAME, null, value, SQLiteDatabase.CONFLICT_REPLACE);
                         if (_id != -1) {
                             returnCount++;
                         }

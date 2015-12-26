@@ -9,6 +9,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.howest.nmct.bob.data.Contracts.UserEntry;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+
 /**
  * illyism
  * 21/10/15
@@ -179,5 +182,22 @@ public class User implements Parcelable {
         newUser.aboutMe = data.getString(indexAboutMe);
 
         return newUser;
+    }
+
+    public static ContentValues[] asContentValues(LinkedHashSet<Ride> rides) {
+        ArrayList<ContentValues> values = new ArrayList<>();
+        for (Ride r : rides) {
+            ContentValues driverValues = asContentValues(r.driver);
+            if (driverValues != null) values.add(driverValues);
+            for (User u : r.approvedList) {
+                ContentValues listValues = asContentValues(u);
+                if (listValues != null) values.add(listValues);
+            }
+            for (User u : r.requestsList) {
+                ContentValues listValues = asContentValues(u);
+                if (listValues != null) values.add(listValues);
+            }
+        }
+        return values.toArray(new ContentValues[values.size()]);
     }
 }

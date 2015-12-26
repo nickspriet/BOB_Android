@@ -71,4 +71,5 @@
     <string name="no_events">No events</string>
     <string name="failed_loading">Failed loading</string>
     <string name="loading_events">Loading events...</string>
+    <string name="no_rides">No rides</string>
 </resources>

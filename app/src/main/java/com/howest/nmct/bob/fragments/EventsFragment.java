@@ -22,7 +22,7 @@ import com.howest.nmct.bob.activities.NavigationActivity;
 import com.howest.nmct.bob.adapters.EventAdapter;
 import com.howest.nmct.bob.data.Contracts.EventEntry;
 import com.howest.nmct.bob.data.Contracts.PlaceEntry;
-import com.howest.nmct.bob.interfaces.EventsLoadedListener;
+import com.howest.nmct.bob.interfaces.APIFetchListener;
 
 import java.io.IOException;
 
@@ -32,12 +32,15 @@ import butterknife.ButterKnife;
 /**
  * Nick on 28/10/2015.
  */
-public class EventsFragment extends Fragment implements EventsLoadedListener,
+public class EventsFragment extends Fragment implements APIFetchListener,
         LoaderManager.LoaderCallbacks<Cursor> {
+
     @Bind(R.id.list) RecyclerView recyclerView;
     @Bind(R.id.empty_view) TextView emptyView;
+
     public EventAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
     private static final int URL_LOADER = 0;
 
     private static final String[] EVENT_COLUMNS = {
@@ -54,8 +57,7 @@ public class EventsFragment extends Fragment implements EventsLoadedListener,
     public static final int COL_EVENT_COVER = 3;
     public static final int COL_PLACE_NAME = 4;
 
-    public EventsFragment() {
-    }
+    public EventsFragment() {}
 
     @Nullable
     @Override

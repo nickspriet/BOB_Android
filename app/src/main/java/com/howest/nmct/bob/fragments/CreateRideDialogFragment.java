@@ -9,7 +9,6 @@ import android.support.v7.app.AlertDialog;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.interfaces.RideOptionSelectedListener;
-import com.howest.nmct.bob.models.Event;
 
 /**
  * illyism
@@ -17,12 +16,12 @@ import com.howest.nmct.bob.models.Event;
  */
 public class CreateRideDialogFragment extends DialogFragment {
     private RideOptionSelectedListener mListener;
-    private Event mEvent;
+    private String mEventId;
 
-    public static CreateRideDialogFragment newInstance(RideOptionSelectedListener listener, Event event) {
+    public static CreateRideDialogFragment newInstance(RideOptionSelectedListener listener, String eventId) {
         CreateRideDialogFragment fragment = new CreateRideDialogFragment();
         fragment.mListener = listener;
-        fragment.mEvent = event;
+        fragment.mEventId = eventId;
         return fragment;
     }
 
@@ -35,9 +34,9 @@ public class CreateRideDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                mListener.onDialogBobClick(mEvent);
+                                mListener.onDialogBobClick(mEventId);
                             case 1:
-                                mListener.onDialogNotBobClick(mEvent);
+                                mListener.onDialogNotBobClick(mEventId);
                         }
                     }
                 });

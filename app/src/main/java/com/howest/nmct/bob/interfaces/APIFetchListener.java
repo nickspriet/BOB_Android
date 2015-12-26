@@ -6,7 +6,7 @@ import java.io.IOException;
  * illyism
  * 09/12/15
  */
-public interface EventsLoadedListener {
+public interface APIFetchListener{
     void startLoading();
     void failedLoading(IOException e);
 }

@@ -6,6 +6,7 @@ package com.howest.nmct.bob.adapters;
  */
 
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
@@ -22,13 +23,13 @@ import android.widget.TextView;
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.activities.BaseActivity;
 import com.howest.nmct.bob.fragments.RidesFragment;
-import com.howest.nmct.bob.models.Ride;
+import com.howest.nmct.bob.models.Event;
 import com.howest.nmct.bob.models.User;
 import com.howest.nmct.bob.views.AutoHeightViewPager;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -39,12 +40,21 @@ import butterknife.OnClick;
  * Adapter for the RecyclerView
  */
 public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
-    private ArrayList<Ride> mRides;
+    private Cursor mCursor;
     private final BaseActivity mActivity;
     private final RidesFragment mFragment;
 
-    public void setRides(LinkedHashSet<Ride> rides) {
-        this.mRides = new ArrayList<>(rides);
+    public void swapCursor(Cursor data) {
+        if (mCursor == data) return;
+        Cursor oldCursor = mCursor;
+        mCursor = data;
+        if (data != null) {
+            resetSwipeStates();
+            notifyDataSetChanged();
+        }
+        if (oldCursor != null) {
+            oldCursor.close();
+        }
     }
 
     private enum SwipedState {
@@ -53,16 +63,15 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
     }
     private List<SwipedState> mItemSwipedStates;
 
-    public RideAdapter(RidesFragment ridesFragment, LinkedHashSet<Ride> rides) {
+    public RideAdapter(RidesFragment ridesFragment) {
         this.mActivity = (BaseActivity) ridesFragment.getActivity();
         this.mFragment = ridesFragment;
-        this.mRides = new ArrayList<>(rides);
         resetSwipeStates();
     }
 
     public void resetSwipeStates() {
         mItemSwipedStates = new ArrayList<>();
-        for (int i = 0; i < mRides.size(); i++) {
+        for (int i = 0; i < getItemCount(); i++) {
             mItemSwipedStates.add(i, SwipedState.SHOWING_PRIMARY_CONTENT);
         }
     }
@@ -109,30 +118,42 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
 
 
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        // Get information
+        mCursor.moveToPosition(position);
         User profile = mActivity.getUser();
-        Ride ride = mRides.get(position);
+        Date startTime = Event.parseDate(mCursor.getString(RidesFragment.COL_RIDE_START_TIME));
 
         // Fill in details
-        holder.rideTitle.setText(ride.event.getName());
-        holder.locationDetails.setText(Html.fromHtml(String.format("<b>%s</b> in <b>%s</b>", ride.getAddress(), ride.getStartTime())));
-        holder.ridePerson.setText(ride.getDriver().getName());
+        holder.rideTitle.setText(mCursor.getString(RidesFragment.COL_EVENT_NAME));
+
+        String locationName = mCursor.getString(RidesFragment.COL_PLACE_NAME);
+        holder.locationDetails.setText(
+                Html.fromHtml(String.format("<b>%s</b> in <b>%s</b>",
+                        locationName,
+                        Event.formatDate("E h a", startTime)
+                ))
+        );
+        holder.ridePerson.setText(mCursor.getString(RidesFragment.COL_USER_NAME));
 
         Picasso p = Picasso.with(mActivity);
-        p.load(ride.event.getCover())
+        p.load(mCursor.getString(RidesFragment.COL_EVENT_COVER))
                 .fit()
                 .centerCrop()
                 .placeholder(R.drawable.ic_image)
                 .into(holder.rideImage);
 
         if (profile != null) {
-            holder.approvalStatus.setText(Ride.formatApprovalStatus(ride, profile));
+            // holder.approvalStatus.setText(Ride.formatApprovalStatus(ride, profile));
             // Hide or show elements depending on approval and driver status
-            setUsernameColor(holder.ridePerson, ride.isSelfDriver(profile));
-            setVisibility(holder.locationDetails, ride.isSelfDriver(profile) || ride.isApproved(profile));
-            setVisibility(holder.driverButton, !ride.isSelfDriver(profile));
-            setVisibility(holder.mapButton, ride.isSelfDriver(profile) || ride.isApproved(profile));
-            setVisibility(holder.guestsButton, ride.isSelfDriver(profile) || ride.isApproved(profile));
+
+            String driverId = mCursor.getString(RidesFragment.COL_USER_ID);
+            Boolean isDriver = driverId.equals(profile.Id);
+            Boolean isApproved = false;
+
+            setUsernameColor(holder.ridePerson, isDriver );
+            setVisibility(holder.locationDetails, isDriver || isApproved);
+            setVisibility(holder.driverButton, !isDriver);
+            setVisibility(holder.mapButton, isDriver || isApproved);
+            setVisibility(holder.guestsButton, isDriver || isApproved);
         }
 
         // Set up viewpager
@@ -169,27 +190,25 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         });
     }
 
-
-
-
     @Override
     public int getItemCount() {
-        return mRides.size();
+        if (mCursor == null) return 0;
+        return mCursor.getCount();
     }
 
-    private void onRideSelected(long itemId, ImageView rideImage) {
-        Ride ride = mRides.get((int) itemId);
-        mFragment.onRideSelected(ride, rideImage);
+    private void onRideSelected(int itemId, ImageView rideImage) {
+        mCursor.moveToPosition(itemId);
+        mFragment.onRideSelected(mCursor.getString(RidesFragment.COL_RIDE_ID), rideImage);
     }
 
-    private void onMapButtonClicked(long itemId) {
-        Ride ride = mRides.get((int) itemId);
-        mFragment.onRideMapClick(ride);
+    private void onMapButtonClicked(int itemId) {
+        mCursor.moveToPosition(itemId);
+        mFragment.onRideMapClick(mCursor.getString(RidesFragment.COL_PLACE_ID));
     }
 
     private void onEventButtonClicked(int adapterPosition) {
-        Ride ride = mRides.get(adapterPosition);
-        mFragment.onRideEventClick(ride);
+        mCursor.moveToPosition(adapterPosition);
+        mFragment.onRideEventClick(mCursor.getString(RidesFragment.COL_EVENT_ID));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

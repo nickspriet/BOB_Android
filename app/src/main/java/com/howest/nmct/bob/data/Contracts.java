@@ -13,6 +13,8 @@ public class Contracts {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static final String PATH_EVENT = "event";
+    public static final String PATH_RIDE = "ride";
+    public static final String PATH_USER_RIDE = "userride";
     public static final String PATH_PLACE = "place";
     public static final String PATH_USER = "user";
 
@@ -47,6 +49,44 @@ public class Contracts {
         public static Uri buildEventUri(String id) {
             return Uri.withAppendedPath(CONTENT_URI, id);
         }
+    }
+
+    public static final class RideEntry implements BaseColumns {
+        public static final String TABLE_NAME = "ride";
+        public static final String COLUMN_START_TIME = "start_time";
+        public static final String COLUMN_END_TIME = "end_time";
+        public static final String COLUMN_DESCRIPTION = "description";
+        public static final String COLUMN_DRIVER_ID = "driver_id";
+        public static final String COLUMN_PLACE_ID = "place_id";
+        public static final String COLUMN_EVENT_ID = "event_id";
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_RIDE).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_RIDE;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_RIDE;
+
+
+        public static Uri buildRideUri(String id) {
+            return Uri.withAppendedPath(CONTENT_URI, id);
+        }
+    }
+
+    public static final class UserRideEntry implements BaseColumns {
+        public static final String TABLE_NAME = "userride";
+        public static final String COLUMN_RIDE_ID = "ride_id";
+        public static final String COLUMN_USER_ID = "user_id";
+        public static final String COLUMN_STATUS = "status";
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_USER_RIDE).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_USER_RIDE;
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_USER_RIDE;
     }
 
     public static final class PlaceEntry implements BaseColumns {

@@ -29,8 +29,6 @@ import android.widget.ImageView;
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.data.Contracts;
 import com.howest.nmct.bob.data.DatabaseHelper;
-import com.howest.nmct.bob.models.Event;
-import com.howest.nmct.bob.models.Ride;
 
 import butterknife.Bind;
 
@@ -220,33 +218,14 @@ public abstract class NavigationActivity extends AppCompatActivity
 
 
     /**
-     * Starts the RideActivity and inserts the Ride bundle
-     * @param ride The Ride
-     */
-    public void navigateToRideDetails(Ride ride) {
-        Intent i = new Intent(this, RideDetailsActivity.class);
-        addDataToIntent(i);
-        i.putExtra(RIDE, ride);
-
-        Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
-
-        ActivityOptionsCompat transitionActivityOptions =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        this, toolbar);
-
-        ActivityCompat.startActivity(this,
-                i, transitionActivityOptions.toBundle());
-    }
-
-    /**
      * Starts the RideActivity and inserts the Ride bundle with a transition
-     * @param ride The Ride
+     * @param rideId The Ride ID
      * @param imageView The View that is shared
      */
-    public void navigateToRideDetails(Ride ride, ImageView imageView) {
+    public void navigateToRideDetails(String rideId, ImageView imageView) {
         Intent i = new Intent(this, RideDetailsActivity.class);
         addDataToIntent(i);
-        i.putExtra(RIDE, ride);
+        i.putExtra(RIDE, rideId);
 
         Pair image = new Pair<>(imageView, ViewCompat.getTransitionName(imageView));
         Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
@@ -279,10 +258,10 @@ public abstract class NavigationActivity extends AppCompatActivity
                 i, transitionActivityOptions.toBundle());
     }
 
-    public void navigateToEventDetails(Event event) {
+    public void navigateToEventDetails(String eventId) {
         Intent i = new Intent(this, EventDetailsActivity.class);
         addDataToIntent(i);
-        i.putExtra(EVENT, event.getId());
+        i.putExtra(EVENT, eventId);
 
         Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
 

@@ -1,7 +1,6 @@
 package com.howest.nmct.bob.models;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -264,11 +263,19 @@ public class Event implements Parcelable {
         return this.getId().hashCode();
     }
 
-    public static ContentValues[] asContentValues(LinkedHashSet<Event> events) {
-        ContentValues[] values = new ContentValues[events.size()];
+    public static ContentValues[] asContentValues(LinkedHashSet objects) {
+        ContentValues[] values = new ContentValues[objects.size()];
         int i = 0;
-        for (Iterator<Event> iter = events.iterator(); iter.hasNext(); i++) {
-            values[i] = asContentValues(iter.next());
+        for (Iterator iter = objects.iterator(); iter.hasNext(); i++) {
+            Object o = iter.next();
+            if (o instanceof Event) {
+                Event e = (Event) o;
+                values[i] = asContentValues(e);
+            }
+            if (o instanceof Ride) {
+                Ride r = (Ride) o;
+                values[i] = asContentValues(r.event);
+            }
         }
         return values;
     }
@@ -294,47 +301,5 @@ public class Event implements Parcelable {
         if (e.place != null)
             values.put(EventEntry.COLUMN_PLACE_ID, e.place.id);
         return values;
-    }
-
-    public static Event createFromCursor(Cursor data) {
-        Event newEvent = new Event();
-
-        int indexId = data.getColumnIndex(EventEntry._ID);
-        int indexName = data.getColumnIndex(EventEntry.COLUMN_NAME);
-        int indexdescription = data.getColumnIndex(EventEntry.COLUMN_DESCRIPTION);
-        int indexstartTime = data.getColumnIndex(EventEntry.COLUMN_START_TIME);
-        int indexupdatedTime = data.getColumnIndex(EventEntry.COLUMN_UPDATED_TIME);
-        int indexendTime = data.getColumnIndex(EventEntry.COLUMN_END_TIME);
-        int indexcover = data.getColumnIndex(EventEntry.COLUMN_COVER);
-        int indexpicture = data.getColumnIndex(EventEntry.COLUMN_PICTURE);
-        int indexattendingCount = data.getColumnIndex(EventEntry.COLUMN_ATTENDING_COUNT);
-        int indexdeclinedCount = data.getColumnIndex(EventEntry.COLUMN_DECLINED_COUNT);
-        int indexinterestedCount = data.getColumnIndex(EventEntry.COLUMN_INTERESTED_COUNT);
-        int indexnoreplyCount = data.getColumnIndex(EventEntry.COLUMN_NOREPLY_COUNT);
-        int indexowner = data.getColumnIndex(EventEntry.COLUMN_OWNER);
-        int indexcanGuestsInvite = data.getColumnIndex(EventEntry.COLUMN_CAN_GUESTS_INVITE);
-        int indexguestListEnabled = data.getColumnIndex(EventEntry.COLUMN_GUEST_LIST_ENABLED);
-        int indexrsvpStatus = data.getColumnIndex(EventEntry.COLUMN_RSVP_STATUS);
-
-        newEvent.id = data.getString(indexId);
-        newEvent.name = data.getString(indexName);
-        newEvent.description = data.getString(indexdescription);
-        newEvent.startTime = data.getString(indexstartTime);
-        newEvent.updatedTime = data.getString(indexupdatedTime);
-        newEvent.endTime = data.getString(indexendTime);
-        newEvent.cover = data.getString(indexcover);
-        newEvent.picture = data.getString(indexpicture);
-        newEvent.attendingCount = data.getInt(indexattendingCount);
-        newEvent.declinedCount = data.getInt(indexdeclinedCount);
-        newEvent.interestedCount = data.getInt(indexinterestedCount);
-        newEvent.noreplyCount = data.getInt(indexnoreplyCount);
-        newEvent.owner = new Owner("0", data.getString(indexowner));
-        newEvent.canGuestsInvite = data.getInt(indexcanGuestsInvite) == 1;
-        newEvent.guestListEnabled = data.getInt(indexguestListEnabled) == 1;
-        newEvent.rsvpStatus = data.getString(indexrsvpStatus);
-
-        newEvent.place = Place.createFromCursor(data);
-
-        return newEvent;
     }
 }

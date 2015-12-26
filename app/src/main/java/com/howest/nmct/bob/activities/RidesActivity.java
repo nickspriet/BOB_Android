@@ -11,10 +11,7 @@ import android.support.v4.app.Fragment;
 import com.howest.nmct.bob.collections.Rides;
 import com.howest.nmct.bob.data.Contracts;
 import com.howest.nmct.bob.fragments.RidesFragment;
-import com.howest.nmct.bob.interfaces.RidesLoadedListener;
-import com.howest.nmct.bob.models.Ride;
 
-import java.util.LinkedHashSet;
 import java.util.List;
 
 import static com.howest.nmct.bob.Constants.USER_ID;
@@ -24,7 +21,7 @@ import static com.howest.nmct.bob.Constants.USER_ID;
  * illyism
  * 24/11/15
  */
-public class RidesActivity extends BaseActivity implements RidesLoadedListener {
+public class RidesActivity extends BaseActivity {
     private RidesFragment mFragment;
 
     private Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -48,7 +45,7 @@ public class RidesActivity extends BaseActivity implements RidesLoadedListener {
     }
 
     protected void initData() {
-        Rides.fetchData(this, this);
+        Rides.fetchData(this, mFragment);
     }
 
     @Override
@@ -60,13 +57,6 @@ public class RidesActivity extends BaseActivity implements RidesLoadedListener {
             mFragment = new RidesFragment();
             addFragmentToContainer(mFragment);
         }
-    }
-
-    @Override
-    public void ridesLoaded(LinkedHashSet<Ride> rides) {
-        mFragment.mAdapter.setRides(rides);
-        mFragment.mAdapter.resetSwipeStates();
-        mFragment.mAdapter.notifyDataSetChanged();
     }
 
     class UserObserver extends ContentObserver {

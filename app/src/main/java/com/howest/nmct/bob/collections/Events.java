@@ -12,7 +12,7 @@ import com.google.gson.Gson;
 import com.howest.nmct.bob.api.APIEventsResponse;
 import com.howest.nmct.bob.data.Contracts.EventEntry;
 import com.howest.nmct.bob.data.Contracts.PlaceEntry;
-import com.howest.nmct.bob.interfaces.EventsLoadedListener;
+import com.howest.nmct.bob.interfaces.APIFetchListener;
 import com.howest.nmct.bob.models.Event;
 import com.howest.nmct.bob.models.Place;
 import com.squareup.okhttp.Call;
@@ -22,7 +22,6 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
-import java.util.LinkedHashSet;
 
 import static com.howest.nmct.bob.Constants.BACKEND_HOST;
 import static com.howest.nmct.bob.Constants.BACKEND_SCHEME;
@@ -33,26 +32,8 @@ import static com.howest.nmct.bob.Constants.BACKEND_TOKEN;
  */
 public class Events {
     private static Handler mainHandler = new Handler(Looper.getMainLooper());
-    private static LinkedHashSet<Event> events = new LinkedHashSet<>();
 
-    public static LinkedHashSet<Event> getEvents() {
-        return events;
-    }
-
-    public static Event getEvent(final String id) {
-        Event foundEvent = null;
-
-        for (Event e : events) {
-            if (e.getId().equals(id)) {
-                foundEvent = e;
-                break;
-            }
-        }
-
-        return foundEvent;
-    }
-
-    public static void fetchData(final Context context, final EventsLoadedListener listener) {
+    public static void fetchData(final Context context, final APIFetchListener listener) {
         OkHttpClient okHttpClient = new OkHttpClient();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);

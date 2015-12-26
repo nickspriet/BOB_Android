@@ -1,13 +1,11 @@
 package com.howest.nmct.bob.models;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.howest.nmct.bob.data.Contracts.EventEntry;
 import com.howest.nmct.bob.data.Contracts.PlaceEntry;
 
 import java.util.ArrayList;
@@ -42,8 +40,6 @@ public class Place implements Parcelable {
         this.name = name;
         this.location = location;
     }
-
-    public Place() {}
 
     @Override
     public String toString() {
@@ -83,10 +79,18 @@ public class Place implements Parcelable {
                 }
             };
 
-    public static ContentValues[] asContentValues(LinkedHashSet<Event> events) {
+    public static ContentValues[] asContentValues(LinkedHashSet list) {
         ArrayList<ContentValues> values = new ArrayList<>();
-        for (Event event : events) {
-            ContentValues newValues = asContentValues(event.place);
+        for (Object o : list) {
+            ContentValues newValues = null;
+            if (o instanceof Ride) {
+                Ride r = (Ride) o;
+                newValues = asContentValues(r.place);
+            }
+            if (o instanceof Event) {
+                Event e = (Event) o;
+                newValues = asContentValues(e.place);
+            }
             if (newValues != null) {
                 values.add(newValues);
             }
@@ -111,28 +115,4 @@ public class Place implements Parcelable {
         return values;
     }
 
-    public static Place createFromCursor(Cursor c) {
-        int i = c.getColumnIndex(EventEntry.COLUMN_PLACE_ID);
-
-        Place newPlace = new Place();
-        // Using a wildcard so can assume it's in the same order as the CREATE TABLE
-        newPlace.id = c.getString(i++);
-        newPlace.name = c.getString(i++);
-
-        if (newPlace.name == null && newPlace.id == null) return null;
-
-        newPlace.location = new Location(
-                c.getString(++i),
-                c.getString(++i),
-                c.getString(++i),
-                c.getString(++i),
-                c.getFloat(++i),
-                c.getFloat(++i)
-        );
-
-        if (newPlace.location.toString() == null)
-            newPlace.location = null;
-
-        return newPlace;
-    }
 }

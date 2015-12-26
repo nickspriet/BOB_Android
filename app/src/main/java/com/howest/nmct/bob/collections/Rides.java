@@ -11,10 +11,18 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.howest.nmct.bob.api.APIResponse;
 import com.howest.nmct.bob.api.APIRidesResponse;
+import com.howest.nmct.bob.data.Contracts.EventEntry;
+import com.howest.nmct.bob.data.Contracts.PlaceEntry;
+import com.howest.nmct.bob.data.Contracts.RideEntry;
+import com.howest.nmct.bob.data.Contracts.UserEntry;
+import com.howest.nmct.bob.data.Contracts.UserRideEntry;
+import com.howest.nmct.bob.interfaces.APIFetchListener;
 import com.howest.nmct.bob.interfaces.ResponseListener;
-import com.howest.nmct.bob.interfaces.RidesLoadedListener;
 import com.howest.nmct.bob.models.Event;
+import com.howest.nmct.bob.models.Place;
 import com.howest.nmct.bob.models.Ride;
+import com.howest.nmct.bob.models.User;
+import com.howest.nmct.bob.models.UserRide;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.FormEncodingBuilder;
@@ -24,7 +32,6 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
-import java.util.LinkedHashSet;
 
 import static com.howest.nmct.bob.Constants.API_RIDE_CREATE;
 import static com.howest.nmct.bob.Constants.BACKEND_HOST;
@@ -37,18 +44,8 @@ import static com.howest.nmct.bob.Constants.BACKEND_TOKEN;
  */
 public class Rides {
     private static Handler mainHandler = new Handler(Looper.getMainLooper());
-    private static LinkedHashSet<Ride> rides = new LinkedHashSet<>();
 
-    public static LinkedHashSet<Ride> getRides() {
-        return rides;
-    }
-
-    private static void addRides(LinkedHashSet<Ride> rides) {
-        Rides.rides.addAll(rides);
-    }
-
-
-    public static void fetchData(final Context context, final RidesLoadedListener listener) {
+    public static void fetchData(final Context context, final APIFetchListener listener) {
         OkHttpClient okHttpClient = new OkHttpClient();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -66,10 +63,19 @@ public class Rides {
                 .build();
 
         Call call = okHttpClient.newCall(request);
+        if (listener != null) listener.startLoading();
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(Request request, IOException e) {
+            public void onFailure(Request request, final IOException e) {
                 Log.i("Rides", "Call failed");
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (listener != null) {
+                            listener.failedLoading(e);
+                        }
+                    }
+                });
             }
 
             @Override
@@ -78,26 +84,38 @@ public class Rides {
                 Log.i("Rides", responseString);
                 APIRidesResponse apiResponse = new Gson().fromJson(responseString, APIRidesResponse.class);
                 Log.i("Rides", apiResponse.data.rides.toString());
-                addRides(apiResponse.data.rides);
 
-                mainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        listener.ridesLoaded(rides);
-                    }
-                });
+                context.getContentResolver().bulkInsert(
+                        EventEntry.CONTENT_URI,
+                        Event.asContentValues(apiResponse.data.rides));
+
+                context.getContentResolver().bulkInsert(
+                        PlaceEntry.CONTENT_URI,
+                        Place.asContentValues(apiResponse.data.rides));
+
+                context.getContentResolver().bulkInsert(
+                        RideEntry.CONTENT_URI,
+                        Ride.asContentValues(apiResponse.data.rides));
+
+                context.getContentResolver().bulkInsert(
+                        UserEntry.CONTENT_URI,
+                        User.asContentValues(apiResponse.data.rides));
+
+                context.getContentResolver().bulkInsert(
+                        UserRideEntry.CONTENT_URI,
+                        UserRide.asContentValues(apiResponse.data.rides));
             }
         });
     }
 
-    public static void createRideFromEvent(final Context context, Event event, final ResponseListener listener) {
+    public static void createRideFromEvent(final Context context, String eventId, final ResponseListener listener) {
         OkHttpClient okHttpClient = new OkHttpClient();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String token = preferences.getString(BACKEND_TOKEN, "");
 
         RequestBody body = new FormEncodingBuilder()
                 .add("token", token)
-                .add("eventId", event.getId())
+                .add("eventId", eventId)
                 .build();
 
         Request request = new Request.Builder()
@@ -137,14 +155,5 @@ public class Rides {
 
             }
         });
-    }
-
-    public static Ride getRideForEvent(Event event) {
-        for (Ride ride : rides) {
-            if (ride.event.getId().equals(event.getId())) {
-                return ride;
-            }
-        }
-        return null;
     }
 }

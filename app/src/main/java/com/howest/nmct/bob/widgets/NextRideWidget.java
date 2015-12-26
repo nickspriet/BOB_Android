@@ -6,13 +6,8 @@ import android.content.Context;
 import android.widget.RemoteViews;
 
 import com.howest.nmct.bob.R;
-import com.howest.nmct.bob.collections.Rides;
-import com.howest.nmct.bob.interfaces.RidesLoadedListener;
 import com.howest.nmct.bob.models.Ride;
 import com.howest.nmct.bob.models.User;
-import com.squareup.picasso.Picasso;
-
-import java.util.LinkedHashSet;
 
 /**
  * Implementation of App Widget functionality.
@@ -26,6 +21,7 @@ public class NextRideWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds) {
+        /*
         Rides.fetchData(context, new RidesLoadedListener() {
             @Override
             public void ridesLoaded(LinkedHashSet<Ride> rides) {
@@ -46,6 +42,7 @@ public class NextRideWidget extends AppWidgetProvider {
                 }
             }
         });
+        */
     }
 
 

@@ -1,5 +1,6 @@
 package com.howest.nmct.bob.models;
 
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.Html;
@@ -8,12 +9,12 @@ import android.text.Spanned;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.howest.nmct.bob.Constants;
+import com.howest.nmct.bob.data.Contracts.RideEntry;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * illyism
@@ -30,11 +31,11 @@ public class Ride implements Parcelable {
 
     @SerializedName("approved")
     @Expose
-    public List<String> approvedList = new ArrayList<>();
+    public List<User> approvedList = new ArrayList<>();
 
     @SerializedName("requests")
     @Expose
-    public List<String> requestsList = new ArrayList<>();
+    public List<User> requestsList = new ArrayList<>();
 
     @SerializedName("description")
     @Expose
@@ -55,13 +56,13 @@ public class Ride implements Parcelable {
     @SerializedName("event")
     @Expose
     public Event event;
-    private String address;
-    private boolean link;
 
     public Ride(User driver, Event event) {
         this.driver = driver;
         this.event = event;
     }
+
+    public Ride() {}
 
     public Boolean isSelfDriver(User otherUser) {
         return this.getDriver().getId().equals(otherUser.getId());
@@ -98,8 +99,6 @@ public class Ride implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeParcelable(driver, flags);
-        dest.writeStringList(approvedList);
-        dest.writeStringList(requestsList);
         dest.writeString(description);
         dest.writeString(startTime);
         dest.writeString(endTime);
@@ -110,8 +109,6 @@ public class Ride implements Parcelable {
     public Ride(Parcel in) {
         id = in.readString();
         driver = in.readParcelable(User.class.getClassLoader());
-        in.readStringList(approvedList);
-        in.readStringList(requestsList);
         description = in.readString();
         startTime = in.readString();
         endTime = in.readString();
@@ -147,15 +144,6 @@ public class Ride implements Parcelable {
         return event.getAddress();
     }
 
-    public Date getStartTime() {
-        if (startTime == null) return event.getStartTime();
-        try {
-            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US).parse(startTime);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
     public String getId() {
         return id;
     }
@@ -175,7 +163,28 @@ public class Ride implements Parcelable {
         return this.getId().hashCode();
     }
 
-    public String getLink() {
-        return Constants.BACKEND_BASEURL + "/ride/" + getId();
+    public static ContentValues[] asContentValues(LinkedHashSet<Ride> rides) {
+        ContentValues[] values = new ContentValues[rides.size()];
+        int i = 0;
+        for (Iterator<Ride> iter = rides.iterator(); iter.hasNext(); i++) {
+            values[i] = asContentValues(iter.next());
+        }
+        return values;
+    }
+
+    private static ContentValues asContentValues(Ride r) {
+        ContentValues values = new ContentValues();
+        values.put(RideEntry._ID, r.id);
+        values.put(RideEntry.COLUMN_START_TIME, r.startTime);
+        values.put(RideEntry.COLUMN_END_TIME, r.endTime);
+        values.put(RideEntry.COLUMN_DESCRIPTION, r.description);
+        values.put(RideEntry.COLUMN_DRIVER_ID, r.driver.Id);
+        values.put(RideEntry.COLUMN_PLACE_ID, r.place.id);
+        values.put(RideEntry.COLUMN_EVENT_ID, r.event.id);
+        return values;
+    }
+
+    public static String createLink(String rideId) {
+        return Constants.BACKEND_BASEURL + "/ride/" + rideId;
     }
 }
