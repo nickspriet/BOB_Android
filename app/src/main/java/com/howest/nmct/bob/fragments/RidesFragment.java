@@ -56,7 +56,9 @@ public class RidesFragment extends Fragment implements APIFetchListener,
             UserEntry.TABLE_NAME + "." + UserEntry.COLUMN_NAME,
             EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_NAME,
             EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_COVER,
-            PlaceEntry.TABLE_NAME + "." + EventEntry.COLUMN_NAME
+            PlaceEntry.TABLE_NAME + "." + EventEntry.COLUMN_NAME,
+            "(SELECT count(*) FROM userride WHERE ride._id=userride.ride_id AND userride.status=1)",
+            "(SELECT count(*) FROM userride WHERE ride._id=userride.ride_id AND userride.status=2)",
     };
 
     public static final int COL_RIDE_ID = 0;
@@ -68,6 +70,8 @@ public class RidesFragment extends Fragment implements APIFetchListener,
     public static final int COL_EVENT_NAME = 6;
     public static final int COL_EVENT_COVER = 7;
     public static final int COL_PLACE_NAME = 8;
+    public static final int COL_USER_RIDE_APPROVED_COUNT = 9;
+    public static final int COL_USER_RIDE_REQUEST_COUNT = 10;
 
     public RidesFragment() {}
 
@@ -137,7 +141,7 @@ public class RidesFragment extends Fragment implements APIFetchListener,
         switch (id) {
             case URL_LOADER:
                 return new CursorLoader(
-                        getActivity(),
+                        getContext(),
                         RideEntry.CONTENT_URI,
                         RIDE_COLUMNS,
                         null,
@@ -151,8 +155,7 @@ public class RidesFragment extends Fragment implements APIFetchListener,
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.d("RidesFragment", "Cursor loaded " + data.getCount());
-
+        Log.d("RidesFragment", "Rides loaded " + data.getCount());
         if (data.getCount() == 0) {
             emptyView.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
@@ -160,6 +163,14 @@ public class RidesFragment extends Fragment implements APIFetchListener,
         } else {
             emptyView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
+
+            data.moveToFirst();
+            do {
+                for (int j = 0; j < data.getColumnCount(); j++) {
+                    Log.d("RideSQL", data.getColumnName(j) + " = " + data.getString(j));
+                }
+            } while(data.moveToNext());
+
             mAdapter.swapCursor(data);
         }
     }

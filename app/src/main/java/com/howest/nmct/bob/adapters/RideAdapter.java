@@ -24,10 +24,12 @@ import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.activities.BaseActivity;
 import com.howest.nmct.bob.fragments.RidesFragment;
 import com.howest.nmct.bob.models.Event;
+import com.howest.nmct.bob.models.Ride;
 import com.howest.nmct.bob.models.User;
 import com.howest.nmct.bob.views.AutoHeightViewPager;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -127,11 +129,12 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
 
         String locationName = mCursor.getString(RidesFragment.COL_PLACE_NAME);
         holder.locationDetails.setText(
-                Html.fromHtml(String.format("<b>%s</b> in <b>%s</b>",
-                        locationName,
-                        Event.formatDate("E h a", startTime)
+                Html.fromHtml(String.format("<b>%s</b> at <b>%s</b>",
+                        DateFormat.getDateTimeInstance().format(startTime),
+                        locationName
                 ))
         );
+        holder.shortDate.setText(Event.formatDate("d MMM\nyyyy", startTime));
         holder.ridePerson.setText(mCursor.getString(RidesFragment.COL_USER_NAME));
 
         Picasso p = Picasso.with(mActivity);
@@ -142,12 +145,14 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
                 .into(holder.rideImage);
 
         if (profile != null) {
-            // holder.approvalStatus.setText(Ride.formatApprovalStatus(ride, profile));
-            // Hide or show elements depending on approval and driver status
-
             String driverId = mCursor.getString(RidesFragment.COL_USER_ID);
             Boolean isDriver = driverId.equals(profile.Id);
             Boolean isApproved = false;
+
+            int approvedCount = mCursor.getInt(RidesFragment.COL_USER_RIDE_APPROVED_COUNT);
+            int requestCount = mCursor.getInt(RidesFragment.COL_USER_RIDE_REQUEST_COUNT);
+            // Hide or show elements depending on approval and driver status
+            holder.approvalStatus.setText(Ride.formatApprovalStatus(isDriver, isApproved, approvedCount, requestCount));
 
             setUsernameColor(holder.ridePerson, isDriver );
             setVisibility(holder.locationDetails, isDriver || isApproved);
@@ -217,6 +222,7 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         @Bind(R.id.ride_title) TextView rideTitle;
         @Bind(R.id.location_details) TextView locationDetails;
         @Bind(R.id.approval_status) TextView approvalStatus;
+        @Bind(R.id.shortDate) TextView shortDate;
 
         @Bind(R.id.driver_button) LinearLayout driverButton;
         @Bind(R.id.map_button) LinearLayout mapButton;

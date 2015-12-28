@@ -44,6 +44,7 @@
 
                     <TextView
                         style="@style/Header.Text.Title"
+                        android:id="@+id/shortDate"
                         android:text="21 Oct"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"

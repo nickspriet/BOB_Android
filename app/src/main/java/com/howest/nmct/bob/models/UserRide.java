@@ -27,6 +27,10 @@ public class UserRide {
                 ContentValues listValues = asContentValues(u, r, UserRide.REQUEST);
                 if (listValues != null) values.add(listValues);
             }
+            if (r.driver != null) {
+                ContentValues driverValues = asContentValues(r.driver, r, UserRide.APPROVED);
+                if (driverValues != null) values.add(driverValues);
+            }
         }
         return values.toArray(new ContentValues[values.size()]);
     }

@@ -53,12 +53,20 @@ public class Provider extends ContentProvider {
                 " ON " + RideEntry.TABLE_NAME + "." + RideEntry.COLUMN_PLACE_ID +
                 " = " + PlaceEntry.TABLE_NAME + "." + PlaceEntry._ID;
 
+    static final String sUserRideWithUser = UserRideEntry.TABLE_NAME +
+            " LEFT OUTER JOIN " +
+                UserEntry.TABLE_NAME +
+                " ON " + UserRideEntry.TABLE_NAME + "." + UserRideEntry.COLUMN_USER_ID +
+                " = " + UserEntry.TABLE_NAME + "." + UserEntry._ID;
+
     static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_EVENT, EVENT);
         uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_EVENT + "/*", EVENT_ID);
         uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_RIDE, RIDE);
         uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_RIDE + "/*", RIDE_ID);
+        uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_USER_RIDE, USER_RIDE);
+        uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_USER_RIDE + "/*", USER_RIDE_ID);
         uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_PLACE, PLACE);
         uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_PLACE + "/*", PLACE_ID);
         uriMatcher.addURI(Contracts.CONTENT_AUTHORITY, Contracts.PATH_USER, USER);
@@ -137,6 +145,34 @@ public class Provider extends ContentProvider {
                 );
                 break;
             }
+            // "userride"
+            case USER_RIDE: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        sUserRideWithUser,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+            // "userride/*"
+            case USER_RIDE_ID: {
+                final String rideId = uri.getPathSegments().get(1);
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        UserRideEntry.TABLE_NAME,
+                        projection,
+                        "(" + UserRideEntry.COLUMN_RIDE_ID + "=?)",
+                        new String[] {rideId},
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+
             // "place"
             case PLACE: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
