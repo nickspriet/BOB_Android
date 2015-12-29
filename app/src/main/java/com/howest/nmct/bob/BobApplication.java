@@ -9,5 +9,6 @@ import android.app.Application;
 public class BobApplication extends Application {
     public void onCreate() {
         super.onCreate();
+        // Stetho.initializeWithDefaults(this);
     }
 }

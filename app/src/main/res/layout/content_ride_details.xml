@@ -52,48 +52,11 @@
                 style="@style/Card.Text.Meta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Description that will be editable by the driver. This will explain general information about the ride." />
+                android:text="@string/loremipsum" />
 
         </LinearLayout>
 
         <LinearLayout style="@style/Card.Wrapper.Details">
-
-            <TextView
-                style="@style/Card.Text.Meta.Label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/driver" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/imgDriverProfile"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_account"
-                    android:layout_marginEnd="@dimen/card_inner_margin_horizontal"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentEnd="true"
-                    app:civ_border_width="2dp"
-                    app:civ_border_color="#AACFCFCF"/>
-
-
-                <TextView
-                    android:id="@+id/tvDriverName"
-                    style="@style/Card.Text.Meta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/account"
-                    android:layout_alignParentEnd="false" />
-
-            </RelativeLayout>
-
-
-
-            <View style="@style/Separator.Horizontal" />
 
             <TextView
                 style="@style/Card.Text.Meta.Label"
@@ -122,5 +85,73 @@
                 android:text="Red Volkswagen A1" />
 
         </LinearLayout>
+
+        <LinearLayout style="@style/Card.Wrapper">
+            <TextView
+                style="@style/Card.Text.Meta.Label.Padded.Wrapper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/driver" />
+
+            <LinearLayout
+                android:clickable="true"
+                android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+                android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+                android:minHeight="?android:attr/listPreferredItemHeightSmall"
+                android:background="?android:attr/selectableItemBackground"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgDriverProfile"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_account"
+                    android:layout_marginEnd="@dimen/card_inner_margin_horizontal"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#AACFCFCF"/>
+
+
+                <TextView
+                    android:id="@+id/tvDriverName"
+                    android:textAppearance="?android:attr/textAppearanceListItemSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account"
+                    android:gravity="center_vertical" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card.Wrapper">
+            <TextView
+                style="@style/Card.Text.Meta.Label.Padded.Wrapper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/approved" />
+            <ListView
+                android:id="@+id/lstAccepted"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </ListView>
+        </LinearLayout>
+
+        <LinearLayout style="@style/Card.Wrapper">
+            <TextView
+                style="@style/Card.Text.Meta.Label.Padded.Wrapper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/requests" />
+            <ListView
+                android:id="@+id/lstRequest"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </ListView>
+        </LinearLayout>
+
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

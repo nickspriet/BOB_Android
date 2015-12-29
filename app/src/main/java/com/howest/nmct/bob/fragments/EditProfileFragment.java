@@ -37,9 +37,10 @@ public class EditProfileFragment extends Fragment {
         return view;
     }
 
-    private void initViews() {
+    public void initViews() {
         EditProfileActivity parentActivity = (EditProfileActivity) getActivity();
         User user = parentActivity.getUser();
+        if (user == null) return;
 
         Picasso p = Picasso.with(getActivity());
         p.load(user.getPicture())

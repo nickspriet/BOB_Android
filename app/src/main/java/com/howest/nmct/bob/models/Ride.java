@@ -1,5 +1,6 @@
 package com.howest.nmct.bob.models;
 
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.Html;
@@ -7,12 +8,13 @@ import android.text.Spanned;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.howest.nmct.bob.Constants;
+import com.howest.nmct.bob.data.Contracts.RideEntry;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * illyism
@@ -29,11 +31,11 @@ public class Ride implements Parcelable {
 
     @SerializedName("approved")
     @Expose
-    public List<String> approvedList = new ArrayList<>();
+    public List<User> approvedList = new ArrayList<>();
 
     @SerializedName("requests")
     @Expose
-    public List<String> requestsList = new ArrayList<>();
+    public List<User> requestsList = new ArrayList<>();
 
     @SerializedName("description")
     @Expose
@@ -54,38 +56,26 @@ public class Ride implements Parcelable {
     @SerializedName("event")
     @Expose
     public Event event;
-    private String address;
 
     public Ride(User driver, Event event) {
         this.driver = driver;
         this.event = event;
     }
 
-    public Boolean isSelfDriver(User otherUser) {
-        return this.getDriver().getId().equals(otherUser.getId());
-    }
+    public Ride() {}
 
-    public Boolean isApproved(User user) {
-        return approvedList != null && approvedList.contains(user.getId());
-    }
-
-    public static Spanned formatApprovalStatus(Ride ride, User user) {
-        if (ride.isSelfDriver(user)) {
+    public static Spanned formatApprovalStatus(Boolean isDriver, Boolean isApproved, int approvedCount, int requestCount) {
+        if (isDriver) {
             // I am BOB - so show me approvals and requests
-            return Html.fromHtml(String.format("<b>%s</b> approvals • <b>%s</b> requested", ride.getApproved(), ride.getRequests()));
-        } else if (ride.isApproved(user)) {
+            return Html.fromHtml(String.format("<b>%d</b> approvals • <b>%d</b> requested", approvedCount, requestCount));
+        } else if (isApproved) {
             // I am not BOB but I'm approved - so show me the amount of guests
-            return Html.fromHtml(String.format("<b>%s</b> guests", ride.getApproved()));
+            return Html.fromHtml(String.format("<b>%d</b> riding along", approvedCount));
         } else {
             // I am not BOB and I'm awaiting approval
             return Html.fromHtml("Waiting for approval...");
         }
     }
-
-    public User getDriver() {
-        return driver;
-    }
-
 
     @Override
     public int describeContents() {
@@ -96,8 +86,6 @@ public class Ride implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeParcelable(driver, flags);
-        dest.writeStringList(approvedList);
-        dest.writeStringList(requestsList);
         dest.writeString(description);
         dest.writeString(startTime);
         dest.writeString(endTime);
@@ -108,8 +96,6 @@ public class Ride implements Parcelable {
     public Ride(Parcel in) {
         id = in.readString();
         driver = in.readParcelable(User.class.getClassLoader());
-        in.readStringList(approvedList);
-        in.readStringList(requestsList);
         description = in.readString();
         startTime = in.readString();
         endTime = in.readString();
@@ -128,48 +114,39 @@ public class Ride implements Parcelable {
                 }
             };
 
-    public int getApproved() {
-        if (approvedList == null) return 0;
-        return approvedList.size();
-    }
-
-    public int getRequests() {
-        if (requestsList == null) return 0;
-        return requestsList.size();
-    }
-
-    public String getAddress() {
-        if (place != null && place.location != null) {
-            return place.location.toString();
-        }
-        return event.getAddress();
-    }
-
-    public Date getStartTime() {
-        if (startTime == null) return event.getStartTime();
-        try {
-            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US).parse(startTime);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
     @Override
     public boolean equals(Object o) {
         Ride otherRide = (Ride) o;
-        return otherRide != null && this.getId().equals(otherRide.getId());
+        return otherRide != null && this.id.equals(otherRide.id);
     }
 
     @Override
     public int hashCode() {
-        return this.getId().hashCode();
+        return this.id.hashCode();
+    }
+
+    public static ContentValues[] asContentValues(LinkedHashSet<Ride> rides) {
+        ContentValues[] values = new ContentValues[rides.size()];
+        int i = 0;
+        for (Iterator<Ride> iter = rides.iterator(); iter.hasNext(); i++) {
+            values[i] = asContentValues(iter.next());
+        }
+        return values;
+    }
+
+    private static ContentValues asContentValues(Ride r) {
+        ContentValues values = new ContentValues();
+        values.put(RideEntry._ID, r.id);
+        values.put(RideEntry.COLUMN_START_TIME, r.startTime);
+        values.put(RideEntry.COLUMN_END_TIME, r.endTime);
+        values.put(RideEntry.COLUMN_DESCRIPTION, r.description);
+        values.put(RideEntry.COLUMN_DRIVER_ID, r.driver.Id);
+        values.put(RideEntry.COLUMN_PLACE_ID, r.place.id);
+        values.put(RideEntry.COLUMN_EVENT_ID, r.event.id);
+        return values;
+    }
+
+    public static String createLink(String rideId) {
+        return Constants.BACKEND_BASEURL + "/ride/" + rideId;
     }
 }

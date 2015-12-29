@@ -1,9 +1,12 @@
 package com.howest.nmct.bob.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -24,8 +27,8 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.howest.nmct.bob.R;
-import com.howest.nmct.bob.models.Event;
-import com.howest.nmct.bob.models.Ride;
+import com.howest.nmct.bob.data.Contracts;
+import com.howest.nmct.bob.data.DatabaseHelper;
 
 import butterknife.Bind;
 
@@ -33,10 +36,13 @@ import static com.howest.nmct.bob.Constants.ACTIVITY_EVENTS;
 import static com.howest.nmct.bob.Constants.ACTIVITY_FEED;
 import static com.howest.nmct.bob.Constants.ACTIVITY_PROFILE;
 import static com.howest.nmct.bob.Constants.ACTIVITY_RIDES;
+import static com.howest.nmct.bob.Constants.ACTIVITY_SETTINGS;
+import static com.howest.nmct.bob.Constants.BACKEND_TOKEN;
 import static com.howest.nmct.bob.Constants.EVENT;
 import static com.howest.nmct.bob.Constants.REQUEST_EDIT;
 import static com.howest.nmct.bob.Constants.RIDE;
 import static com.howest.nmct.bob.Constants.TOOLBAR_TRANSITION_NAME;
+import static com.howest.nmct.bob.Constants.USER_ID;
 
 /**
  * illyism
@@ -124,20 +130,19 @@ public abstract class NavigationActivity extends AppCompatActivity
     private void updateNavigation(int itemId) {
         switch (itemId) {
             case R.id.nav_feed:
-                Log.d("NavigationDrawer", "Click Feed");
                 navigateToFeed();
                 break;
             case R.id.nav_events:
-                Log.d("NavigationDrawer", "Click Events");
                 navigateToEvents();
                 break;
             case R.id.nav_rides:
-                Log.d("NavigationDrawer", "Click Rides");
                 navigateToRides();
                 break;
             case R.id.nav_profile:
-                Log.d("NavigationDrawer", "Click Profile");
                 navigateToProfile();
+                break;
+            case R.id.nav_settings:
+                navigateToSettings();
                 break;
             default:
                 throw new Error(String.format("Navigation Item not specified: %s", itemId));
@@ -146,6 +151,10 @@ public abstract class NavigationActivity extends AppCompatActivity
 
     public void navigateToProfile() {
         navigateToActivity(ACTIVITY_PROFILE);
+    }
+
+    public void navigateToSettings() {
+        navigateToActivity(ACTIVITY_SETTINGS);
     }
 
     public void navigateToRides() {
@@ -179,6 +188,9 @@ public abstract class NavigationActivity extends AppCompatActivity
             case ACTIVITY_RIDES:
                 i = new Intent(this, RidesActivity.class);
                 break;
+            case ACTIVITY_SETTINGS:
+                i = new Intent(this, SettingsActivity.class);
+                break;
             default:
                 throw new Error("Invalid activityName");
         }
@@ -206,33 +218,14 @@ public abstract class NavigationActivity extends AppCompatActivity
 
 
     /**
-     * Starts the RideActivity and inserts the Ride bundle
-     * @param ride The Ride
-     */
-    public void navigateToRideDetails(Ride ride) {
-        Intent i = new Intent(this, RideDetailsActivity.class);
-        addDataToIntent(i);
-        i.putExtra(RIDE, ride);
-
-        Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
-
-        ActivityOptionsCompat transitionActivityOptions =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        this, toolbar);
-
-        ActivityCompat.startActivity(this,
-                i, transitionActivityOptions.toBundle());
-    }
-
-    /**
      * Starts the RideActivity and inserts the Ride bundle with a transition
-     * @param ride The Ride
+     * @param rideId The Ride ID
      * @param imageView The View that is shared
      */
-    public void navigateToRideDetails(Ride ride, ImageView imageView) {
+    public void navigateToRideDetails(String rideId, ImageView imageView) {
         Intent i = new Intent(this, RideDetailsActivity.class);
         addDataToIntent(i);
-        i.putExtra(RIDE, ride);
+        i.putExtra(RIDE, rideId);
 
         Pair image = new Pair<>(imageView, ViewCompat.getTransitionName(imageView));
         Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
@@ -247,13 +240,12 @@ public abstract class NavigationActivity extends AppCompatActivity
 
     /**
      * Starts the EventDetailsActivity and inserts the Event bundle with a transition
-     * @param event The Event
      * @param imageView The View that is shared
      */
-    public void navigateToEventDetails(Event event, ImageView imageView) {
+    public void navigateToEventDetails(String eventId, ImageView imageView) {
         Intent i = new Intent(this, EventDetailsActivity.class);
         addDataToIntent(i);
-        i.putExtra(EVENT, event);
+        i.putExtra(EVENT, eventId);
 
         Pair image = new Pair<>(imageView, ViewCompat.getTransitionName(imageView));
         Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
@@ -266,10 +258,10 @@ public abstract class NavigationActivity extends AppCompatActivity
                 i, transitionActivityOptions.toBundle());
     }
 
-    public void navigateToEventDetails(Event event) {
+    public void navigateToEventDetails(String eventId) {
         Intent i = new Intent(this, EventDetailsActivity.class);
         addDataToIntent(i);
-        i.putExtra(EVENT, event);
+        i.putExtra(EVENT, eventId);
 
         Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
 
@@ -296,6 +288,25 @@ public abstract class NavigationActivity extends AppCompatActivity
 
         ActivityCompat.startActivityForResult(this, i, REQUEST_EDIT,
                 transitionActivityOptions.toBundle());
+    }
+
+    /**
+     * Clears all saved user data
+     * Navigate to Login
+     */
+    public void navigatetoLogin() {
+        Log.d("NavigationActivity", "Navigating to login - killing user dat");
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        preferences.edit().remove(BACKEND_TOKEN).remove(USER_ID).apply();
+
+        SQLiteDatabase db = new DatabaseHelper(this).getWritableDatabase();
+        db.delete(Contracts.UserEntry.TABLE_NAME, null, null);
+        db.delete(Contracts.PlaceEntry.TABLE_NAME, null, null);
+        db.delete(Contracts.EventEntry.TABLE_NAME, null, null);
+
+        Intent i = new Intent(this, LoginActivity.class);
+        startActivity(i);
+        finish();
     }
 
     /**

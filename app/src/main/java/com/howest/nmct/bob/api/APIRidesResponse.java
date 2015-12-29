@@ -25,8 +25,8 @@ public class APIRidesResponse extends APIResponse {
         @Expose
         public LinkedHashSet<Ride> rides;
 
-        public APIData(LinkedHashSet<Ride> events) {
-            this.rides = events;
+        public APIData(LinkedHashSet<Ride> rides) {
+            this.rides = rides;
         }
     }
 }

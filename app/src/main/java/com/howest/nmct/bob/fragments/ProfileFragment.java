@@ -37,9 +37,12 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+
+
     public void initViews() {
         ProfileActivity parentActivity = (ProfileActivity) getActivity();
         User user = parentActivity.getUser();
+        if (user == null) return;
 
         Picasso p = Picasso.with(getActivity());
         p.load(user.getPicture())

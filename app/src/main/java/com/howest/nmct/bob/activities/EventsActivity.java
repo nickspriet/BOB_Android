@@ -1,26 +1,23 @@
 package com.howest.nmct.bob.activities;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
-import com.howest.nmct.bob.collections.Events;
 import com.howest.nmct.bob.fragments.EventsFragment;
-import com.howest.nmct.bob.interfaces.EventsLoadedListener;
-import com.howest.nmct.bob.models.Event;
+import com.howest.nmct.bob.sync.BackendSyncAdapter;
 
-import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
  * illyism
  * 24/11/15
  */
-public class EventsActivity extends BaseActivity implements EventsLoadedListener {
+public class EventsActivity extends BaseActivity {
     private EventsFragment mFragment;
 
     @Override
-    protected void initData(Bundle activityData) {
-        Events.fetchData(this);
+    protected void onResume() {
+        super.onResume();
+        BackendSyncAdapter.syncImmediately(this);
     }
 
     @Override
@@ -32,11 +29,5 @@ public class EventsActivity extends BaseActivity implements EventsLoadedListener
             mFragment = new EventsFragment();
             addFragmentToContainer(mFragment);
         }
-    }
-
-    @Override
-    public void eventsLoaded(LinkedHashSet<Event> events) {
-        mFragment.mAdapter.setEvents(events);
-        mFragment.mAdapter.notifyDataSetChanged();
     }
 }
