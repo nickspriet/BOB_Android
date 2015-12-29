@@ -20,7 +20,6 @@ import com.howest.nmct.bob.data.Contracts.UserEntry;
 import com.howest.nmct.bob.interfaces.ToolbarController;
 import com.howest.nmct.bob.models.User;
 import com.howest.nmct.bob.sync.BackendSyncAdapter;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
@@ -147,20 +146,10 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
     }
 
     @Override
-    public void setToolbarImage(String url, Callback callback) {
-        if (mToolbarImage != null) {
-            Picasso p = Picasso.with(this);
-            p.load(url)
-                    .noFade()
-                    .fit()
-                    .centerCrop()
-                    .into(mToolbarImage, callback);
-        }
-    }
-
-    @Override
     public void setToolbarTitle(String title) {
         if (mToolbarLayout == null) return;
+        mToolbar.setTitle(title);
+        getSupportActionBar().setTitle(title);
         mToolbarLayout.setTitle(title);
     }
 

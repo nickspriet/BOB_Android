@@ -133,7 +133,7 @@ public class RidesFragment extends Fragment implements
                         RIDE_COLUMNS,
                         null,
                         null,
-                        null
+                        RideEntry.TABLE_NAME + "." + RideEntry.COLUMN_START_TIME + " DESC"
                 );
             default:
                 return null;

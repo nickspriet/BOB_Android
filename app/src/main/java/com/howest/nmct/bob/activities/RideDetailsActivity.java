@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
+import android.transition.Transition;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +31,9 @@ public class RideDetailsActivity extends BaseActivity {
     private String mRideId;
     private RideDetailsFragment mFragment;
 
+    private String mTitle;
+    private String mCover;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (!parseIntent()) {
@@ -37,6 +41,23 @@ public class RideDetailsActivity extends BaseActivity {
         }
         super.onCreate(savedInstanceState);
         setStatusBarTranslucent(true);
+
+        getWindow().getSharedElementEnterTransition().addListener(new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {}
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                setToolbarImage(mCover);
+                setToolbarTitle(mTitle);
+            }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {}
+            @Override
+            public void onTransitionPause(Transition transition) {}
+            @Override
+            public void onTransitionResume(Transition transition) {}
+        });
     }
 
     @Override
@@ -81,8 +102,7 @@ public class RideDetailsActivity extends BaseActivity {
 
     protected void initData(Bundle activityData) {
         if (activityData == null) return;
-        String rideId = activityData.getString(RIDE);
-        setRideId(rideId);
+        setRideId(activityData.getString(RIDE));
     }
 
     @Override
@@ -136,7 +156,9 @@ public class RideDetailsActivity extends BaseActivity {
     }
 
     public void initToolbar(String cover, String title) {
-        setToolbarImage(cover);
-        setToolbarTitle(title);
+        this.mTitle = title;
+        this.mCover = cover;
+        setToolbarImage(mCover);
+        setToolbarTitle(mTitle);
     }
 }

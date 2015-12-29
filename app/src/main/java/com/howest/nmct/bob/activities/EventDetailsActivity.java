@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.transition.Transition;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -34,15 +35,32 @@ public class EventDetailsActivity extends BaseActivity implements RideOptionSele
     private String mEventId;
     private EventDetailsFragment mFragment;
 
-    private static final int URL_LOADER = 0;
+    private String mTitle;
+    private String mCover;
 
     protected void onCreate(Bundle savedInstanceState) {
         if (!parseIntent()) {
             initData(getIntent() != null ? getIntent().getExtras() : savedInstanceState);
         }
-        initData(getIntent() != null ?   getIntent().getExtras() : savedInstanceState);
         super.onCreate(savedInstanceState);
         setStatusBarTranslucent(true);
+
+        getWindow().getSharedElementEnterTransition().addListener(new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {}
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                setToolbarImage(mCover);
+                setToolbarTitle(mTitle);
+            }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {}
+            @Override
+            public void onTransitionPause(Transition transition) {}
+            @Override
+            public void onTransitionResume(Transition transition) {}
+        });
     }
 
 
@@ -89,12 +107,7 @@ public class EventDetailsActivity extends BaseActivity implements RideOptionSele
 
     protected void initData(Bundle activityData) {
         if (activityData == null) return;
-        String oldEventId = mEventId;
-        mEventId = activityData.getString(EVENT);
-        if (mEventId == null || mEventId.isEmpty()) throw new Error("No Event ID in EventDetailsActivity");
-        Log.i("EventDetailsActivity", "Loaded Event " + mEventId);
-        if (!mEventId.equals(oldEventId))
-            getSupportLoaderManager().restartLoader(URL_LOADER, null, this);
+        setEventId(activityData.getString(EVENT));
     }
 
     @Override
@@ -121,8 +134,10 @@ public class EventDetailsActivity extends BaseActivity implements RideOptionSele
     }
 
     public void initToolbar(String cover, String title) {
-        setToolbarImage(cover);
-        setToolbarTitle(title);
+        this.mTitle = title;
+        this.mCover = cover;
+        setToolbarImage(mCover);
+        setToolbarTitle(mTitle);
     }
 
     public void onDialogBobClick(final String eventId) {

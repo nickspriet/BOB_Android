@@ -106,7 +106,7 @@ public class EventsFragment extends Fragment implements
                         EVENT_COLUMNS,
                         null,
                         null,
-                        null
+                        EventEntry.COLUMN_START_TIME + " DESC"
                 );
             default:
                 return null;
@@ -117,14 +117,16 @@ public class EventsFragment extends Fragment implements
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         Log.d("EventsFragment", "Cursor loaded " + data.getCount());
 
-        if (data.getCount() == 0) {
-            emptyView.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-            emptyView.setText(R.string.no_events);
-        } else {
-            emptyView.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
-            mAdapter.swapCursor(data);
+        if (getLoaderManager().getLoader(URL_LOADER).equals(loader)) {
+            if (data.getCount() == 0) {
+                emptyView.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+                emptyView.setText(R.string.no_events);
+            } else {
+                emptyView.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                mAdapter.swapCursor(data);
+            }
         }
     }
 
