@@ -52,7 +52,7 @@
                 style="@style/Card.Text.Meta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Description that will be editable by the driver. This will explain general information about the ride." />
+                android:text="@string/loremipsum" />
 
         </LinearLayout>
 

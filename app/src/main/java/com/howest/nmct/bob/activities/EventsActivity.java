@@ -2,8 +2,8 @@ package com.howest.nmct.bob.activities;
 
 import android.support.v4.app.Fragment;
 
-import com.howest.nmct.bob.collections.Events;
 import com.howest.nmct.bob.fragments.EventsFragment;
+import com.howest.nmct.bob.sync.BackendSyncAdapter;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class EventsActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Events.fetchData(this, mFragment);
+        BackendSyncAdapter.syncImmediately(this);
     }
 
     @Override

@@ -29,6 +29,7 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                 <ImageView
+                    android:contentDescription="Toolbar Image"
                     android:id="@+id/toolbarImage"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/toolbar_image_height"

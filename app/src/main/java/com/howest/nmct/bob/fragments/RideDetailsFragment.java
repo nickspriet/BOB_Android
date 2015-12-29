@@ -56,10 +56,7 @@ public class RideDetailsFragment extends Fragment implements
     private static final int REQUEST_LOADER = 2;
     private Cursor mCursor;
 
-    private Cursor mApprovedCursor;
     private CursorAdapter mApprovedAdapter;
-
-    private Cursor mRequestCursor;
     private CursorAdapter mRequestAdapter;
 
     private static final String[] RIDE_COLUMNS = {
@@ -216,14 +213,12 @@ public class RideDetailsFragment extends Fragment implements
         } else if (getLoaderManager().getLoader(APPROVED_LOADER).equals(loader)) {
             Log.d("EventDetailsFragment", "Finished approved users " + data.getCount());
             if (data.moveToFirst()) {
-                mApprovedCursor = data;
-                mApprovedAdapter.swapCursor(mApprovedCursor);
+                mApprovedAdapter.swapCursor(data);
             }
         } else if (getLoaderManager().getLoader(REQUEST_LOADER).equals(loader)) {
             Log.d("EventDetailsFragment", "Finished request users " + data.getCount());
             if (data.moveToFirst()) {
-                mRequestCursor = data;
-                mRequestAdapter.swapCursor(mRequestCursor);
+                mRequestAdapter.swapCursor(data);
             }
         }
 

@@ -70,7 +70,7 @@ public class Location implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(city);
-        dest.writeString(country);;
+        dest.writeString(country);
         dest.writeFloat(longitude);
         dest.writeFloat(latitude);
         dest.writeString(street);

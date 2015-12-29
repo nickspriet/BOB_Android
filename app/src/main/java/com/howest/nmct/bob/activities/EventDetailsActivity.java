@@ -16,6 +16,7 @@ import com.howest.nmct.bob.fragments.EventDetailsFragment;
 import com.howest.nmct.bob.interfaces.EventActionsListener;
 import com.howest.nmct.bob.interfaces.ResponseListener;
 import com.howest.nmct.bob.interfaces.RideOptionSelectedListener;
+import com.howest.nmct.bob.sync.BackendSyncAdapter;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -130,7 +131,7 @@ public class EventDetailsActivity extends BaseActivity implements RideOptionSele
             @Override
             public void onSuccess() {
                 Log.i("EventDetailsActivity", "Ride is created");
-                Rides.fetchData(activityContext, null);
+                BackendSyncAdapter.syncImmediately(activityContext);
                 Toast.makeText(activityContext, "Ride created", Toast.LENGTH_LONG).show();
             }
 

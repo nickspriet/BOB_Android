@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:fitsSystemWindows="true"
     android:background="@color/appBackground"
     android:id="@+id/loadingPanel"
     tools:context=".activities.LoginActivity">
@@ -31,7 +32,7 @@
             android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Try again">
+            android:text="@string/try_again">
 
         </Button>
     </LinearLayout>

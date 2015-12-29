@@ -24,10 +24,7 @@ import com.howest.nmct.bob.data.Contracts.EventEntry;
 import com.howest.nmct.bob.data.Contracts.PlaceEntry;
 import com.howest.nmct.bob.data.Contracts.RideEntry;
 import com.howest.nmct.bob.data.Contracts.UserEntry;
-import com.howest.nmct.bob.interfaces.APIFetchListener;
 import com.howest.nmct.bob.utils.IntentStarter;
-
-import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,7 +33,7 @@ import butterknife.ButterKnife;
  * illyism
  * 21/10/15
  */
-public class RidesFragment extends Fragment implements APIFetchListener,
+public class RidesFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     @Bind(R.id.list) RecyclerView recyclerView;
@@ -127,16 +124,6 @@ public class RidesFragment extends Fragment implements APIFetchListener,
     }
 
     @Override
-    public void startLoading() {
-
-    }
-
-    @Override
-    public void failedLoading(IOException e) {
-
-    }
-
-    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case URL_LOADER:
@@ -163,14 +150,6 @@ public class RidesFragment extends Fragment implements APIFetchListener,
         } else {
             emptyView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
-
-            data.moveToFirst();
-            do {
-                for (int j = 0; j < data.getColumnCount(); j++) {
-                    Log.d("RideSQL", data.getColumnName(j) + " = " + data.getString(j));
-                }
-            } while(data.moveToNext());
-
             mAdapter.swapCursor(data);
         }
     }

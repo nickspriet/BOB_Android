@@ -53,19 +53,6 @@ public class User implements Parcelable {
     @Expose
     public String aboutMe;
 
-    public User(String id, String facebookID, String name, String firstName, String lastName,
-                String picture, String cover, String link, String aboutMe) {
-        this.Id = id;
-        this.facebookID = facebookID;
-        this.name = name;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.picture = picture;
-        this.cover = cover;
-        this.link = link;
-        this.aboutMe = aboutMe;
-    }
-
     public User() {}
 
     @Override

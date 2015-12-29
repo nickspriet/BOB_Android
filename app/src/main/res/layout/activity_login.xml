@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground"
+    android:fitsSystemWindows="true"
     tools:context=".activities.LoginActivity">
 
     <ImageView
@@ -22,7 +23,7 @@
         android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
         android:layout_below="@id/imgLogo"
-        android:text="Find &amp; Share Rides"
+        android:text="@string/find_share_rides"
         android:textSize="16sp"
         android:textColor="@android:color/white"
         android:layout_marginTop="20dp"

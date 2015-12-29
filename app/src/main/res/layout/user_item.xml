@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/text"
-        android:text="User"
+        android:text="@string/user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceListItemSmall"

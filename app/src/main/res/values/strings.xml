@@ -30,7 +30,6 @@
         <item>No, I would like to join a ride</item>
         <item>Nevermind</item>
     </string-array>
-    <string name="appwidget_text">EXAMPLE</string>
     <string name="loremipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
     <string name="when">When</string>
     <string name="where">Where</string>
@@ -70,8 +69,18 @@
     <string name="pref_notifications_summ">Receive notifications?</string>
     <string name="no_events">No events</string>
     <string name="failed_loading">Failed loading</string>
-    <string name="loading_events">Loading events...</string>
+    <string name="loading_events">Loading events…</string>
     <string name="no_rides">No rides</string>
-    <string name="none_yet">None... Yet.</string>
+    <string name="none_yet">None… Yet.</string>
     <string name="vehicle">Vehicle</string>
+    <string name="sync_account_type">com.howest.nmct.bob.account</string>
+    <string name="content_authority">com.howest.nmct.bob</string>
+    <string name="try_again">Try again</string>
+    <string name="find_share_rides"><![CDATA[Find & Share Rides]]></string>
+    <string name="description">Description</string>
+    <string name="user">User</string>
+    <string name="save">Save</string>
+    <string name="edit">Edit</string>
+    <string name="view_profile">View Profile</string>
+    <string name="write_something_about_yourself">Write something about yourself</string>
 </resources>

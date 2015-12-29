@@ -29,7 +29,6 @@ public class RideDetailsActivity extends BaseActivity {
 
     private String mRideId;
     private RideDetailsFragment mFragment;
-    private ShareActionProvider mShareActionProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +113,7 @@ public class RideDetailsActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.ride, menu);
 
         MenuItem item = menu.findItem(R.id.share);
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        ShareActionProvider mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
 
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);

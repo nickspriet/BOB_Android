@@ -8,9 +8,9 @@ import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 
-import com.howest.nmct.bob.collections.Rides;
 import com.howest.nmct.bob.data.Contracts;
 import com.howest.nmct.bob.fragments.RidesFragment;
+import com.howest.nmct.bob.sync.BackendSyncAdapter;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class RidesActivity extends BaseActivity {
     }
 
     protected void initData() {
-        Rides.fetchData(this, mFragment);
+        BackendSyncAdapter.syncImmediately(this);
     }
 
     @Override

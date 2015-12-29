@@ -135,6 +135,8 @@ public class TestEventProvider extends AndroidTestCase {
 
         assertEquals("Test Event", c.getString(indexName));
         assertEquals("Event Description", c.getString(indexDesc));
+
+        c.close();
     }
 
     public void testEventUpdate() {

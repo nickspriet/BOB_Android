@@ -44,6 +44,7 @@ public class TestEventDb extends AndroidTestCase {
         assertTrue("Error: Your database was created without both the place entry and event entry tables",
                 tableNameHashSet.isEmpty());
 
+        c.close();
         db.close();
     }
 

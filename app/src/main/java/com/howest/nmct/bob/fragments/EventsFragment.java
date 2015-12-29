@@ -15,16 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.activities.NavigationActivity;
 import com.howest.nmct.bob.adapters.EventAdapter;
 import com.howest.nmct.bob.data.Contracts.EventEntry;
 import com.howest.nmct.bob.data.Contracts.PlaceEntry;
-import com.howest.nmct.bob.interfaces.APIFetchListener;
-
-import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,7 +28,7 @@ import butterknife.ButterKnife;
 /**
  * Nick on 28/10/2015.
  */
-public class EventsFragment extends Fragment implements APIFetchListener,
+public class EventsFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     @Bind(R.id.list) RecyclerView recyclerView;
@@ -98,15 +94,6 @@ public class EventsFragment extends Fragment implements APIFetchListener,
     public void onEventSelected(String eventId, ImageView imgEvent) {
         ((NavigationActivity) getActivity())
                 .navigateToEventDetails(eventId, imgEvent);
-    }
-
-    public void startLoading() {
-        emptyView.setText(R.string.loading_events);
-    }
-
-    @Override
-    public void failedLoading(IOException e) {
-        Toast.makeText(getContext(), R.string.failed_loading, Toast.LENGTH_SHORT).show();
     }
 
     @Override
