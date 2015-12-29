@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.howest.nmct.bob.models.Event;
 
-import java.util.List;
+import java.util.LinkedHashSet;
 
 /**
  * illyism
@@ -23,9 +23,9 @@ public class APIEventsResponse extends APIResponse {
     public class APIData {
         @SerializedName("events")
         @Expose
-        public List<Event> events;
+        public LinkedHashSet<Event> events;
 
-        public APIData(List<Event> events) {
+        public APIData(LinkedHashSet<Event> events) {
             this.events = events;
         }
     }

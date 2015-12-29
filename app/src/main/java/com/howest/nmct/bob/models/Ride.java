@@ -1,11 +1,19 @@
 package com.howest.nmct.bob.models;
 
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.Html;
 import android.text.Spanned;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import com.howest.nmct.bob.Constants;
+import com.howest.nmct.bob.data.Contracts.RideEntry;
+
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -13,126 +21,61 @@ import java.util.List;
  * 21/10/15
  */
 public class Ride implements Parcelable {
-    private String id;
-    private String eventId;
-    private String title;
-    private String date;
-    private String image;
-    private String address;
-    private int requests;
-    private List<String> approvedList = new ArrayList<>();
-    private User driver;
+    @SerializedName("_id")
+    @Expose
+    public String id;
 
-    public Ride(String id, String eventId, User user, String title, String date, String address) {
-        this.id = id;
-        this.eventId = eventId;
-        this.driver = user;
-        this.title = title;
-        this.date = date;
-        this.address = address;
+    @SerializedName("driver")
+    @Expose
+    public User driver;
+
+    @SerializedName("approved")
+    @Expose
+    public List<User> approvedList = new ArrayList<>();
+
+    @SerializedName("requests")
+    @Expose
+    public List<User> requestsList = new ArrayList<>();
+
+    @SerializedName("description")
+    @Expose
+    public String description;
+
+    @SerializedName("startTime")
+    @Expose
+    public String startTime;
+
+    @SerializedName("endTime")
+    @Expose
+    public String endTime;
+
+    @SerializedName("place")
+    @Expose
+    public Place place;
+
+    @SerializedName("event")
+    @Expose
+    public Event event;
+
+    public Ride(User driver, Event event) {
+        this.driver = driver;
+        this.event = event;
     }
 
-    public String getTitle() {
-        return title;
-    }
+    public Ride() {}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public int getRequests() {
-        return requests;
-    }
-
-    public void setRequests(int requests) {
-        this.requests = requests;
-    }
-
-    public int getApproved() {
-        if (approvedList != null) {
-            return approvedList.size();
-        }
-        return 0;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public Boolean isSelfDriver(User otherUser) {
-        return this.getDriver().getId().equals(otherUser.getId());
-    }
-
-    public Boolean isApproved(User user) {
-        return approvedList != null && approvedList.contains(user.getId());
-    }
-
-    public void setApprovedList(List<String> approvedList) {
-        this.approvedList = approvedList;
-    }
-
-    public void addApprovedUser(User user) {
-        this.approvedList.add(user.getId());
-    }
-
-    /**
-     * Sets Title, Date, Address for a Ride
-     * @param event the event to copy data from
-     * @param driver The driver of the new ride
-     * @return Ride
-     */
-    public static Ride createRideFromEvent(Event event, User driver) {
-        Ride ride = new Ride("-1", event.getId(), driver, event.getName(), event.getStartTime().toString(), event.getAddress());
-        ride.addApprovedUser(driver);
-        return ride;
-    }
-
-
-    public static Spanned formatApprovalStatus(Ride ride, User user) {
-        if (ride.isSelfDriver(user)) {
+    public static Spanned formatApprovalStatus(Boolean isDriver, Boolean isApproved, int approvedCount, int requestCount) {
+        if (isDriver) {
             // I am BOB - so show me approvals and requests
-            return Html.fromHtml(String.format("<b>%s</b> approvals • <b>%s</b> requested", ride.getApproved(), ride.getRequests()));
-        } else if (ride.isApproved(user)) {
+            return Html.fromHtml(String.format("<b>%d</b> approvals • <b>%d</b> requested", approvedCount, requestCount));
+        } else if (isApproved) {
             // I am not BOB but I'm approved - so show me the amount of guests
-            return Html.fromHtml(String.format("<b>%s</b> guests", ride.getApproved()));
+            return Html.fromHtml(String.format("<b>%d</b> riding along", approvedCount));
         } else {
             // I am not BOB and I'm awaiting approval
             return Html.fromHtml("Waiting for approval...");
         }
     }
-
-    public User getDriver() {
-        return driver;
-    }
-
 
     @Override
     public int describeContents() {
@@ -142,22 +85,22 @@ public class Ride implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
-        dest.writeString(eventId);
         dest.writeParcelable(driver, flags);
-        dest.writeString(title);
-        dest.writeString(date);
-        dest.writeString(address);
-        dest.writeString(image);
+        dest.writeString(description);
+        dest.writeString(startTime);
+        dest.writeString(endTime);
+        dest.writeParcelable(place, flags);
+        dest.writeParcelable(event, flags);
     }
 
     public Ride(Parcel in) {
         id = in.readString();
-        eventId = in.readString();
         driver = in.readParcelable(User.class.getClassLoader());
-        title = in.readString();
-        date = in.readString();
-        address = in.readString();
-        image = in.readString();
+        description = in.readString();
+        startTime = in.readString();
+        endTime = in.readString();
+        place = in.readParcelable(Place.class.getClassLoader());
+        event = in.readParcelable(Event.class.getClassLoader());
     }
 
     public static final Parcelable.Creator CREATOR =
@@ -170,4 +113,40 @@ public class Ride implements Parcelable {
                     return new Ride[size];
                 }
             };
+
+    @Override
+    public boolean equals(Object o) {
+        Ride otherRide = (Ride) o;
+        return otherRide != null && this.id.equals(otherRide.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
+    }
+
+    public static ContentValues[] asContentValues(LinkedHashSet<Ride> rides) {
+        ContentValues[] values = new ContentValues[rides.size()];
+        int i = 0;
+        for (Iterator<Ride> iter = rides.iterator(); iter.hasNext(); i++) {
+            values[i] = asContentValues(iter.next());
+        }
+        return values;
+    }
+
+    private static ContentValues asContentValues(Ride r) {
+        ContentValues values = new ContentValues();
+        values.put(RideEntry._ID, r.id);
+        values.put(RideEntry.COLUMN_START_TIME, r.startTime);
+        values.put(RideEntry.COLUMN_END_TIME, r.endTime);
+        values.put(RideEntry.COLUMN_DESCRIPTION, r.description);
+        values.put(RideEntry.COLUMN_DRIVER_ID, r.driver.Id);
+        values.put(RideEntry.COLUMN_PLACE_ID, r.place.id);
+        values.put(RideEntry.COLUMN_EVENT_ID, r.event.id);
+        return values;
+    }
+
+    public static String createLink(String rideId) {
+        return Constants.BACKEND_BASEURL + "/ride/" + rideId;
+    }
 }

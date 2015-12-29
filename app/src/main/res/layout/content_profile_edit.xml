@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".activities.EditProfileActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            style="@style/Card.Wrapper.Details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgProfile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_account"
+                android:layout_marginEnd="@dimen/card_inner_margin_horizontal"
+                tools:civ_border_width="2dp"
+                tools:civ_border_color="#FFEFEFEF"/>
+
+            <TextView
+                android:id="@+id/lblAboutMe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/imgProfile"
+                android:padding="4dp"
+                android:text="@string/about_me"
+                android:labelFor="@id/tvProfileAboutMe"
+                android:textStyle="bold" />
+
+            <EditText
+                android:inputType="textAutoComplete"
+                android:hint="@string/write_something_about_yourself"
+                android:id="@+id/tvProfileAboutMe"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lblAboutMe"
+                android:layout_toEndOf="@id/imgProfile"
+                android:padding="4dp"
+                android:text="" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

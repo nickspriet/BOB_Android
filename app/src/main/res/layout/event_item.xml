@@ -26,16 +26,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/nav_header_height" />
 
-            <ImageView
-                android:contentDescription="@string/BOB"
-                android:id="@+id/imgBobStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/imgEvent"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="-25dp"
-                android:src="@mipmap/ic_launcher" />
-
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="fill_parent"
@@ -59,7 +49,6 @@
                         android:id="@+id/tvEventDay"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:text="23"
                         android:textAlignment="center"
                         android:textSize="32sp" />
 
@@ -68,7 +57,6 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-5sp"
-                        android:text="NOV"
                         android:textAlignment="center"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -83,22 +71,19 @@
                         android:id="@+id/tvEventName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Name of the event"
                         android:textStyle="bold" />
 
                     <TextView
                         style="@style/Card.Text.Meta"
                         android:id="@+id/tvEventDate"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sat 6:30 PM" />
+                        android:layout_height="wrap_content" />
 
                     <TextView
                         style="@style/Card.Text.Meta"
                         android:id="@+id/tvEventLocation"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Kortrijk, Belgium" />
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 

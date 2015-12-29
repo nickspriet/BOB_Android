@@ -13,8 +13,7 @@
             <TextView
                 android:id="@+id/tvEventDetailsFriendsAndGuests"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="27 are going (including 7 Bobs)" />
+                android:layout_height="wrap_content" />
 
             <View android:id="@+id/bobBadgeSeparator" style="@style/Separator.Horizontal" />
 
@@ -56,8 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:elevation="6dp"
-                    android:text="Going (52/140)" />
+                    android:elevation="6dp" />
 
                 <Button
                     android:id="@+id/btnInterested"
@@ -66,8 +64,7 @@
                     android:textColor="@android:color/white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Interested (10/25)" />
+                    android:layout_weight="1" />
 
                 <Button
                     android:id="@+id/btnNotGoing"
@@ -76,8 +73,7 @@
                     android:textColor="@android:color/white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Not going (17/120)" />
+                    android:layout_weight="1" />
             </LinearLayout>
         </LinearLayout>
 
@@ -99,8 +95,7 @@
                 <TextView
                     android:id="@+id/tvEventDetailsStartTime"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Oct 20 at 9:00pm to Oct 21 at 5:00am" />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <View android:id="@+id/endsAtContainerSeparator" style="@style/Separator.Horizontal" />
@@ -121,8 +116,7 @@
                 <TextView
                     android:id="@+id/tvEventDetailsEndTime"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Oct 20 at 9:00pm to Oct 21 at 5:00am" />
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <View android:id="@+id/locationContainerSeparator" style="@style/Separator.Horizontal" />
@@ -138,13 +132,12 @@
                     style="@style/Card.Text.Meta.Label.Padded"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Location"/>
+                    android:text="@string/location"/>
 
                 <TextView
                     android:id="@+id/tvEventDetailsAddress"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Street, 0000 City, Country" />
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -156,7 +149,7 @@
                 style="@style/Card.Text.Meta.Label.Padded"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Description" />
+                android:text="@string/description" />
 
             <TextView
                 android:id="@+id/tvDescription"

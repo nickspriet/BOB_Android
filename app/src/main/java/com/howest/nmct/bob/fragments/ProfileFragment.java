@@ -37,13 +37,14 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    private void initViews() {
+
+
+    public void initViews() {
         ProfileActivity parentActivity = (ProfileActivity) getActivity();
         User user = parentActivity.getUser();
+        if (user == null) return;
 
         Picasso p = Picasso.with(getActivity());
-        p.setIndicatorsEnabled(true);
-
         p.load(user.getPicture())
                 .fit()
                 .centerCrop()

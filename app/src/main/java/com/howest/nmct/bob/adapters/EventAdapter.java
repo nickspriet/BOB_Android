@@ -1,5 +1,6 @@
 package com.howest.nmct.bob.adapters;
 
+import android.database.Cursor;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,11 +11,11 @@ import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.activities.BaseActivity;
+import com.howest.nmct.bob.data.Contracts;
 import com.howest.nmct.bob.fragments.EventsFragment;
 import com.howest.nmct.bob.models.Event;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import butterknife.Bind;
@@ -26,15 +27,13 @@ import butterknife.OnClick;
  * Adapter for the events
  */
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
-
-    private final ArrayList<Event> mEvents;
+    private Cursor mCursor;
     private final BaseActivity mActivity;
     private final EventsFragment mFragment;
 
-    public EventAdapter(EventsFragment eventsFragment, ArrayList<Event> events) {
+    public EventAdapter(EventsFragment eventsFragment) {
         this.mActivity = (BaseActivity) eventsFragment.getActivity();
         this.mFragment = eventsFragment;
-        this.mEvents = events;
     }
 
     @Override
@@ -44,18 +43,24 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     }
 
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Event event = mEvents.get(position);
-        Date startTime = event.getStartTime();
-        holder.tvEventDay.setText(event.getEventDateFormat("FF", startTime));
-        holder.tvEventMonth.setText(event.getEventDateFormat("MMM", startTime).toUpperCase());
-        holder.tvEventName.setText(event.getName());
-        holder.tvEventDate.setText(event.getEventDateFormat("E h a", startTime) );
-        holder.tvEventLocation.setText(event.getAddress());
+        mCursor.moveToPosition(position);
+        Date startTime = Event.parseDate(mCursor.getString(EventsFragment.COL_EVENT_START_TIME));
+        
+        holder.tvEventDay.setText(Event.formatDate("FF", startTime));
+        holder.tvEventMonth.setText(Event.formatDate("MMM", startTime).toUpperCase());
+        holder.tvEventName.setText(mCursor.getString(EventsFragment.COL_EVENT_NAME));
+        holder.tvEventDate.setText(Event.formatDate("E h a", startTime) );
 
-        //set image via picasso
+        String locationName = mCursor.getString(EventsFragment.COL_PLACE_NAME);
+        if (locationName != null && !locationName.isEmpty()) {
+            holder.tvEventLocation.setText(locationName);
+            holder.tvEventLocation.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvEventLocation.setVisibility(View.GONE);
+        }
+
         Picasso p = Picasso.with(this.mActivity.getApplicationContext());
-        p.setIndicatorsEnabled(true);
-        p.load(event.getCover())
+        p.load(mCursor.getString(EventsFragment.COL_EVENT_COVER))
                 .fit()
                 .centerCrop()
                 .into(holder.imgEvent);
@@ -63,12 +68,19 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return mEvents.size();
+        return mCursor.getCount();
     }
 
-    private void onEventGoing(int adapterPosition) {
-        Event event = mEvents.get(adapterPosition);
-        mFragment.onShowCreateRideDialog(event);
+    public void swapCursor(Cursor data) {
+        if (mCursor == data) return;
+        Cursor oldCursor = mCursor;
+        mCursor = data;
+        if (data != null) {
+            notifyDataSetChanged();
+        }
+        if (oldCursor != null) {
+            oldCursor.close();
+        }
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -87,13 +99,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             ButterKnife.bind(this, view);
         }
 
-        /*
-        @OnClick(R.id.btnEventGoing)
-        public void onEventGoing() {
-            adapter.onEventGoing(getAdapterPosition());
-        }
-        */
-
         @OnClick(R.id.cardView)
         public void onCardClicked() {
             ViewCompat.setTransitionName(imgEvent, "toolbarImage");
@@ -101,8 +106,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         }
     }
 
-    private void onEventSelected(long itemId, ImageView imgEvent) {
-        Event event = mEvents.get((int) itemId);
-        mFragment.onEventSelected(event, imgEvent);
+    private void onEventSelected(int itemId, ImageView imgEvent) {
+        mCursor.moveToPosition(itemId);
+        int idIndex = mCursor.getColumnIndex(Contracts.EventEntry._ID);
+        mFragment.onEventSelected(mCursor.getString(idIndex), imgEvent);
     }
 }
