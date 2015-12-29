@@ -37,17 +37,17 @@
             android:src="@drawable/ic_account"
             android:layout_gravity="center"
             app:civ_border_width="2dp"
-            android:elevation="2dp"
+            app:elevation="4dp"
+            android:elevation="4dp"
             app:civ_border_color="#FFFFFFFF"/>
 
         <TextView
             style="@style/Header.Text.Title"
-            android:layout_marginLeft="18dp"
+            android:layout_marginStart="18dp"
             android:layout_gravity="center"
             android:id="@+id/nav_header_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="John Doe"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     </LinearLayout>

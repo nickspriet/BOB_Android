@@ -1,12 +1,21 @@
 package com.howest.nmct.bob.activities;
 
+import android.content.SharedPreferences;
+import android.database.ContentObserver;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 
-import com.howest.nmct.bob.collections.Rides;
+import com.howest.nmct.bob.data.Contracts;
 import com.howest.nmct.bob.fragments.RidesFragment;
+import com.howest.nmct.bob.sync.BackendSyncAdapter;
 
 import java.util.List;
+
+import static com.howest.nmct.bob.Constants.USER_ID;
+
 
 /**
  * illyism
@@ -15,10 +24,28 @@ import java.util.List;
 public class RidesActivity extends BaseActivity {
     private RidesFragment mFragment;
 
+    private Handler mainHandler = new Handler(Looper.getMainLooper());
+    ContentObserver userObserver;
+
     @Override
-    protected void initData(Bundle activityData) {
-        if (Rides.getRides().size() == 0)
-            Rides.fetchData();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initData();
+
+        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String userId = preferences.getString(USER_ID, "");
+        userObserver = new UserObserver(mainHandler);
+        getContentResolver().registerContentObserver(Contracts.UserEntry.buildUserUri(userId), false, userObserver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getContentResolver().unregisterContentObserver(userObserver);
+    }
+
+    protected void initData() {
+        BackendSyncAdapter.syncImmediately(this);
     }
 
     @Override
@@ -26,13 +53,22 @@ public class RidesActivity extends BaseActivity {
         List<Fragment> frags = getSupportFragmentManager().getFragments();
         if (frags != null)
             mFragment = (RidesFragment) frags.get(0);
-        if (mFragment == null)
+        if (mFragment == null) {
             mFragment = new RidesFragment();
-        addFragmentToContainer(mFragment);
+            addFragmentToContainer(mFragment);
+        }
     }
 
-    @Override
-    protected void setupToolbar() {
-        setToolbarTitle("Rides");
+    class UserObserver extends ContentObserver {
+        public UserObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            mFragment.mAdapter.resetSwipeStates();
+            mFragment.mAdapter.notifyDataSetChanged();
+        }
     }
 }

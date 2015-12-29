@@ -1,13 +1,17 @@
 package com.howest.nmct.bob.models;
 
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.howest.nmct.bob.data.Contracts.EventEntry;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Locale;
 
 /**
@@ -122,6 +126,8 @@ public class Event implements Parcelable {
         this.place = place;
     }
 
+    public Event() {}
+
     public String getId() {
         return id;
     }
@@ -134,22 +140,21 @@ public class Event implements Parcelable {
         return name;
     }
 
-    public Date getStartTime() {
-        if (startTime == null) return null;
+    public static Date parseDate(String dateString) {
+        if (dateString == null) return null;
         try {
-            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US).parse(startTime);
+            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US).parse(dateString);
         } catch (Exception e) {
             return null;
         }
     }
 
+    public Date getStartTime() {
+        return parseDate(startTime);
+    }
+
     public Date getEndTime() {
-        if (endTime == null) return null;
-        try {
-            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US).parse(endTime);
-        } catch (Exception e) {
-            return null;
-        }
+        return parseDate(endTime);
     }
 
     public String getCover() {
@@ -157,14 +162,14 @@ public class Event implements Parcelable {
     }
 
     public String getAddress() {
-        if (place != null && place.location != null) {
-            return place.location.toString();
+        if (place != null) {
+            return place.toString();
         } else {
             return "";
         }
     }
 
-    public String getEventDateFormat(String datePattern, Date date) {
+    public static String formatDate(String datePattern, Date date) {
         if (date == null) return "";
         SimpleDateFormat sdf = new SimpleDateFormat(datePattern, Locale.US);
         return sdf.format(date);
@@ -245,5 +250,56 @@ public class Event implements Parcelable {
 
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        Event otherEvent = (Event) o;
+        return otherEvent != null && this.getId().equals(otherEvent.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getId().hashCode();
+    }
+
+    public static ContentValues[] asContentValues(LinkedHashSet objects) {
+        ContentValues[] values = new ContentValues[objects.size()];
+        int i = 0;
+        for (Iterator iter = objects.iterator(); iter.hasNext(); i++) {
+            Object o = iter.next();
+            if (o instanceof Event) {
+                Event e = (Event) o;
+                values[i] = asContentValues(e);
+            }
+            if (o instanceof Ride) {
+                Ride r = (Ride) o;
+                values[i] = asContentValues(r.event);
+            }
+        }
+        return values;
+    }
+
+    public static ContentValues asContentValues(Event e) {
+        ContentValues values = new ContentValues();
+        values.put(EventEntry._ID, e.id);
+        values.put(EventEntry.COLUMN_NAME, e.name);
+        values.put(EventEntry.COLUMN_DESCRIPTION, e.description);
+        values.put(EventEntry.COLUMN_START_TIME, e.startTime);
+        values.put(EventEntry.COLUMN_UPDATED_TIME, e.updatedTime);
+        values.put(EventEntry.COLUMN_END_TIME, e.endTime);
+        values.put(EventEntry.COLUMN_COVER, e.cover);
+        values.put(EventEntry.COLUMN_PICTURE, e.picture);
+        values.put(EventEntry.COLUMN_ATTENDING_COUNT, e.attendingCount);
+        values.put(EventEntry.COLUMN_DECLINED_COUNT, e.declinedCount);
+        values.put(EventEntry.COLUMN_INTERESTED_COUNT, e.interestedCount);
+        values.put(EventEntry.COLUMN_NOREPLY_COUNT, e.noreplyCount);
+        values.put(EventEntry.COLUMN_OWNER, e.owner.name);
+        values.put(EventEntry.COLUMN_CAN_GUESTS_INVITE, e.canGuestsInvite);
+        values.put(EventEntry.COLUMN_GUEST_LIST_ENABLED, e.guestListEnabled);
+        values.put(EventEntry.COLUMN_RSVP_STATUS, e.rsvpStatus);
+        if (e.place != null)
+            values.put(EventEntry.COLUMN_PLACE_ID, e.place.id);
+        return values;
     }
 }

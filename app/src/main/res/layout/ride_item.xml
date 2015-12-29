@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress AndroidUnknownAttribute -->
 <view
     xmlns:android="http://schemas.android.com/apk/res/android"
     class="com.howest.nmct.bob.views.AutoHeightViewPager"
@@ -39,12 +40,12 @@
                         android:contentDescription="@string/ride_image"
                         android:id="@+id/ride_image"
                         android:src="@android:color/black"
-                        android:transitionName="MyTransition"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
+
                     <TextView
                         style="@style/Header.Text.Title"
-                        android:text="21 Oct"
+                        android:id="@+id/shortDate"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:padding="5dp"
