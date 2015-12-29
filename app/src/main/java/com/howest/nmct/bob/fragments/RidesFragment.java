@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
@@ -110,9 +109,9 @@ public class RidesFragment extends Fragment implements
         }
     }
 
-    public void onRideSelected(String rideId, ImageView rideImage) {
+    public void onRideSelected(String rideId) {
         ((NavigationActivity) getActivity())
-                .navigateToRideDetails(rideId, rideImage);
+                .navigateToRideDetails(rideId);
     }
 
     public void onRideMapClick(String placeId) {

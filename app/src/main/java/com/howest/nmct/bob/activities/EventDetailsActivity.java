@@ -36,7 +36,6 @@ public class EventDetailsActivity extends BaseActivity implements RideOptionSele
     private EventDetailsFragment mFragment;
 
     private String mTitle;
-    private String mCover;
 
     protected void onCreate(Bundle savedInstanceState) {
         if (!parseIntent()) {
@@ -50,10 +49,8 @@ public class EventDetailsActivity extends BaseActivity implements RideOptionSele
             public void onTransitionStart(Transition transition) {}
             @Override
             public void onTransitionEnd(Transition transition) {
-                setToolbarImage(mCover);
                 setToolbarTitle(mTitle);
             }
-
             @Override
             public void onTransitionCancel(Transition transition) {}
             @Override
@@ -135,8 +132,7 @@ public class EventDetailsActivity extends BaseActivity implements RideOptionSele
 
     public void initToolbar(String cover, String title) {
         this.mTitle = title;
-        this.mCover = cover;
-        setToolbarImage(mCover);
+        setToolbarImage(cover);
         setToolbarTitle(mTitle);
     }
 

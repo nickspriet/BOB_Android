@@ -1,6 +1,5 @@
 package com.howest.nmct.bob.activities;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -145,11 +144,10 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
         }
     }
 
+    // @FixMe: See Android bug #190388
     @Override
     public void setToolbarTitle(String title) {
         if (mToolbarLayout == null) return;
-        mToolbar.setTitle(title);
-        getSupportActionBar().setTitle(title);
         mToolbarLayout.setTitle(title);
     }
 
@@ -183,11 +181,6 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
                 .beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
-    }
-
-    @Override
-    protected void addDataToIntent(Intent i) {
-        i.putExtra(USER_PROFILE, mUser);
     }
 
     @Override

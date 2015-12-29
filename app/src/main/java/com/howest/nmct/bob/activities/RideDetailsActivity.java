@@ -10,7 +10,6 @@ import android.transition.Transition;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.fragments.RideDetailsFragment;
@@ -32,7 +31,6 @@ public class RideDetailsActivity extends BaseActivity {
     private RideDetailsFragment mFragment;
 
     private String mTitle;
-    private String mCover;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +45,8 @@ public class RideDetailsActivity extends BaseActivity {
             public void onTransitionStart(Transition transition) {}
             @Override
             public void onTransitionEnd(Transition transition) {
-                setToolbarImage(mCover);
                 setToolbarTitle(mTitle);
             }
-
             @Override
             public void onTransitionCancel(Transition transition) {}
             @Override
@@ -149,7 +145,7 @@ public class RideDetailsActivity extends BaseActivity {
         // Events when selecting an item in the options
         int id = item.getItemId();
         if (id == R.id.event) {
-            navigateToEventDetails(mFragment.getEventId(), (ImageView) findViewById(R.id.toolbarImage));
+            navigateToEventDetails(mFragment.getEventId());
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -157,8 +153,7 @@ public class RideDetailsActivity extends BaseActivity {
 
     public void initToolbar(String cover, String title) {
         this.mTitle = title;
-        this.mCover = cover;
-        setToolbarImage(mCover);
+        setToolbarImage(cover);
         setToolbarTitle(mTitle);
     }
 }

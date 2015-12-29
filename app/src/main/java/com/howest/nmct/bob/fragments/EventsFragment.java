@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
@@ -91,9 +90,9 @@ public class EventsFragment extends Fragment implements
     }
 
 
-    public void onEventSelected(String eventId, ImageView imgEvent) {
+    public void onEventSelected(String eventId) {
         ((NavigationActivity) getActivity())
-                .navigateToEventDetails(eventId, imgEvent);
+                .navigateToEventDetails(eventId);
     }
 
     @Override

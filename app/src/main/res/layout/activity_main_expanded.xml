@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
-            android:transitionName="toolbar"
+            android:transitionName="appbar"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.design.widget.CollapsingToolbarLayout
@@ -26,15 +26,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_image_height"
                 android:fitsSystemWindows="true"
+                app:expandedTitleTextAppearance="@style/Header.Title"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                 <ImageView
-                    android:contentDescription="Toolbar Image"
+                    android:contentDescription="@string/toolbar_image"
                     android:id="@+id/toolbarImage"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/toolbar_image_height"
                     app:layout_collapseMode="parallax"
-                    android:transitionName="toolbarImage"
                     android:scaleType="centerCrop"
                     android:fitsSystemWindows="true"
                     android:src="@drawable/ic_account"/>
@@ -44,11 +44,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/toolbar_image_height"
                     app:layout_collapseMode="parallax"
+                    android:fitsSystemWindows="true"
                     android:background="@drawable/header_background">
                 </View>
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
+                    android:transitionName="toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"

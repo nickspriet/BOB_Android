@@ -1,7 +1,6 @@
 package com.howest.nmct.bob.adapters;
 
 import android.database.Cursor;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,14 +100,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
         @OnClick(R.id.cardView)
         public void onCardClicked() {
-            ViewCompat.setTransitionName(imgEvent, "toolbarImage");
-            adapter.onEventSelected(getAdapterPosition(), imgEvent);
+            adapter.onEventSelected(getAdapterPosition());
         }
     }
 
-    private void onEventSelected(int itemId, ImageView imgEvent) {
+    private void onEventSelected(int itemId) {
         mCursor.moveToPosition(itemId);
         int idIndex = mCursor.getColumnIndex(Contracts.EventEntry._ID);
-        mFragment.onEventSelected(mCursor.getString(idIndex), imgEvent);
+        mFragment.onEventSelected(mCursor.getString(idIndex));
     }
 }

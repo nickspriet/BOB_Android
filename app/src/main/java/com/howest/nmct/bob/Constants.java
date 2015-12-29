@@ -35,5 +35,6 @@ public class Constants {
     public final static int RESULTS_CLOSE = 0;
     public final static int RESULTS_OK = 1;
 
+    public final static String APPBAR_TRANSITION_NAME = "appbar";
     public final static String TOOLBAR_TRANSITION_NAME = "toolbar";
 }
