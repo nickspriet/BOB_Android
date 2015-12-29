@@ -3,6 +3,7 @@
     android:orientation="horizontal" android:id="@+id/widgetContainer">
 
     <LinearLayout
+        android:id="@+id/widgetContent"
         android:background="@color/cardColorBackground"
         android:layout_width="match_parent"
         android:gravity="center"
@@ -12,7 +13,7 @@
 
         <RelativeLayout
             android:layout_width="@dimen/card_image_size_horizontal"
-            android:layout_height="match_parent">
+            android:layout_height="@dimen/card_image_size_horizontal">
 
             <ImageView
                 android:contentDescription="@string/ride_image"
@@ -20,8 +21,10 @@
                 android:src="@android:color/black"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
             <TextView
                 style="@style/Header.Text.Title"
+                android:id="@+id/shortDate"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:padding="5dp"
@@ -36,7 +39,9 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/card_inner_margin">
+            android:minHeight="@dimen/card_image_size_horizontal"
+            android:padding="@dimen/card_inner_margin"
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/ride_title"
@@ -51,14 +56,6 @@
                 style="@style/Card.Text.Meta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/approval_status"
-                android:text="@string/approval_status"
-                style="@style/Card.Text.Meta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
