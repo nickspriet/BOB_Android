@@ -19,6 +19,7 @@ import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.data.Contracts.UserEntry;
 import com.howest.nmct.bob.interfaces.ToolbarController;
 import com.howest.nmct.bob.models.User;
+import com.howest.nmct.bob.sync.BackendSyncAdapter;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -50,6 +51,7 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
         initUserData(savedInstanceState);
         super.initNavigation();
         initFragment();
+        BackendSyncAdapter.initializeSyncAdapter(this);
     }
 
     @SuppressWarnings("SameReturnValue")
