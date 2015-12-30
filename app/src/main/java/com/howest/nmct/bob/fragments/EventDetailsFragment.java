@@ -23,6 +23,7 @@ import com.howest.nmct.bob.data.Contracts.PlaceEntry;
 import com.howest.nmct.bob.interfaces.EventActionsListener;
 import com.howest.nmct.bob.models.Event;
 
+import java.text.DateFormat;
 import java.util.Date;
 
 import butterknife.Bind;
@@ -140,20 +141,14 @@ public class EventDetailsFragment extends Fragment implements
         }
 
         if (startTime != null) {
-            tvEventDetailsStartTime.setText(String.format("%s %s at %s",
-                    Event.formatDate("EEE", startTime),
-                    Event.formatDate("FF", startTime),
-                    Event.formatDate("hh:mm a", startTime)));
+            tvEventDetailsStartTime.setText(DateFormat.getDateTimeInstance().format(startTime));
         } else {
             startAtContainer.setVisibility(View.GONE);
             startAtContainerSeparator.setVisibility(View.GONE);
         }
 
         if (endTime != null) {
-            tvEventDetailsEndTime.setText(String.format("%s %s at %s",
-                    Event.formatDate("EEE", endTime),
-                    Event.formatDate("FF", endTime),
-                    Event.formatDate("hh:mm a", endTime)));
+            tvEventDetailsEndTime.setText(DateFormat.getDateTimeInstance().format(endTime));
         } else {
             endsAtContainer.setVisibility(View.GONE);
             endsAtContainerSeparator.setVisibility(View.GONE);
