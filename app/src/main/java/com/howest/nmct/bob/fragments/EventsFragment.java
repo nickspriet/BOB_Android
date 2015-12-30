@@ -2,11 +2,13 @@ package com.howest.nmct.bob.fragments;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,10 +19,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
+import com.howest.nmct.bob.activities.EventsActivity;
 import com.howest.nmct.bob.activities.NavigationActivity;
 import com.howest.nmct.bob.adapters.EventAdapter;
 import com.howest.nmct.bob.data.Contracts.EventEntry;
 import com.howest.nmct.bob.data.Contracts.PlaceEntry;
+import com.howest.nmct.bob.sync.BackendSyncAdapter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,10 +33,11 @@ import butterknife.ButterKnife;
  * Nick on 28/10/2015.
  */
 public class EventsFragment extends Fragment implements
-        LoaderManager.LoaderCallbacks<Cursor> {
+        LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
 
     @Bind(R.id.list) RecyclerView recyclerView;
     @Bind(R.id.empty_view) TextView emptyView;
+    @Bind(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
 
     public EventAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -56,11 +61,12 @@ public class EventsFragment extends Fragment implements
     public EventsFragment() {}
 
     @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.content_events, container, false);
         ButterKnife.bind(this, view);
         initViews();
+        swipeContainer.setOnRefreshListener(this);
         return view;
     }
 
@@ -126,10 +132,19 @@ public class EventsFragment extends Fragment implements
             recyclerView.setVisibility(View.VISIBLE);
             mAdapter.swapCursor(data);
         }
+
+        swipeContainer.setRefreshing(false);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeContainer.setRefreshing(true);
+        BackendSyncAdapter.syncImmediately(EventsFragment.this.getContext());
+        mAdapter.notifyDataSetChanged();
     }
 }

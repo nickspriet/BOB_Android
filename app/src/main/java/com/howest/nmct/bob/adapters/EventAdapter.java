@@ -45,11 +45,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         mCursor.moveToPosition(position);
         Date startTime = Event.parseDate(mCursor.getString(EventsFragment.COL_EVENT_START_TIME));
-        
+
         holder.tvEventDay.setText(Event.formatDate("FF", startTime));
         holder.tvEventMonth.setText(Event.formatDate("MMM", startTime).toUpperCase());
         holder.tvEventName.setText(mCursor.getString(EventsFragment.COL_EVENT_NAME));
-        holder.tvEventDate.setText(Event.formatDate("E h a", startTime) );
+        holder.tvEventDate.setText(Event.formatDate("E h a", startTime));
 
         String locationName = mCursor.getString(EventsFragment.COL_PLACE_NAME);
         if (locationName != null && !locationName.isEmpty()) {
