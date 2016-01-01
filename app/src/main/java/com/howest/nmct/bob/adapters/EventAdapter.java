@@ -46,7 +46,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         mCursor.moveToPosition(position);
         Date startTime = Event.parseDate(mCursor.getString(EventsFragment.COL_EVENT_START_TIME));
 
-        holder.tvEventDay.setText(Event.formatDate("FF", startTime));
+        holder.tvEventDay.setText(Event.formatDate("dd", startTime));
         holder.tvEventMonth.setText(Event.formatDate("MMM", startTime).toUpperCase());
         holder.tvEventName.setText(mCursor.getString(EventsFragment.COL_EVENT_NAME));
         holder.tvEventDate.setText(Event.formatDate("E h a", startTime));
