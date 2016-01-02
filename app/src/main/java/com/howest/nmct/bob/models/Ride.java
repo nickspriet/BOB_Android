@@ -134,14 +134,16 @@ public class Ride implements Parcelable {
         return values;
     }
 
-    private static ContentValues asContentValues(Ride r) {
+    public static ContentValues asContentValues(Ride r) {
         ContentValues values = new ContentValues();
         values.put(RideEntry._ID, r.id);
         values.put(RideEntry.COLUMN_START_TIME, r.startTime);
         values.put(RideEntry.COLUMN_END_TIME, r.endTime);
         values.put(RideEntry.COLUMN_DESCRIPTION, r.description);
         values.put(RideEntry.COLUMN_DRIVER_ID, r.driver.Id);
-        values.put(RideEntry.COLUMN_PLACE_ID, r.place.id);
+        if (r.place != null) {
+            values.put(RideEntry.COLUMN_PLACE_ID, r.place.id);
+        }
         values.put(RideEntry.COLUMN_EVENT_ID, r.event.id);
         return values;
     }

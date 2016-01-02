@@ -16,7 +16,7 @@ import static com.howest.nmct.bob.data.Contracts.PlaceEntry;
  * 21/12/15
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
     public static final String DATABASE_NAME = "bob.db";
 
     public DatabaseHelper(Context context) {
@@ -51,6 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 EventEntry.COLUMN_GUEST_LIST_ENABLED + " INTEGER NOT NULL, " +
                 EventEntry.COLUMN_RSVP_STATUS + " TEXT, " +
                 EventEntry.COLUMN_PLACE_ID + " TEXT, " +
+                EventEntry.COLUMN_HIDE + " INTEGER DEFAULT 0, " +
 
                 " FOREIGN KEY (" + EventEntry.COLUMN_PLACE_ID + ") REFERENCES " +
                 PlaceEntry.TABLE_NAME + " (" + PlaceEntry._ID + "));";

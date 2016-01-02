@@ -8,8 +8,10 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.howest.nmct.bob.api.APIResponse;
+import com.howest.nmct.bob.api.APIRideResponse;
+import com.howest.nmct.bob.data.Contracts;
 import com.howest.nmct.bob.interfaces.ResponseListener;
+import com.howest.nmct.bob.models.Ride;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.FormEncodingBuilder;
@@ -48,12 +50,12 @@ public class Rides {
         Call call = okHttpClient.newCall(request);
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(Request request, IOException e) {
-                Log.e("LoginActivity", "Call failed");
+            public void onFailure(Request request, final IOException e) {
+                Log.e("Rides", "Call failed");
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        listener.onFailure();
+                        listener.onFailure(e);
                     }
                 });
             }
@@ -61,16 +63,19 @@ public class Rides {
             @Override
             public void onResponse(Response response) throws IOException {
                 String responseString = response.body().string();
-                Log.i("LoginActivity", responseString);
-                final APIResponse apiResponse = new Gson().fromJson(responseString, APIResponse.class);
+                Log.i("Rides", responseString);
+                final APIRideResponse apiResponse = new Gson().fromJson(responseString, APIRideResponse.class);
+
+                context.getContentResolver().insert(Contracts.EventEntry.CONTENT_URI,
+                        Ride.asContentValues(apiResponse.data.ride));
 
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         if (apiResponse.statusCode == 200) {
-                            listener.onSuccess();
+                            listener.onSuccess(apiResponse.data.ride.id);
                         } else {
-                            listener.onFailure();
+                            listener.onFailure(new Exception(apiResponse.message));
                         }
                     }
                 });

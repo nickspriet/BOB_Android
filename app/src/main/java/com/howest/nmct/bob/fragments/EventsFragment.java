@@ -20,6 +20,7 @@ import com.howest.nmct.bob.activities.NavigationActivity;
 import com.howest.nmct.bob.adapters.EventAdapter;
 import com.howest.nmct.bob.data.Contracts.EventEntry;
 import com.howest.nmct.bob.data.Contracts.PlaceEntry;
+import com.howest.nmct.bob.models.Event;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -103,7 +104,7 @@ public class EventsFragment extends Fragment implements
                         getActivity(),
                         EventEntry.CONTENT_URI,
                         EVENT_COLUMNS,
-                        null,
+                        EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_HIDE + "=" + Event.VISIBILE,
                         null,
                         EventEntry.COLUMN_START_TIME + " DESC"
                 );

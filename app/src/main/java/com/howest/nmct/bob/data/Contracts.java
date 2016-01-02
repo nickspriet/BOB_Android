@@ -36,6 +36,7 @@ public class Contracts {
         public static final String COLUMN_GUEST_LIST_ENABLED = "guest_list_enabled";
         public static final String COLUMN_RSVP_STATUS = "rsvp_status";
         public static final String COLUMN_PLACE_ID = "place_id";
+        public static final String COLUMN_HIDE = "hide";
 
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_EVENT).build();

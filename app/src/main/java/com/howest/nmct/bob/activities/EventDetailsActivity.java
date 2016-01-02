@@ -1,10 +1,11 @@
 package com.howest.nmct.bob.activities;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.transition.Transition;
 import android.util.Log;
@@ -12,12 +13,12 @@ import android.widget.Toast;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.collections.Rides;
-import com.howest.nmct.bob.fragments.CreateRideDialogFragment;
+import com.howest.nmct.bob.data.Contracts.EventEntry;
+import com.howest.nmct.bob.data.Contracts.RideEntry;
 import com.howest.nmct.bob.fragments.EventDetailsFragment;
 import com.howest.nmct.bob.interfaces.EventActionsListener;
 import com.howest.nmct.bob.interfaces.ResponseListener;
-import com.howest.nmct.bob.interfaces.RideOptionSelectedListener;
-import com.howest.nmct.bob.sync.BackendSyncAdapter;
+import com.howest.nmct.bob.models.Event;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -29,7 +30,7 @@ import static com.howest.nmct.bob.Constants.EVENT;
  * illyism
  * 24/11/15
  */
-public class EventDetailsActivity extends BaseActivity implements RideOptionSelectedListener,
+public class EventDetailsActivity extends BaseActivity implements
     EventActionsListener {
 
     private String mEventId;
@@ -136,32 +137,53 @@ public class EventDetailsActivity extends BaseActivity implements RideOptionSele
         setToolbarTitle(mTitle);
     }
 
-    public void onDialogBobClick(final String eventId) {
+    @Override
+    public void onShareRide() {
         final Context activityContext = this;
-        Rides.createRideFromEvent(this, mEventId, new ResponseListener() {
-            @Override
-            public void onSuccess() {
-                Log.i("EventDetailsActivity", "Ride is created");
-                BackendSyncAdapter.syncImmediately(activityContext);
-                Toast.makeText(activityContext, "Ride created", Toast.LENGTH_LONG).show();
-            }
 
-            @Override
-            public void onFailure() {
-                Log.e("EventDetailsActivity", "Failed to save ride");
-                Toast.makeText(activityContext, "Failed to save this ride", Toast.LENGTH_LONG).show();
-            }
-        });
+        Cursor c = getContentResolver().query(RideEntry.CONTENT_URI,
+                new String[] { RideEntry.TABLE_NAME + "." + RideEntry._ID },
+                RideEntry.COLUMN_EVENT_ID + "=?",
+                new String[] {mEventId},
+                null,
+                null
+        );
+
+        if (c != null && c.moveToFirst()) {
+            // Event already exists
+            navigateToRideDetails(c.getString(0));
+            c.close();
+        } else {
+            Rides.createRideFromEvent(this, mEventId, new ResponseListener() {
+                @Override
+                public void onSuccess(String id) {
+                    Log.i("EventDetailsActivity", "Ride is created - " + id);
+                    navigateToRideDetails(id);
+                    Toast.makeText(activityContext, "Ride created", Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Log.e("EventDetailsActivity", "Failed to save ride", e);
+                    Toast.makeText(activityContext, "Failed to save this ride", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
 
     }
 
-    public void onDialogNotBobClick(String mEventId) {}
-
-    public void onGoing() {
-        DialogFragment dialog = CreateRideDialogFragment.newInstance(this, mEventId);
-        dialog.show(getSupportFragmentManager(), "CreateRideDialogFragment");
+    @Override
+    public void onHide() {
+        ContentValues values = new ContentValues();
+        values.put(EventEntry.COLUMN_HIDE, Event.HIDDEN);
+        getContentResolver().update(
+                EventEntry.buildEventUri(mEventId),
+                values, null, null
+        );
+        finish();
     }
 
-    public void onInterested() {}
-    public void onNotGoing() {}
+    @Override
+    public void onFindRide() {
+    }
 }

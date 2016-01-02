@@ -342,6 +342,15 @@ public class Provider extends ContentProvider {
                         selectionArgs
                 );
                 break;
+            case EVENT_ID:
+                final String eventId = uri.getPathSegments().get(1);
+                updatedRows = db.update(
+                        EventEntry.TABLE_NAME,
+                        values,
+                        "(" + EventEntry._ID + " =?)",
+                        new String[] {eventId}
+                );
+                break;
             case RIDE:
                 updatedRows = db.update(
                         RideEntry.TABLE_NAME,
@@ -404,7 +413,7 @@ public class Provider extends ContentProvider {
                 db.beginTransaction();
                 try {
                     for (ContentValues value : values) {
-                        long _id = db.insertWithOnConflict(EventEntry.TABLE_NAME, null, value, SQLiteDatabase.CONFLICT_REPLACE);
+                        long _id = db.insertWithOnConflict(EventEntry.TABLE_NAME, null, value, SQLiteDatabase.CONFLICT_IGNORE);
                         if (_id != -1) {
                             returnCount++;
                         }

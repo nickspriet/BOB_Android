@@ -5,7 +5,7 @@ package com.howest.nmct.bob.interfaces;
  * 24/12/15
  */
 public interface EventActionsListener {
-    void onGoing();
-    void onNotGoing();
-    void onInterested();
+    void onShareRide();
+    void onHide();
+    void onFindRide();
 }

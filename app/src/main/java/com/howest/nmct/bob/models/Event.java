@@ -18,6 +18,9 @@ import java.util.Locale;
  * Nick on 28/10/2015.
  */
 public class Event implements Parcelable {
+    public static final int VISIBILE = 0;
+    public static final int HIDDEN = 1;
+
     @SerializedName("id")
     @Expose
     public String id;
