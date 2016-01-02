@@ -173,9 +173,9 @@ public class EventDetailsActivity extends BaseActivity implements
     }
 
     @Override
-    public void onHide() {
+    public void onHide(Boolean shouldHide) {
         ContentValues values = new ContentValues();
-        values.put(EventEntry.COLUMN_HIDE, Event.HIDDEN);
+        values.put(EventEntry.COLUMN_HIDE, shouldHide ? Event.HIDDEN : Event.VISIBILE);
         getContentResolver().update(
                 EventEntry.buildEventUri(mEventId),
                 values, null, null

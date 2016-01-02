@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,8 @@ public class EventDetailsFragment extends Fragment implements
     @Bind(R.id.tvEventDetailsAttending) TextView tvEventDetailsAttending;
     @Bind(R.id.tvEventDetailsInterested) TextView tvEventDetailsInterested;
     @Bind(R.id.tvEventDetailsDeclined) TextView tvEventDetailsDeclined;
+    @Bind(R.id.btnHide)
+    Button btnHide;
 
     @Bind(R.id.endsAtContainer) View endsAtContainer;
     @Bind(R.id.endsAtContainerSeparator) View endsAtContainerSeparator;
@@ -71,6 +74,7 @@ public class EventDetailsFragment extends Fragment implements
             EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_DECLINED_COUNT,
             EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_RSVP_STATUS,
             PlaceEntry.TABLE_NAME + "." + PlaceEntry.COLUMN_NAME,
+            EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_HIDE
     };
 
     public static final int COL_EVENT_ID = 0;
@@ -84,6 +88,7 @@ public class EventDetailsFragment extends Fragment implements
     public static final int COL_EVENT_DECLINED_COUNT = 8;
     public static final int COL_EVENT_RSVP_STATUS = 9;
     public static final int COL_PLACE_NAME = 10;
+    public static final int COL_HIDE = 11;
 
     public EventDetailsFragment() {}
 
@@ -150,6 +155,8 @@ public class EventDetailsFragment extends Fragment implements
         }
 
         tvDescription.setText(mCursor.getString(COL_EVENT_DESCCRIPTION));
+
+        btnHide.setText(mCursor.getInt(COL_HIDE) == 0 ? "Hide" : "Undo hide");
     }
 
     @OnClick(R.id.btnShare)
@@ -164,7 +171,7 @@ public class EventDetailsFragment extends Fragment implements
 
     @OnClick(R.id.btnHide)
     public void onBtnHideClick() {
-        if (mListener != null) mListener.onHide();
+        if (mListener != null) mListener.onHide(mCursor.getInt(COL_HIDE) == 0);
     }
 
 

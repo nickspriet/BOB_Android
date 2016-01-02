@@ -6,6 +6,6 @@ package com.howest.nmct.bob.interfaces;
  */
 public interface EventActionsListener {
     void onShareRide();
-    void onHide();
+    void onHide(Boolean shouldHide);
     void onFindRide();
 }
