@@ -47,7 +47,7 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 
     // 60 seconds (1 minute) * 180 = 3 hours
     public static final int SYNC_INTERVAL = 60 * 180;
-    public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
+    public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
 
     public BackendSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -77,27 +77,28 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
         String authority = context.getString(R.string.content_authority);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // we can enable inexact timers in our periodic sync
-            SyncRequest request = new SyncRequest.Builder().
-                    syncPeriodic(syncInterval, flexTime).
-                    setSyncAdapter(account, authority).
-                    setExtras(new Bundle()).build();
+            SyncRequest request = new SyncRequest.Builder()
+                    .syncPeriodic(syncInterval, flexTime)
+                    .setSyncAdapter(account, authority)
+                    .setExtras(new Bundle())
+                    .build();
             ContentResolver.requestSync(request);
-        } else {
-            ContentResolver.addPeriodicSync(account,
-                    authority, new Bundle(), syncInterval);
+        }
+        else {
+            ContentResolver.addPeriodicSync(account, authority, new Bundle(), syncInterval);
         }
     }
 
     /**
      * Helper method to have the sync adapter sync immediately
+     *
      * @param context The context used to access the account service
      */
     public static void syncImmediately(Context context) {
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        ContentResolver.requestSync(getSyncAccount(context),
-                context.getString(R.string.content_authority), bundle);
+        ContentResolver.requestSync(getSyncAccount(context), context.getString(R.string.content_authority), bundle);
     }
 
     /**
@@ -110,12 +111,10 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
      */
     public static Account getSyncAccount(Context context) {
         // Get an instance of the Android account manager
-        AccountManager accountManager =
-                (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
+        AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
 
         // Create the account type and default account
-        Account newAccount = new Account(
-                context.getString(R.string.app_name), context.getString(R.string.sync_account_type));
+        Account newAccount = new Account(context.getString(R.string.app_name), context.getString(R.string.sync_account_type));
 
         // If the password doesn't exist, the account doesn't exist
         if (null == accountManager.getPassword(newAccount)) {
@@ -128,7 +127,7 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
                 return null;
             }
             /*
-             * If you don't set android:syncable="true" in
+             * If you don't set android:syncable="true"
              * in your <provider> element in the manifest,
              * then call ContentResolver.setIsSyncable(account, AUTHORITY, 1)
              * here.
@@ -142,8 +141,8 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.d(LOG_TAG, "On Perform Sync");
-        getRides();
         getEvents();
+        //getRides();
     }
 
     private void getRides() {
@@ -177,25 +176,11 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
                 APIRidesResponse apiResponse = new Gson().fromJson(responseString, APIRidesResponse.class);
                 Log.i(LOG_TAG, apiResponse.data.rides.toString());
 
-                getContext().getContentResolver().bulkInsert(
-                        Contracts.EventEntry.CONTENT_URI,
-                        Event.asContentValues(apiResponse.data.rides));
-
-                getContext().getContentResolver().bulkInsert(
-                        Contracts.PlaceEntry.CONTENT_URI,
-                        Place.asContentValues(apiResponse.data.rides));
-
-                getContext().getContentResolver().bulkInsert(
-                        Contracts.RideEntry.CONTENT_URI,
-                        Ride.asContentValues(apiResponse.data.rides));
-
-                getContext().getContentResolver().bulkInsert(
-                        Contracts.UserEntry.CONTENT_URI,
-                        User.asContentValues(apiResponse.data.rides));
-
-                getContext().getContentResolver().bulkInsert(
-                        Contracts.UserRideEntry.CONTENT_URI,
-                        UserRide.asContentValues(apiResponse.data.rides));
+                getContext().getContentResolver().bulkInsert(Contracts.EventEntry.CONTENT_URI, Event.asContentValues(apiResponse.data.rides));
+                getContext().getContentResolver().bulkInsert(Contracts.PlaceEntry.CONTENT_URI, Place.asContentValues(apiResponse.data.rides));
+                getContext().getContentResolver().bulkInsert(Contracts.RideEntry.CONTENT_URI, Ride.asContentValues(apiResponse.data.rides));
+                getContext().getContentResolver().bulkInsert(Contracts.UserEntry.CONTENT_URI, User.asContentValues(apiResponse.data.rides));
+                getContext().getContentResolver().bulkInsert(Contracts.UserRideEntry.CONTENT_URI, UserRide.asContentValues(apiResponse.data.rides));
             }
         });
     }
@@ -209,6 +194,7 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(BACKEND_SCHEME)
                 .encodedAuthority(BACKEND_HOST)
+                .appendPath("api")
                 .appendPath("event")
                 .appendQueryParameter("token", token);
 
@@ -231,13 +217,11 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
                 APIEventsResponse apiResponse = new Gson().fromJson(responseString, APIEventsResponse.class);
                 Log.i(LOG_TAG, apiResponse.data.events.toString());
 
-                getContext().getContentResolver().bulkInsert(
-                        Contracts.PlaceEntry.CONTENT_URI,
-                        Place.asContentValues(apiResponse.data.events));
+                getContext().getContentResolver().delete(Contracts.PlaceEntry.CONTENT_URI, null, null);
+                getContext().getContentResolver().delete(Contracts.EventEntry.CONTENT_URI, null, null);
 
-                getContext().getContentResolver().bulkInsert(
-                        Contracts.EventEntry.CONTENT_URI,
-                        Event.asContentValues(apiResponse.data.events));
+                getContext().getContentResolver().bulkInsert(Contracts.PlaceEntry.CONTENT_URI, Place.asContentValues(apiResponse.data.events));
+                getContext().getContentResolver().bulkInsert(Contracts.EventEntry.CONTENT_URI, Event.asContentValues(apiResponse.data.events));
             }
         });
     }
