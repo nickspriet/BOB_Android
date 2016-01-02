@@ -5,10 +5,11 @@ package com.howest.nmct.bob;
  * 17/11/15
  */
 public class Constants {
-    public static final String BACKEND_HOST = "192.168.0.247:3000";
+    public static final String BACKEND_HOST = "192.168.0.108:3000";
     public static final String BACKEND_SCHEME = "http";
     public static final String BACKEND_BASEURL =  BACKEND_SCHEME + "://" + BACKEND_HOST;
-    public static final String API_USER_LOGIN = BACKEND_BASEURL + "/user/login";
+    public static final String API_USER_LOGIN = BACKEND_BASEURL + "/api/user/login";
+    public static final String API_EVENT_SAVE = BACKEND_BASEURL + "/api/event/save";
     public static final String API_RIDE_CREATE = BACKEND_BASEURL + "/ride";
 
     public static final String FACEBOOK_TOKEN = "com.howest.nmct.bob.FACEBOOK_TOKEN";
@@ -23,8 +24,8 @@ public class Constants {
     public static final String DEVICE_MODEL = "com.howest.nmct.bob.DEVICE_MODEL";
     public static final String USER_PROFILE = "com.howest.nmct.bob.USER_PROFILE";
     public static final String EVENT = "com.howest.nmct.bob.EVENT";
-
     public static final String RIDE = "com.howest.nmct.bob.RIDE";
+
     public final static String ACTIVITY_EVENTS = "com.howest.nmct.bob.ACTIVITY_EVENTS";
     public final static String ACTIVITY_FEED = "com.howest.nmct.bob.ACTIVITY_FEED";
     public final static String ACTIVITY_PROFILE = "com.howest.nmct.bob.ACTIVITY_PROFILE";
