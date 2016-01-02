@@ -77,7 +77,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 " FOREIGN KEY (" + RideEntry.COLUMN_DRIVER_ID + ") REFERENCES " +
                 UserEntry.TABLE_NAME + " (" + UserEntry._ID + "));";
 
-                db.execSQL(SQL_CREATE_RIDE_TABLE);
+        db.execSQL(SQL_CREATE_RIDE_TABLE);
     }
 
     private void createUserRideTable(SQLiteDatabase db) {
@@ -100,7 +100,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private void createPlaceTable(SQLiteDatabase db) {
         final String SQL_CREATE_PLACE_TABLE = "CREATE TABLE " + PlaceEntry.TABLE_NAME + " (" +
-                PlaceEntry._ID +  " TEXT PRIMARY KEY, " +
+                PlaceEntry._ID + " TEXT PRIMARY KEY, " +
                 PlaceEntry.COLUMN_NAME + " TEXT, " +
                 PlaceEntry.COLUMN_LOCATION_STREET + " TEXT, " +
                 PlaceEntry.COLUMN_LOCATION_ZIP + " TEXT, " +

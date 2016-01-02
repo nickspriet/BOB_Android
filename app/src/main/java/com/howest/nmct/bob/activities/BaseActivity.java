@@ -216,8 +216,7 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (!data.moveToFirst()) {
-            Log.e("BaseActivity", "No user found " + data.getColumnCount() + " "
-                    + Arrays.toString(data.getColumnNames()));
+            Log.e("BaseActivity", "No user found " + data.getColumnCount() + " " + Arrays.toString(data.getColumnNames()));
             data.close();
             navigatetoLogin();
             return;

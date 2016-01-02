@@ -81,17 +81,19 @@ public class ProfileActivity extends BaseActivity {
         if (id == R.id.edit) {
             navigateToEditProfile();
             return true;
-        } else if (id == R.id.facebook) {
+        }
+        else if (id == R.id.facebook) {
             IntentStarter.openFacebookProfile(this, getUser());
             return true;
-        } else {
+        }
+        else {
             throw new Error(String.format("Options Item not specified: %s", item));
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_EDIT ) {
+        if (requestCode == REQUEST_EDIT) {
             switch (resultCode) {
                 case RESULTS_CLOSE:
                     Toast.makeText(this, "Edit cancelled", Toast.LENGTH_SHORT).show();

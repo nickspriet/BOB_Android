@@ -53,12 +53,20 @@ public abstract class NavigationActivity extends AppCompatActivity
 
     private static final String SELECTED_MENU_ITEM_ID = "selectedMenuItemId";
 
-    @Nullable @Bind(R.id.toolbarLayout) CollapsingToolbarLayout mToolbarLayout;
-    @Bind(R.id.appbarLayout) AppBarLayout appBarLayout;
-    @Bind(R.id.toolbar) Toolbar mToolbar;
-    @Nullable @Bind(R.id.toolbarImage) ImageView mToolbarImage;
-    @Bind(R.id.drawer_layout) DrawerLayout mDrawerLayout;
-    @Bind(R.id.nav_view) NavigationView mNavigationView;
+    @Nullable
+    @Bind(R.id.toolbarLayout)
+    CollapsingToolbarLayout mToolbarLayout;
+    @Bind(R.id.appbarLayout)
+    AppBarLayout appBarLayout;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+    @Nullable
+    @Bind(R.id.toolbarImage)
+    ImageView mToolbarImage;
+    @Bind(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+    @Bind(R.id.nav_view)
+    NavigationView mNavigationView;
 
     private ActionBarDrawerToggle mDrawerToggle;
     private int mSelectedMenuItemId;
@@ -103,7 +111,8 @@ public abstract class NavigationActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) mDrawerLayout.closeDrawer(GravityCompat.START);
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
+            mDrawerLayout.closeDrawer(GravityCompat.START);
         else super.onBackPressed();
     }
 
@@ -125,6 +134,7 @@ public abstract class NavigationActivity extends AppCompatActivity
 
     /**
      * Navigates to a fragment from a navigation drawer click
+     *
      * @param itemId the id of the menu item
      */
     private void updateNavigation(int itemId) {
@@ -171,6 +181,7 @@ public abstract class NavigationActivity extends AppCompatActivity
 
     /**
      * Navigates to an activity
+     *
      * @param activityName The name of the activity
      */
     private void navigateToActivity(String activityName) {
@@ -202,6 +213,7 @@ public abstract class NavigationActivity extends AppCompatActivity
 
     /**
      * Adds data to the intent - Defined by inheritors
+     *
      * @param i the intent
      */
     protected abstract void addDataToIntent(Intent i);
@@ -219,7 +231,8 @@ public abstract class NavigationActivity extends AppCompatActivity
 
     /**
      * Starts the RideActivity and inserts the Ride bundle with a transition
-     * @param rideId The Ride ID
+     *
+     * @param rideId    The Ride ID
      * @param imageView The View that is shared
      */
     public void navigateToRideDetails(String rideId, ImageView imageView) {
@@ -230,16 +243,13 @@ public abstract class NavigationActivity extends AppCompatActivity
         Pair image = new Pair<>(imageView, ViewCompat.getTransitionName(imageView));
         Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
 
-        ActivityOptionsCompat transitionActivityOptions =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        this, image, toolbar);
-
-        ActivityCompat.startActivity(this,
-                i, transitionActivityOptions.toBundle());
+        ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this, image, toolbar);
+        ActivityCompat.startActivity(this, i, transitionActivityOptions.toBundle());
     }
 
     /**
      * Starts the EventDetailsActivity and inserts the Event bundle with a transition
+     *
      * @param imageView The View that is shared
      */
     public void navigateToEventDetails(String eventId, ImageView imageView) {
@@ -250,12 +260,8 @@ public abstract class NavigationActivity extends AppCompatActivity
         Pair image = new Pair<>(imageView, ViewCompat.getTransitionName(imageView));
         Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
 
-        ActivityOptionsCompat transitionActivityOptions =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        this, image, toolbar);
-
-        ActivityCompat.startActivity(this,
-                i, transitionActivityOptions.toBundle());
+        ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this, image, toolbar);
+        ActivityCompat.startActivity(this, i, transitionActivityOptions.toBundle());
     }
 
     public void navigateToEventDetails(String eventId) {
@@ -265,12 +271,8 @@ public abstract class NavigationActivity extends AppCompatActivity
 
         Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
 
-        ActivityOptionsCompat transitionActivityOptions =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        this, toolbar);
-
-        ActivityCompat.startActivity(this,
-                i, transitionActivityOptions.toBundle());
+        ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this, toolbar);
+        ActivityCompat.startActivity(this, i, transitionActivityOptions.toBundle());
     }
 
     /**
@@ -282,12 +284,8 @@ public abstract class NavigationActivity extends AppCompatActivity
 
         Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
 
-        ActivityOptionsCompat transitionActivityOptions =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(
-                        this, toolbar);
-
-        ActivityCompat.startActivityForResult(this, i, REQUEST_EDIT,
-                transitionActivityOptions.toBundle());
+        ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this, toolbar);
+        ActivityCompat.startActivityForResult(this, i, REQUEST_EDIT, transitionActivityOptions.toBundle());
     }
 
     /**
@@ -314,15 +312,15 @@ public abstract class NavigationActivity extends AppCompatActivity
      * after the shared element has been measured and laid out within the
      * activity's view hierarchy. Some common places where it might make
      * sense to call this method are:
-     *
+     * <p/>
      * (1) Inside a Fragment's onCreateView() method (if the shared element
-     *     lives inside a Fragment hosted by the called Activity).
-     *
+     * lives inside a Fragment hosted by the called Activity).
+     * <p/>
      * (2) Inside a Picasso Callback object (if you need to wait for Picasso to
-     *     asynchronously load/scale a bitmap before the transition can begin).
-     *
+     * asynchronously load/scale a bitmap before the transition can begin).
+     * <p/>
      * (3) Inside a LoaderCallback's onLoadFinished() method (if the shared
-     *     element depends on data queried by a Loader).
+     * element depends on data queried by a Loader).
      */
     protected void scheduleStartPostponedTransition(final View sharedElement) {
         sharedElement.getViewTreeObserver().addOnPreDrawListener(
@@ -335,7 +333,6 @@ public abstract class NavigationActivity extends AppCompatActivity
                     }
                 });
     }
-
 
 
 }
