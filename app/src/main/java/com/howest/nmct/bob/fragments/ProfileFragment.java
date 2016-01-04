@@ -41,6 +41,7 @@ public class ProfileFragment extends Fragment {
 
     public void initViews() {
         ProfileActivity parentActivity = (ProfileActivity) getActivity();
+        if (parentActivity == null) return;
         User user = parentActivity.getUser();
         if (user == null) return;
 

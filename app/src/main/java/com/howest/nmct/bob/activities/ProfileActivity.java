@@ -48,8 +48,8 @@ public class ProfileActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         getContentResolver().unregisterContentObserver(userObserver);
+        super.onDestroy();
     }
 
     @Override
@@ -91,19 +91,24 @@ public class ProfileActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // FixMe: Losing focus on window
         if (requestCode == REQUEST_EDIT ) {
             switch (resultCode) {
                 case RESULTS_CLOSE:
                     Toast.makeText(this, "Edit cancelled", Toast.LENGTH_SHORT).show();
+                    navigateToProfile();
+                    finish();
                     break;
                 case RESULTS_OK:
                     Toast.makeText(this, "Edit Saved", Toast.LENGTH_LONG).show();
-                    reloadUser();
+                    // reloadUser();
+                    navigateToProfile();
+                    finish();
                     break;
+                default:
+                    super.onActivityResult(requestCode, resultCode, data);
             }
         }
-
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     class UserObserver extends ContentObserver {

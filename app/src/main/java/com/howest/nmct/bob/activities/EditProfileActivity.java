@@ -44,18 +44,17 @@ public class EditProfileActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        super.onResume();
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String userId = preferences.getString(USER_ID, "");
         userObserver = new UserObserver(mainHandler);
         getContentResolver().registerContentObserver(UserEntry.buildUserUri(userId), false, userObserver);
-
+        super.onResume();
     }
 
     @Override
     protected void onPause() {
-        super.onPause();
         getContentResolver().unregisterContentObserver(userObserver);
+        super.onPause();
     }
 
     @Override

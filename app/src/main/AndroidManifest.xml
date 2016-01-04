@@ -57,9 +57,6 @@
             android:label="@string/edit_profile"
             android:parentActivityName=".activities.ProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.EventDetailsActivity"
