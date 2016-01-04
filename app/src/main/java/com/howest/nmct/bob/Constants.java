@@ -10,6 +10,7 @@ public class Constants {
     public static final String BACKEND_BASEURL =  BACKEND_SCHEME + "://" + BACKEND_HOST;
     public static final String API_USER_LOGIN = BACKEND_BASEURL + "/user/login";
     public static final String API_RIDE_CREATE = BACKEND_BASEURL + "/ride";
+    public static final String API_RIDE_REQUEST = BACKEND_BASEURL + "/ride/request";
 
     public static final String FACEBOOK_TOKEN = "com.howest.nmct.bob.FACEBOOK_TOKEN";
     public static final String FACEBOOK_USERID = "com.howest.nmct.bob.FACEBOOK_USERID";
@@ -32,6 +33,7 @@ public class Constants {
     public final static String ACTIVITY_RIDES = "com.howest.nmct.bob.ACTIVITY_RIDES";
 
     public final static int REQUEST_EDIT = 1000;
+    public final static int REQUEST_RIDE = 1010;
     public final static int RESULTS_CLOSE = 0;
     public final static int RESULTS_OK = 1;
 

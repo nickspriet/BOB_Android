@@ -25,6 +25,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.howest.nmct.bob.Constants.EVENT;
+import static com.howest.nmct.bob.Constants.REQUEST_RIDE;
+import static com.howest.nmct.bob.Constants.RESULTS_CLOSE;
+import static com.howest.nmct.bob.Constants.RESULTS_OK;
+import static com.howest.nmct.bob.Constants.RIDE;
 
 /**
  * illyism
@@ -185,5 +189,35 @@ public class EventDetailsActivity extends BaseActivity implements
 
     @Override
     public void onFindRide() {
+        navigateToFindRides(mEventId);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_RIDE) {
+            switch (resultCode) {
+                case RESULTS_OK:
+                    Toast.makeText(this, "Ride selected", Toast.LENGTH_SHORT).show();
+                    String rideId = data.getExtras().getString(RIDE);
+                    final Context context = this;
+                    Rides.requestRide(this, rideId, new ResponseListener() {
+                        @Override
+                        public void onSuccess(String id) {
+                            navigateToRideDetails(id);
+                        }
+
+                        @Override
+                        public void onFailure(Exception e) {
+                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    break;
+                case RESULTS_CLOSE:
+                    Toast.makeText(this, "Nothing selected", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

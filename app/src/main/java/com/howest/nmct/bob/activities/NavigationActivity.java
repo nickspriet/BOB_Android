@@ -39,6 +39,8 @@ import static com.howest.nmct.bob.Constants.ACTIVITY_SETTINGS;
 import static com.howest.nmct.bob.Constants.APPBAR_TRANSITION_NAME;
 import static com.howest.nmct.bob.Constants.BACKEND_TOKEN;
 import static com.howest.nmct.bob.Constants.EVENT;
+import static com.howest.nmct.bob.Constants.REQUEST_EDIT;
+import static com.howest.nmct.bob.Constants.REQUEST_RIDE;
 import static com.howest.nmct.bob.Constants.RIDE;
 import static com.howest.nmct.bob.Constants.TOOLBAR_TRANSITION_NAME;
 import static com.howest.nmct.bob.Constants.USER_ID;
@@ -211,6 +213,17 @@ public abstract class NavigationActivity extends AppCompatActivity
                 intent, transitionActivityOptions.toBundle());
     }
 
+    public void navigateToActivityForResult(Intent intent, int requestCode) {
+        Pair appbar = new Pair<>(appBarLayout, APPBAR_TRANSITION_NAME);
+        Pair toolbar = new Pair<>(mToolbar, TOOLBAR_TRANSITION_NAME);
+
+        ActivityOptionsCompat transitionActivityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this, appbar, toolbar);
+
+        ActivityCompat.startActivityForResult(this, intent, requestCode, transitionActivityOptions.toBundle());
+    }
+
     /**
      * Shows the back icon
      */
@@ -247,7 +260,13 @@ public abstract class NavigationActivity extends AppCompatActivity
      */
     public void navigateToEditProfile() {
         Intent i = new Intent(this, EditProfileActivity.class);
-        navigateToActivity(i);
+        navigateToActivityForResult(i, REQUEST_EDIT);
+    }
+
+    public void navigateToFindRides(String eventId) {
+        Intent i = new Intent(this, FindRidesActivity.class);
+        i.putExtra(EVENT, eventId);
+        navigateToActivityForResult(i, REQUEST_RIDE);
     }
 
     /**
@@ -295,7 +314,4 @@ public abstract class NavigationActivity extends AppCompatActivity
                     }
                 });
     }
-
-
-
 }

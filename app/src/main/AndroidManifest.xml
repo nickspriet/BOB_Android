@@ -87,6 +87,11 @@
             android:label="@string/action_settings"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity
+            android:name=".activities.FindRidesActivity"
+            android:label="@string/find_a_ride"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
 
         <!-- Facebook sign in activity -->
         <activity
