@@ -25,6 +25,8 @@ public class ProfileFragment extends Fragment {
     @Bind(R.id.imgProfile) ImageView imgProfile;
     @Bind(R.id.tvProfileAboutMe) TextView tvProfileAboutMe;
     @Bind(R.id.tvMobile) TextView tvMobile;
+    @Bind(R.id.tvCarModel) TextView tvCarModel;
+    @Bind(R.id.tvCarNo) TextView tvCarNo;
 
     public ProfileFragment() {
     }
@@ -58,6 +60,14 @@ public class ProfileFragment extends Fragment {
 
         if (!user.getMobile().isEmpty()) {
             tvMobile.setText(user.getMobile());
+        }
+
+        if (!user.getCarModel().isEmpty()) {
+            tvCarModel.setText(user.getCarModel());
+        }
+
+        if (!user.getCarNo().isEmpty()) {
+            tvCarNo.setText(user.getCarNo());
         }
 
     }

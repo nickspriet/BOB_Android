@@ -64,5 +64,38 @@
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
+
+            <LinearLayout
+                style="@style/Card.Wrapper.Details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/Card.Text.Meta.Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/carmodel" />
+
+                <TextView
+                    android:id="@+id/tvCarModel"
+                    style="@style/Card.Text.Meta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <View style="@style/Separator.Horizontal" />
+
+                <TextView
+                    style="@style/Card.Text.Meta.Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/carno" />
+
+                <TextView
+                    android:id="@+id/tvCarNo"
+                    style="@style/Card.Text.Meta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
         </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

@@ -222,4 +222,22 @@ public class User implements Parcelable {
     public void setMobile(String mobile) {
         this.mobile = mobile;
     }
+
+    public String getCarModel() {
+        if (carModel == null) return "";
+        return carModel;
+    }
+
+    public void setCarModel(String carModel) {
+        this.carModel = carModel;
+    }
+
+    public String getCarNo() {
+        if (carNo == null) return "";
+        return carNo;
+    }
+
+    public void setCarNo(String carNo) {
+        this.carNo = carNo;
+    }
 }

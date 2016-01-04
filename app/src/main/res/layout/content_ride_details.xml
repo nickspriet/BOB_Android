@@ -63,13 +63,13 @@
                 style="@style/Card.Text.Meta.Label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/license_plate" />
+                android:text="@string/carno" />
 
             <TextView
+                android:id="@+id/tvDriverCarNo"
                 style="@style/Card.Text.Meta"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1-ABC-123" />
+                android:layout_height="wrap_content" />
 
             <View style="@style/Separator.Horizontal" />
 
@@ -77,13 +77,13 @@
                 style="@style/Card.Text.Meta.Label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/car_description" />
+                android:text="@string/carmodel" />
 
             <TextView
+                android:id="@+id/tvDriverCarModel"
                 style="@style/Card.Text.Meta"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Red Volkswagen A1" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 

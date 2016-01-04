@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
 import com.howest.nmct.bob.R;
@@ -21,7 +23,9 @@ import butterknife.ButterKnife;
  */
 public class EditProfileFragment extends Fragment {
     @Bind(R.id.tvProfileAboutMe) EditText etProfileAboutMe;
-    @Bind(R.id.etMobile) EditText setMobile;
+    @Bind(R.id.etMobile) EditText etMobile;
+    @Bind(R.id.etCarModel) AutoCompleteTextView etCarModel;
+    @Bind(R.id.etCarNo) EditText etCarNo;
 
     public EditProfileFragment() {
     }
@@ -45,7 +49,20 @@ public class EditProfileFragment extends Fragment {
         }
 
         if (!user.getMobile().isEmpty()) {
-            setMobile.setText(user.getMobile());
+            etMobile.setText(user.getMobile());
+        }
+
+        ArrayAdapter<String> modelAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                getResources().getStringArray(R.array.car_makes));
+        etCarModel.setAdapter(modelAdapter);
+
+        if (!user.getCarModel().isEmpty()) {
+            etCarModel.setText(user.getCarModel());
+        }
+
+        if (!user.getCarNo().isEmpty()) {
+            etCarNo.setText(user.getCarNo());
         }
     }
 
@@ -58,7 +75,9 @@ public class EditProfileFragment extends Fragment {
         User user = parentActivity.getUser();
 
         user.setAboutMe(etProfileAboutMe.getText().toString());
-        user.setMobile(setMobile.getText().toString());
+        user.setMobile(etMobile.getText().toString());
+        user.setCarModel(etCarModel.getText().toString());
+        user.setCarNo(etCarNo.getText().toString());
 
         return user;
     }

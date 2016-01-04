@@ -92,4 +92,5 @@
     <string name="mobile">Mobile</string>
     <string name="carmodel">Car Model</string>
     <string name="carno">Car No.</string>
+    <string name="carmake">Car Make</string>
 </resources>

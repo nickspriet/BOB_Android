@@ -66,9 +66,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/etCarModel"
-                android:inputType="textAutoComplete"
+                android:inputType="textNoSuggestions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="" />
@@ -83,7 +83,7 @@
 
             <EditText
                 android:id="@+id/etCarNo"
-                android:inputType="textAutoComplete"
+                android:inputType="textNoSuggestions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="" />
