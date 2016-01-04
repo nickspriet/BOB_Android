@@ -89,4 +89,7 @@
     <string name="hide_event">Hide event</string>
     <string name="hide">Hide</string>
     <string name="delete">Delete</string>
+    <string name="mobile">Mobile</string>
+    <string name="carmodel">Car Model</string>
+    <string name="carno">Car No.</string>
 </resources>

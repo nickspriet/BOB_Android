@@ -13,42 +13,81 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <LinearLayout
             style="@style/Card.Wrapper.Details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imgProfile"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/ic_account"
-                android:layout_marginEnd="@dimen/card_inner_margin_horizontal"
-                tools:civ_border_width="2dp"
-                tools:civ_border_color="#FFEFEFEF"/>
-
             <TextView
-                android:id="@+id/lblAboutMe"
+                style="@style/Card.Text.Meta.Label.Padded"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/imgProfile"
-                android:padding="4dp"
                 android:text="@string/about_me"
-                android:labelFor="@id/tvProfileAboutMe"
-                android:textStyle="bold" />
+                android:labelFor="@id/tvProfileAboutMe" />
 
             <EditText
+                android:id="@+id/tvProfileAboutMe"
                 android:inputType="textAutoComplete"
                 android:hint="@string/write_something_about_yourself"
-                android:id="@+id/tvProfileAboutMe"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/lblAboutMe"
-                android:layout_toEndOf="@id/imgProfile"
-                android:padding="4dp"
                 android:text="" />
 
-        </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/Card.Wrapper.Details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/Card.Text.Meta.Label.Padded"
+                android:text="@string/mobile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/etMobile"
+                android:inputType="phone"
+                android:digits="0123456789+"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/Card.Wrapper.Details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/Card.Text.Meta.Label.Padded"
+                android:text="@string/carmodel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/etCarModel"
+                android:inputType="textAutoComplete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <View style="@style/Separator.Horizontal" />
+
+            <TextView
+                style="@style/Card.Text.Meta.Label.Padded"
+                android:text="@string/carno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/etCarNo"
+                android:inputType="textAutoComplete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="" />
+        </LinearLayout>
 
     </LinearLayout>
 

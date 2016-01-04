@@ -3,31 +3,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/appBackground"
+    android:background="@drawable/gradientbackground"
     android:fitsSystemWindows="true"
     tools:context=".activities.LoginActivity">
 
-    <ImageView
-        android:contentDescription="@string/logo"
-        android:id="@+id/imgLogo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginTop="100dp"
+    <LinearLayout
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:id="@+id/tvLoginInfo"
-        android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/imgLogo"
-        android:text="@string/find_share_rides"
-        android:textSize="16sp"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="20dp"
-        android:textAlignment="center"/>
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:gravity="center">
+
+        <ImageView
+            android:contentDescription="@string/logo"
+            android:id="@+id/imgLogo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tvLoginInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/find_share_rides"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:textAlignment="center"/>
+    </LinearLayout>
+
 
     <LinearLayout
         android:padding="20dp"

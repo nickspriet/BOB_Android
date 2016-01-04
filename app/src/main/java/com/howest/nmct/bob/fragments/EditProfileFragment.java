@@ -6,13 +6,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.activities.EditProfileActivity;
 import com.howest.nmct.bob.models.User;
-import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,7 +20,6 @@ import butterknife.ButterKnife;
  * 09/12/15
  */
 public class EditProfileFragment extends Fragment {
-    @Bind(R.id.imgProfile) ImageView imgProfile;
     @Bind(R.id.tvProfileAboutMe) TextView tvProfileAboutMe;
 
     public EditProfileFragment() {
@@ -41,12 +38,6 @@ public class EditProfileFragment extends Fragment {
         EditProfileActivity parentActivity = (EditProfileActivity) getActivity();
         User user = parentActivity.getUser();
         if (user == null) return;
-
-        Picasso p = Picasso.with(getActivity());
-        p.load(user.getPicture())
-                .fit()
-                .centerCrop()
-                .into(imgProfile);
 
         if (!user.getAboutMe().isEmpty()) {
             tvProfileAboutMe.setText(user.getAboutMe());
