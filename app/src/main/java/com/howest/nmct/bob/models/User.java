@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.telephony.PhoneNumberUtils;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -53,6 +54,18 @@ public class User implements Parcelable {
     @Expose
     public String aboutMe;
 
+    @SerializedName("mobile")
+    @Expose
+    public String mobile;
+
+    @SerializedName("carModel")
+    @Expose
+    public String carModel;
+
+    @SerializedName("carNo")
+    @Expose
+    public String carNo;
+
     public User() {}
 
     @Override
@@ -71,6 +84,9 @@ public class User implements Parcelable {
         dest.writeString(cover);
         dest.writeString(link);
         dest.writeString(aboutMe);
+        dest.writeString(mobile);
+        dest.writeString(carModel);
+        dest.writeString(carNo);
     }
 
     public User(Parcel in) {
@@ -83,6 +99,9 @@ public class User implements Parcelable {
         cover = in.readString();
         link = in.readString();
         aboutMe = in.readString();
+        mobile = in.readString();
+        carModel = in.readString();
+        carNo = in.readString();
     }
 
     public static final Parcelable.Creator CREATOR =
@@ -121,10 +140,13 @@ public class User implements Parcelable {
     }
 
     public String getAboutMe() {
-        if (aboutMe != null) {
-            return aboutMe;
-        }
-        return "";
+        if (aboutMe == null) return "";
+        return aboutMe;
+    }
+
+    public String getMobile() {
+        if (mobile == null) return "";
+        return PhoneNumberUtils.formatNumber(mobile, "BE");
     }
 
     public void setAboutMe(String aboutMe) {
@@ -142,6 +164,9 @@ public class User implements Parcelable {
         values.put(UserEntry.COLUMN_COVER, u.cover);
         values.put(UserEntry.COLUMN_LINK, u.link);
         values.put(UserEntry.COLUMN_ABOUTME, u.aboutMe);
+        values.put(UserEntry.COLUMN_MOBILE, u.mobile);
+        values.put(UserEntry.COLUMN_CAR_MODEL, u.carModel);
+        values.put(UserEntry.COLUMN_CAR_NO, u.carNo );
         return values;
     }
 
@@ -157,6 +182,9 @@ public class User implements Parcelable {
         int indexCover = data.getColumnIndex(UserEntry.COLUMN_COVER);
         int indexLink = data.getColumnIndex(UserEntry.COLUMN_LINK);
         int indexAboutMe = data.getColumnIndex(UserEntry.COLUMN_ABOUTME);
+        int indexMobile = data.getColumnIndex(UserEntry.COLUMN_MOBILE);
+        int indexCarModel = data.getColumnIndex(UserEntry.COLUMN_CAR_MODEL);
+        int indexCarNo = data.getColumnIndex(UserEntry.COLUMN_CAR_NO);
 
         newUser.Id = data.getString(indexId);
         newUser.facebookID = data.getString(indexFacebookID);
@@ -167,6 +195,9 @@ public class User implements Parcelable {
         newUser.cover = data.getString(indexCover);
         newUser.link = data.getString(indexLink);
         newUser.aboutMe = data.getString(indexAboutMe);
+        newUser.mobile = data.getString(indexMobile);
+        newUser.carModel = data.getString(indexCarModel);
+        newUser.carNo = data.getString(indexCarNo);
 
         return newUser;
     }
@@ -186,5 +217,9 @@ public class User implements Parcelable {
             }
         }
         return values.toArray(new ContentValues[values.size()]);
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }

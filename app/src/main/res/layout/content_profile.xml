@@ -29,65 +29,40 @@
 
                 <TextView
                     android:id="@+id/lblAboutMe"
+                    style="@style/Card.Text.Meta.Label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/imgProfile"
-                    android:padding="4dp"
-                    android:text="@string/about_me"
-                    android:textStyle="bold" />
+                    android:text="@string/about_me" />
 
                 <TextView
                     android:id="@+id/tvProfileAboutMe"
+                    style="@style/Card.Text.Meta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/lblAboutMe"
                     android:layout_toEndOf="@id/imgProfile"
-                    android:padding="4dp"
                     android:text="" />
 
             </RelativeLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 style="@style/Card.Wrapper.Details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/lblCars"
+                    style="@style/Card.Text.Meta.Label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="4dp"
-                    android:text="@string/cars"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:contentDescription="@string/car_icon"
-                    android:id="@+id/imgCar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/lblCars"
-                    android:layout_marginTop="8dp"
-                    android:src="@drawable/ic_car" />
-
+                    android:text="@string/mobile" />
 
                 <TextView
-                    android:id="@+id/tvProfileCarType"
+                    android:id="@+id/tvMobile"
+                    style="@style/Card.Text.Meta"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/imgCar"
-                    android:layout_marginStart="100dp"
-                    android:padding="4dp"
-                    android:text="Seat Ibiza" />
+                    android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/tvProfileCarLicense"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="100dp"
-                    android:layout_below="@id/tvProfileCarType"
-                    android:padding="4dp"
-                    android:text="1-ABC-123" />
-
-            </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

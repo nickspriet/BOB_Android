@@ -123,6 +123,9 @@ public class Contracts {
         public static final String COLUMN_COVER = "cover";
         public static final String COLUMN_LINK = "link";
         public static final String COLUMN_ABOUTME = "aboutme";
+        public static final String COLUMN_MOBILE = "mobile";
+        public static final String COLUMN_CAR_MODEL = "car_model";
+        public static final String COLUMN_CAR_NO = "car_no";
 
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_USER).build();

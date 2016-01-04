@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 public class ProfileFragment extends Fragment {
     @Bind(R.id.imgProfile) ImageView imgProfile;
     @Bind(R.id.tvProfileAboutMe) TextView tvProfileAboutMe;
+    @Bind(R.id.tvMobile) TextView tvMobile;
 
     public ProfileFragment() {
     }
@@ -53,6 +54,10 @@ public class ProfileFragment extends Fragment {
 
         if (!user.getAboutMe().isEmpty()) {
             tvProfileAboutMe.setText(user.getAboutMe());
+        }
+
+        if (!user.getMobile().isEmpty()) {
+            tvMobile.setText(user.getMobile());
         }
 
     }

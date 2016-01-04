@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.activities.EditProfileActivity;
@@ -20,7 +20,8 @@ import butterknife.ButterKnife;
  * 09/12/15
  */
 public class EditProfileFragment extends Fragment {
-    @Bind(R.id.tvProfileAboutMe) TextView tvProfileAboutMe;
+    @Bind(R.id.tvProfileAboutMe) EditText etProfileAboutMe;
+    @Bind(R.id.etMobile) EditText setMobile;
 
     public EditProfileFragment() {
     }
@@ -40,7 +41,11 @@ public class EditProfileFragment extends Fragment {
         if (user == null) return;
 
         if (!user.getAboutMe().isEmpty()) {
-            tvProfileAboutMe.setText(user.getAboutMe());
+            etProfileAboutMe.setText(user.getAboutMe());
+        }
+
+        if (!user.getMobile().isEmpty()) {
+            setMobile.setText(user.getMobile());
         }
     }
 
@@ -52,7 +57,8 @@ public class EditProfileFragment extends Fragment {
         EditProfileActivity parentActivity = (EditProfileActivity) getActivity();
         User user = parentActivity.getUser();
 
-        user.setAboutMe(tvProfileAboutMe.getText().toString());
+        user.setAboutMe(etProfileAboutMe.getText().toString());
+        user.setMobile(setMobile.getText().toString());
 
         return user;
     }
