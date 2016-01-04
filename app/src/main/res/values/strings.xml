@@ -88,4 +88,5 @@
     <string name="find_a_ride">Find a ride</string>
     <string name="hide_event">Hide event</string>
     <string name="hide">Hide</string>
+    <string name="delete">Delete</string>
 </resources>

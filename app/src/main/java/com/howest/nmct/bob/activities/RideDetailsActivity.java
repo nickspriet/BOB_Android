@@ -1,18 +1,24 @@
 package com.howest.nmct.bob.activities;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.ShareActionProvider;
 import android.transition.Transition;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.howest.nmct.bob.R;
+import com.howest.nmct.bob.collections.Rides;
 import com.howest.nmct.bob.fragments.RideDetailsFragment;
+import com.howest.nmct.bob.interfaces.ResponseListener;
 import com.howest.nmct.bob.models.Ride;
 
 import java.util.List;
@@ -146,6 +152,36 @@ public class RideDetailsActivity extends BaseActivity {
         int id = item.getItemId();
         if (id == R.id.event) {
             navigateToEventDetails(mFragment.getEventId());
+            return true;
+        } else if (id == R.id.delete) {
+            final Context context = this;
+
+            new AlertDialog.Builder(this)
+                    .setIcon(R.drawable.ic_trash)
+                    .setTitle("Deleting Ride")
+                    .setMessage("Are you sure you want to delete this ride?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Rides.delete(context, mRideId, new ResponseListener() {
+                                @Override
+                                public void onSuccess(String id) {
+                                    Toast.makeText(context, "You're no longer part of this ride", Toast.LENGTH_LONG).show();
+                                    finish();
+                                }
+
+                                @Override
+                                public void onFailure(Exception e) {
+                                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+
             return true;
         }
         return super.onOptionsItemSelected(item);
