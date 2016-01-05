@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SyncRequest;
@@ -44,6 +45,8 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import static com.howest.nmct.bob.Constants.API_RIDE;
 import static com.howest.nmct.bob.Constants.API_RIDE_REQUEST;
@@ -254,6 +257,16 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 
                     context.getContentResolver().insert(RideEntry.CONTENT_URI,
                             Ride.asContentValues(apiResponse.data.ride));
+
+                    HashMap<String, ContentValues> userValues = User.asContentValues(apiResponse.data.ride);
+                    context.getContentResolver().bulkInsert(
+                            UserEntry.CONTENT_URI,
+                            userValues.values().toArray(new ContentValues[userValues.size()]));
+
+                    ArrayList<ContentValues> userRideValues = UserRide.asContentValues(apiResponse.data.ride);
+                    context.getContentResolver().bulkInsert(
+                            UserRideEntry.CONTENT_URI,
+                            userRideValues.toArray(new ContentValues[userRideValues.size()]));
 
                     mainHandler.post(new Runnable() {
                         @Override

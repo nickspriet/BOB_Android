@@ -42,6 +42,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class RideDetailsFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static String LOG_TAG = RideDetailsFragment.class.getSimpleName();
+
     @Bind(R.id.address) TextView tvAddress;
     @Bind(R.id.date) TextView tvDate;
     @Bind(R.id.description) TextView tvDescription;
@@ -208,7 +210,7 @@ public class RideDetailsFragment extends Fragment implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (getLoaderManager().getLoader(URL_LOADER).equals(loader)) {
-            Log.d("EventDetailsFragment", "Finished loading ride " + data.getCount());
+            Log.d(LOG_TAG, "Finished loading ride " + data.getCount());
             if (data.moveToFirst()) {
                 mCursor = data;
                 initViews();
@@ -219,12 +221,12 @@ public class RideDetailsFragment extends Fragment implements
                 Toast.makeText(getContext(), "No ride found", Toast.LENGTH_LONG).show();
             }
         } else if (getLoaderManager().getLoader(APPROVED_LOADER).equals(loader)) {
-            Log.d("EventDetailsFragment", "Finished approved users " + data.getCount());
+            Log.d(LOG_TAG, "Finished approved users " + data.getCount());
             if (data.moveToFirst()) {
                 mApprovedAdapter.swapCursor(data);
             }
         } else if (getLoaderManager().getLoader(REQUEST_LOADER).equals(loader)) {
-            Log.d("EventDetailsFragment", "Finished request users " + data.getCount());
+            Log.d(LOG_TAG, "Finished request users " + data.getCount());
             if (data.moveToFirst()) {
                 mRequestAdapter.swapCursor(data);
             }

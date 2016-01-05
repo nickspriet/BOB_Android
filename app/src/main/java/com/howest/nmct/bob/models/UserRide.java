@@ -19,18 +19,7 @@ public class UserRide {
     public static ContentValues[] asContentValues(LinkedHashSet<Ride> rides) {
         ArrayList<ContentValues> values = new ArrayList<>();
         for (Ride r : rides) {
-            for (User u : r.approvedList) {
-                ContentValues listValues = asContentValues(u, r, UserRide.APPROVED);
-                if (listValues != null) values.add(listValues);
-            }
-            for (User u : r.requestsList) {
-                ContentValues listValues = asContentValues(u, r, UserRide.REQUEST);
-                if (listValues != null) values.add(listValues);
-            }
-            if (r.driver != null) {
-                ContentValues driverValues = asContentValues(r.driver, r, UserRide.APPROVED);
-                if (driverValues != null) values.add(driverValues);
-            }
+            values.addAll(asContentValues(r));
         }
         return values.toArray(new ContentValues[values.size()]);
     }
@@ -40,6 +29,25 @@ public class UserRide {
         values.put(UserRideEntry.COLUMN_RIDE_ID, ride.id);
         values.put(UserRideEntry.COLUMN_STATUS, approved);
         values.put(UserRideEntry.COLUMN_USER_ID, user.Id);
+        return values;
+    }
+
+    public static ArrayList<ContentValues> asContentValues(Ride r) {
+        ArrayList<ContentValues> values = new ArrayList<>();
+
+        for (User u : r.approvedList) {
+            ContentValues listValues = asContentValues(u, r, UserRide.APPROVED);
+            if (listValues != null) values.add(listValues);
+        }
+        for (User u : r.requestsList) {
+            ContentValues listValues = asContentValues(u, r, UserRide.REQUEST);
+            if (listValues != null) values.add(listValues);
+        }
+        if (r.driver != null) {
+            ContentValues driverValues = asContentValues(r.driver, r, UserRide.APPROVED);
+            if (driverValues != null) values.add(driverValues);
+        }
+
         return values;
     }
 }
