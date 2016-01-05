@@ -93,4 +93,6 @@
     <string name="carmodel">Car Model</string>
     <string name="carno">Car No.</string>
     <string name="carmake">Car Make</string>
+    <string name="clear_data">Clear Data</string>
+    <string name="clear_summary">Clear all cached data</string>
 </resources>

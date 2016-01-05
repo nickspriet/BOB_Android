@@ -315,6 +315,13 @@ public class Provider extends ContentProvider {
                         selectionArgs
                 );
                 break;
+            case USER_RIDE:
+                deletedRows = db.delete(
+                        UserRideEntry.TABLE_NAME,
+                        selection,
+                        selectionArgs
+                );
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }

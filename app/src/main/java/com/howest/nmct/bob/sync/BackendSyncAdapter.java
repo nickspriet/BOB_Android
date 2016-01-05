@@ -352,8 +352,18 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.d(LOG_TAG, "On Perform Sync");
-        getRides();
         getEvents();
+        getRides();
+    }
+
+    public static int clearData(final Context context) {
+        int total = 0;
+        total += context.getContentResolver().delete(EventEntry.CONTENT_URI, null, null);
+        total += context.getContentResolver().delete(PlaceEntry.CONTENT_URI, null, null);
+        total += context.getContentResolver().delete(RideEntry.CONTENT_URI, null, null);
+        total += context.getContentResolver().delete(UserEntry.CONTENT_URI, null, null);
+        total += context.getContentResolver().delete(UserRideEntry.CONTENT_URI, null, null);
+        return total;
     }
 
     private void getRides() {
@@ -382,10 +392,11 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
             @Override
             public void onResponse(Response response) throws IOException {
                 APIRidesResponse apiResponse = new Gson().fromJson(response.body().charStream(), APIRidesResponse.class);
+                if (apiResponse.data.rides == null) return;
 
                 getContext().getContentResolver().bulkInsert(
                         EventEntry.CONTENT_URI,
-                        Event.asContentValues(apiResponse.data.rides));
+                        Event.asContentValues(apiResponse.data.rides, true));
 
                 getContext().getContentResolver().bulkInsert(
                         PlaceEntry.CONTENT_URI,
@@ -432,9 +443,7 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
             @Override
             public void onResponse(Response response) throws IOException {
                 APIEventsResponse apiResponse = new Gson().fromJson(response.body().charStream(), APIEventsResponse.class);
-
-                getContext().getContentResolver().delete(PlaceEntry.CONTENT_URI, null, null);
-                getContext().getContentResolver().delete(EventEntry.CONTENT_URI, null, null);
+                if (apiResponse.data.events == null) return;
 
                 getContext().getContentResolver().bulkInsert(
                         PlaceEntry.CONTENT_URI,
