@@ -351,6 +351,7 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(BACKEND_SCHEME)
                 .encodedAuthority(BACKEND_HOST)
+                .appendPath("api")
                 .appendPath("ride")
                 .appendQueryParameter("token", token);
 
@@ -420,8 +421,8 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
             public void onResponse(Response response) throws IOException {
                 APIEventsResponse apiResponse = new Gson().fromJson(response.body().charStream(), APIEventsResponse.class);
 
-                getContext().getContentResolver().delete(Contracts.PlaceEntry.CONTENT_URI, null, null);
-                getContext().getContentResolver().delete(Contracts.EventEntry.CONTENT_URI, null, null);
+                getContext().getContentResolver().delete(PlaceEntry.CONTENT_URI, null, null);
+                getContext().getContentResolver().delete(EventEntry.CONTENT_URI, null, null);
 
                 getContext().getContentResolver().bulkInsert(
                         PlaceEntry.CONTENT_URI,

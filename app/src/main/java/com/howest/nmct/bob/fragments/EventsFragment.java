@@ -22,17 +22,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.howest.nmct.bob.R;
-import com.howest.nmct.bob.activities.EventsActivity;
 import com.howest.nmct.bob.activities.NavigationActivity;
 import com.howest.nmct.bob.adapters.EventAdapter;
 import com.howest.nmct.bob.data.Contracts.EventEntry;
 import com.howest.nmct.bob.data.Contracts.PlaceEntry;
-import com.howest.nmct.bob.sync.BackendSyncAdapter;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import com.howest.nmct.bob.models.Event;
+import com.howest.nmct.bob.sync.BackendSyncAdapter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
