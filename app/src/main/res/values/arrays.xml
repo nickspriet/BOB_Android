@@ -1,0 +1,1058 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="car_makes">
+        <item>Acura CL</item>
+        <item>Acura Integra</item>
+        <item>Acura Legend</item>
+        <item>Acura MDX</item>
+        <item>Acura NSX</item>
+        <item>Acura RDX</item>
+        <item>Acura RL</item>
+        <item>Acura RSX</item>
+        <item>Acura SLX</item>
+        <item>Acura TL</item>
+        <item>Acura TSX</item>
+        <item>Acura Vigor</item>
+        <item>Acura ZDX</item>
+        <item>Alfa Romeo 164</item>
+        <item>Alfa Romeo Spider</item>
+        <item>Aptera 2e</item>
+        <item>Aptera Typ-1</item>
+        <item>Aptera Type-1h</item>
+        <item>Aston Martin DB9 Volante</item>
+        <item>Aston Martin DB9</item>
+        <item>Aston Martin DBS</item>
+        <item>Aston Martin Rapide</item>
+        <item>Aston Martin V12 Vantage</item>
+        <item>Aston Martin V8 Vantage S</item>
+        <item>Aston Martin V8 Vantage</item>
+        <item>Aston Martin Vanquish S</item>
+        <item>Aston Martin Vantage</item>
+        <item>Aston Martin Virage</item>
+        <item>Audi 100</item>
+        <item>Audi 200</item>
+        <item>Audi 4000</item>
+        <item>Audi 4000CS Quattro</item>
+        <item>Audi 4000s Quattro</item>
+        <item>Audi 4000s</item>
+        <item>Audi 5000CS Quattro</item>
+        <item>Audi 5000CS</item>
+        <item>Audi 5000S</item>
+        <item>Audi 80/90</item>
+        <item>Audi 80</item>
+        <item>Audi 90</item>
+        <item>Audi A3</item>
+        <item>Audi A4</item>
+        <item>Audi A5</item>
+        <item>Audi A6</item>
+        <item>Audi A7</item>
+        <item>Audi A8</item>
+        <item>Audi Allroad</item>
+        <item>Audi Cabriolet</item>
+        <item>Audi Coupe GT</item>
+        <item>Audi Coupe Quattro</item>
+        <item>Audi Q5</item>
+        <item>Audi Q7</item>
+        <item>Audi Quattro</item>
+        <item>Audi R8</item>
+        <item>Audi riolet</item>
+        <item>Audi RS 4</item>
+        <item>Audi RS 6</item>
+        <item>Audi RS4</item>
+        <item>Audi RS6</item>
+        <item>Audi S4</item>
+        <item>Audi S5</item>
+        <item>Audi S6</item>
+        <item>Audi S8</item>
+        <item>Audi TT</item>
+        <item>Audi V8</item>
+        <item>Austin Mini Cooper S</item>
+        <item>Austin Mini Cooper</item>
+        <item>Austin Mini</item>
+        <item>Bentley Arnage</item>
+        <item>Bentley Azure T</item>
+        <item>Bentley Azure</item>
+        <item>Bentley Brooklands</item>
+        <item>Bentley Continental Flying Spur</item>
+        <item>Bentley Continental GT</item>
+        <item>Bentley Continental GTC</item>
+        <item>Bentley Continental Super</item>
+        <item>Bentley Continental</item>
+        <item>Bentley Mulsanne</item>
+        <item>BMW 1 Series</item>
+        <item>BMW 3 Series</item>
+        <item>BMW 325</item>
+        <item>BMW 330</item>
+        <item>BMW 5 Series</item>
+        <item>BMW 525</item>
+        <item>BMW 530</item>
+        <item>BMW 545</item>
+        <item>BMW 550</item>
+        <item>BMW 6 Series</item>
+        <item>BMW 600</item>
+        <item>BMW 645</item>
+        <item>BMW 650</item>
+        <item>BMW 7 Series</item>
+        <item>BMW 745</item>
+        <item>BMW 750</item>
+        <item>BMW 760</item>
+        <item>BMW 8 Series</item>
+        <item>BMW Alpina B7</item>
+        <item>BMW M Roadster</item>
+        <item>BMW M3</item>
+        <item>BMW M5</item>
+        <item>BMW M6</item>
+        <item>BMW M</item>
+        <item>BMW X3</item>
+        <item>BMW X5 M</item>
+        <item>BMW X5</item>
+        <item>BMW X6 M</item>
+        <item>BMW X6</item>
+        <item>BMW Z3</item>
+        <item>BMW Z4 M Roadster</item>
+        <item>BMW Z4 M</item>
+        <item>BMW Z4</item>
+        <item>BMW Z8</item>
+        <item>Bugatti Veyron</item>
+        <item>Buick Century</item>
+        <item>Buick Coachbuilder</item>
+        <item>Buick Electra</item>
+        <item>Buick Enclave</item>
+        <item>Buick Estate</item>
+        <item>Buick Hearse</item>
+        <item>Buick LaCrosse</item>
+        <item>Buick LeSabre</item>
+        <item>Buick Lucerne</item>
+        <item>Buick Park Avenue</item>
+        <item>Buick Rainier</item>
+        <item>Buick Reatta</item>
+        <item>Buick Regal</item>
+        <item>Buick Rendezvous</item>
+        <item>Buick Riviera</item>
+        <item>Buick Roadmaster</item>
+        <item>Buick Skyhawk</item>
+        <item>Buick Skylark</item>
+        <item>Buick Somerset</item>
+        <item>Buick Special</item>
+        <item>Buick Terraza</item>
+        <item>Buick Verano</item>
+        <item>Cadillac Allante</item>
+        <item>Cadillac Brougham</item>
+        <item>Cadillac Catera</item>
+        <item>Cadillac CTS-V</item>
+        <item>Cadillac CTS</item>
+        <item>Cadillac DeVille</item>
+        <item>Cadillac DTS</item>
+        <item>Cadillac Eldorado</item>
+        <item>Cadillac Escalade ESV</item>
+        <item>Cadillac Escalade EXT</item>
+        <item>Cadillac Escalade</item>
+        <item>Cadillac Fleetwood</item>
+        <item>Cadillac Seville</item>
+        <item>Cadillac Sixty Special</item>
+        <item>Cadillac SRX</item>
+        <item>Cadillac STS-V</item>
+        <item>Cadillac STS</item>
+        <item>Cadillac XLR-V</item>
+        <item>Cadillac XLR</item>
+        <item>Chevrolet 1500</item>
+        <item>Chevrolet 2500</item>
+        <item>Chevrolet 3500</item>
+        <item>Chevrolet APV</item>
+        <item>Chevrolet Astro</item>
+        <item>Chevrolet Avalanche 1500</item>
+        <item>Chevrolet Avalanche 2500</item>
+        <item>Chevrolet Avalanche</item>
+        <item>Chevrolet Aveo</item>
+        <item>Chevrolet Bel Air</item>
+        <item>Chevrolet Beretta</item>
+        <item>Chevrolet Blazer</item>
+        <item>Chevrolet Camaro</item>
+        <item>Chevrolet Caprice Classic</item>
+        <item>Chevrolet Caprice</item>
+        <item>Chevrolet Cavalier</item>
+        <item>Chevrolet Citation</item>
+        <item>Chevrolet Classic</item>
+        <item>Chevrolet Cobalt SS</item>
+        <item>Chevrolet Cobalt</item>
+        <item>Chevrolet Colorado</item>
+        <item>Chevrolet Corsica</item>
+        <item>Chevrolet Corvair 500</item>
+        <item>Chevrolet Corvair</item>
+        <item>Chevrolet Corvette</item>
+        <item>Chevrolet Cruze</item>
+        <item>Chevrolet Equinox</item>
+        <item>Chevrolet Express 1500</item>
+        <item>Chevrolet Express 2500</item>
+        <item>Chevrolet Express 3500</item>
+        <item>Chevrolet Express</item>
+        <item>Chevrolet G-Series 1500</item>
+        <item>Chevrolet G-Series 2500</item>
+        <item>Chevrolet G-Series 3500</item>
+        <item>Chevrolet G-Series G10</item>
+        <item>Chevrolet G-Series G20</item>
+        <item>Chevrolet G-Series G30</item>
+        <item>Chevrolet HHR Panel</item>
+        <item>Chevrolet HHR</item>
+        <item>Chevrolet Impala SS</item>
+        <item>Chevrolet Impala</item>
+        <item>Chevrolet K5 Blazer</item>
+        <item>Chevrolet Lumina APV</item>
+        <item>Chevrolet Lumina</item>
+        <item>Chevrolet LUV</item>
+        <item>Chevrolet Malibu Maxx</item>
+        <item>Chevrolet Malibu</item>
+        <item>Chevrolet Metro</item>
+        <item>Chevrolet Monte Carlo</item>
+        <item>Chevrolet Monza</item>
+        <item>Chevrolet Prizm</item>
+        <item>Chevrolet S10 Blazer</item>
+        <item>Chevrolet S10</item>
+        <item>Chevrolet Silverado 1500</item>
+        <item>Chevrolet Silverado 2500</item>
+        <item>Chevrolet Silverado 3500</item>
+        <item>Chevrolet Silverado 3500HD</item>
+        <item>Chevrolet Silverado Hybrid</item>
+        <item>Chevrolet Silverado</item>
+        <item>Chevrolet Sonic</item>
+        <item>Chevrolet Sportvan G10</item>
+        <item>Chevrolet Sportvan G20</item>
+        <item>Chevrolet Sportvan G30</item>
+        <item>Chevrolet SSR</item>
+        <item>Chevrolet Suburban 1500</item>
+        <item>Chevrolet Suburban 2500</item>
+        <item>Chevrolet Suburban</item>
+        <item>Chevrolet Tahoe</item>
+        <item>Chevrolet Tracker</item>
+        <item>Chevrolet Trailblazer</item>
+        <item>Chevrolet TrailBlazer</item>
+        <item>Chevrolet Traverse</item>
+        <item>Chevrolet Uplander</item>
+        <item>Chevrolet Vega</item>
+        <item>Chevrolet Venture</item>
+        <item>Chevrolet Volt</item>
+        <item>Chrysler 200</item>
+        <item>Chrysler 300</item>
+        <item>Chrysler 300C</item>
+        <item>Chrysler 300M</item>
+        <item>Chrysler Aspen</item>
+        <item>Chrysler Cirrus</item>
+        <item>Chrysler Concorde</item>
+        <item>Chrysler Crossfire Roadster</item>
+        <item>Chrysler Crossfire</item>
+        <item>Chrysler Fifth Ave</item>
+        <item>Chrysler Grand Voyager</item>
+        <item>Chrysler Imperial</item>
+        <item>Chrysler LeBaron</item>
+        <item>Chrysler LHS</item>
+        <item>Chrysler New Yorker</item>
+        <item>Chrysler Pacifica</item>
+        <item>Chrysler Prowler</item>
+        <item>Chrysler PT Cruiser</item>
+        <item>Chrysler Sebring</item>
+        <item>Chrysler Town &amp; Country</item>
+        <item>Chrysler Voyager</item>
+        <item>Citroën 2CV</item>
+        <item>Citroën CX</item>
+        <item>Citroën SM</item>
+        <item>Corbin Sparrow</item>
+        <item>Daewoo Lanos</item>
+        <item>Daewoo Leganza</item>
+        <item>Daewoo Nubira</item>
+        <item>Daihatsu Charade</item>
+        <item>Daihatsu Rocky</item>
+        <item>Dodge Aries</item>
+        <item>Dodge Aspen</item>
+        <item>Dodge Avenger</item>
+        <item>Dodge Caliber</item>
+        <item>Dodge Caravan</item>
+        <item>Dodge Challenger</item>
+        <item>Dodge Charger</item>
+        <item>Dodge Colt</item>
+        <item>Dodge D150 Club</item>
+        <item>Dodge D150</item>
+        <item>Dodge D250 Club</item>
+        <item>Dodge D250</item>
+        <item>Dodge D350 Club</item>
+        <item>Dodge D350</item>
+        <item>Dodge Dakota Club</item>
+        <item>Dodge Dakota</item>
+        <item>Dodge Daytona</item>
+        <item>Dodge Durango</item>
+        <item>Dodge Dynasty</item>
+        <item>Dodge Grand Caravan</item>
+        <item>Dodge Intrepid</item>
+        <item>Dodge Journey</item>
+        <item>Dodge Magnum</item>
+        <item>Dodge Monaco</item>
+        <item>Dodge Neon</item>
+        <item>Dodge Nitro</item>
+        <item>Dodge Omni</item>
+        <item>Dodge Ram 1500 Club</item>
+        <item>Dodge Ram 1500</item>
+        <item>Dodge Ram 2500 Club</item>
+        <item>Dodge Ram 2500</item>
+        <item>Dodge Ram 3500 Club</item>
+        <item>Dodge Ram 3500</item>
+        <item>Dodge Ram 50</item>
+        <item>Dodge Ram Van 1500</item>
+        <item>Dodge Ram Van 2500</item>
+        <item>Dodge Ram Van 3500</item>
+        <item>Dodge Ram Van B150</item>
+        <item>Dodge Ram Van B250</item>
+        <item>Dodge Ram Van B350</item>
+        <item>Dodge Ram Wagon B150</item>
+        <item>Dodge Ram Wagon B250</item>
+        <item>Dodge Ram Wagon B350</item>
+        <item>Dodge Ram</item>
+        <item>Dodge Ramcharger</item>
+        <item>Dodge Shadow</item>
+        <item>Dodge Spirit</item>
+        <item>Dodge Sprinter</item>
+        <item>Dodge Stealth</item>
+        <item>Dodge Stratus</item>
+        <item>Dodge Viper RT/10</item>
+        <item>Dodge Viper</item>
+        <item>Eagle Premier</item>
+        <item>Eagle Summit</item>
+        <item>Eagle Talon</item>
+        <item>Eagle Vision</item>
+        <item>Fairthorpe Rockette</item>
+        <item>Ferrari 430 Scuderia</item>
+        <item>Ferrari 458 Italia</item>
+        <item>Ferrari 599 GTB Fiorano</item>
+        <item>Ferrari 612 Scaglietti</item>
+        <item>Ferrari California</item>
+        <item>Ferrari F430 Spider</item>
+        <item>Ferrari F430</item>
+        <item>Ferrari FF</item>
+        <item>FIAT 500</item>
+        <item>Fiat Nuova 500</item>
+        <item>Fillmore</item>
+        <item>Foose Hemisfear</item>
+        <item>Ford Aerostar</item>
+        <item>Ford Aspire</item>
+        <item>Ford Bronco II</item>
+        <item>Ford Bronco</item>
+        <item>Ford C-MAX Hybrid</item>
+        <item>Ford Club Wagon</item>
+        <item>Ford Contour</item>
+        <item>Ford Country</item>
+        <item>Ford Courier</item>
+        <item>Ford Crown Victoria</item>
+        <item>Ford E-350 Super Duty Van</item>
+        <item>Ford E-350 Super Duty</item>
+        <item>Ford E-Series</item>
+        <item>Ford E150</item>
+        <item>Ford E250</item>
+        <item>Ford E350</item>
+        <item>Ford Econoline E150</item>
+        <item>Ford Econoline E250</item>
+        <item>Ford Econoline E350</item>
+        <item>Ford Edge</item>
+        <item>Ford Escape</item>
+        <item>Ford Escort ZX2</item>
+        <item>Ford Escort</item>
+        <item>Ford Excursion</item>
+        <item>Ford EXP</item>
+        <item>Ford Expedition EL</item>
+        <item>Ford Expedition</item>
+        <item>Ford Explorer Sport Trac</item>
+        <item>Ford Explorer Sport</item>
+        <item>Ford Explorer</item>
+        <item>Ford F-250 Super Duty</item>
+        <item>Ford F-350 Super Duty</item>
+        <item>Ford F-Series Super Duty</item>
+        <item>Ford F-Series</item>
+        <item>Ford F150</item>
+        <item>Ford F250</item>
+        <item>Ford F350</item>
+        <item>Ford F450</item>
+        <item>Ford Fairlane</item>
+        <item>Ford Falcon</item>
+        <item>Ford Festiva</item>
+        <item>Ford Fiesta</item>
+        <item>Ford Five Hundred</item>
+        <item>Ford Flex</item>
+        <item>Ford Focus ST</item>
+        <item>Ford Focus</item>
+        <item>Ford Freestar</item>
+        <item>Ford Freestyle</item>
+        <item>Ford Fusion</item>
+        <item>Ford Galaxie</item>
+        <item>Ford GT500</item>
+        <item>Ford GT</item>
+        <item>Ford Laser</item>
+        <item>Ford Lightning</item>
+        <item>Ford LTD Crown Victoria</item>
+        <item>Ford LTD</item>
+        <item>Ford Model T</item>
+        <item>Ford Mustang</item>
+        <item>Ford Probe</item>
+        <item>Ford Ranger</item>
+        <item>Ford Taurus X</item>
+        <item>Ford Taurus</item>
+        <item>Ford Tempo</item>
+        <item>Ford Th!nk</item>
+        <item>Ford TH!NK</item>
+        <item>Ford Thunderbird</item>
+        <item>Ford Torino</item>
+        <item>Ford Transit Connect</item>
+        <item>Ford Windstar</item>
+        <item>Ford ZX2</item>
+        <item>Geo Metro</item>
+        <item>Geo Prizm</item>
+        <item>Geo Storm</item>
+        <item>Geo Tracker</item>
+        <item>GMC 1500 Club Coupe</item>
+        <item>GMC 1500</item>
+        <item>GMC 2500 Club Coupe</item>
+        <item>GMC 2500</item>
+        <item>GMC 3500 Club Coupe</item>
+        <item>GMC 3500</item>
+        <item>GMC Acadia</item>
+        <item>GMC Canyon</item>
+        <item>GMC Envoy XL</item>
+        <item>GMC Envoy XUV</item>
+        <item>GMC Envoy</item>
+        <item>GMC EV1</item>
+        <item>GMC Jimmy</item>
+        <item>GMC Rally Wagon 1500</item>
+        <item>GMC Rally Wagon 2500</item>
+        <item>GMC Rally Wagon 3500</item>
+        <item>GMC Rally Wagon G2500</item>
+        <item>GMC Rally Wagon G3500</item>
+        <item>GMC Safari</item>
+        <item>GMC Savana 1500</item>
+        <item>GMC Savana 2500</item>
+        <item>GMC Savana 3500</item>
+        <item>GMC Savana Cargo Van</item>
+        <item>GMC Savana</item>
+        <item>GMC Sierra 1500</item>
+        <item>GMC Sierra 2500</item>
+        <item>GMC Sierra 2500HD</item>
+        <item>GMC Sierra 3500</item>
+        <item>GMC Sierra 3500HD</item>
+        <item>GMC Sierra Denali</item>
+        <item>GMC Sierra Hybrid</item>
+        <item>GMC Sierra</item>
+        <item>GMC Sonoma Club Coupe</item>
+        <item>GMC Sonoma Club</item>
+        <item>GMC Sonoma</item>
+        <item>GMC Suburban 1500</item>
+        <item>GMC Suburban 2500</item>
+        <item>GMC Terrain</item>
+        <item>GMC Vandura 1500</item>
+        <item>GMC Vandura 2500</item>
+        <item>GMC Vandura 3500</item>
+        <item>GMC Vandura G1500</item>
+        <item>GMC Vandura G2500</item>
+        <item>GMC Vandura G3500</item>
+        <item>GMC Yukon Denali</item>
+        <item>GMC Yukon XL 1500</item>
+        <item>GMC Yukon XL 2500</item>
+        <item>GMC Yukon XL</item>
+        <item>GMC Yukon</item>
+        <item>Hillman Minx Magnificent</item>
+        <item>Holden Monaro</item>
+        <item>Holden VS Commodore</item>
+        <item>Honda Accord Crosstour</item>
+        <item>Honda Accord</item>
+        <item>Honda Civic GX</item>
+        <item>Honda Civic Si</item>
+        <item>Honda Civic</item>
+        <item>Honda CR-V</item>
+        <item>Honda CR-X</item>
+        <item>Honda CR-Z</item>
+        <item>Honda Crosstour</item>
+        <item>Honda del Sol</item>
+        <item>Honda Del Sol</item>
+        <item>Honda Element</item>
+        <item>Honda FCX Clarity</item>
+        <item>Honda Fit</item>
+        <item>Honda Insight</item>
+        <item>Honda Odyssey</item>
+        <item>Honda Passport</item>
+        <item>Honda Pilot</item>
+        <item>Honda Prelude</item>
+        <item>Honda Ridgeline</item>
+        <item>Honda S2000</item>
+        <item>HUMMER H1</item>
+        <item>Hummer H2 SUT</item>
+        <item>Hummer H2 SUV</item>
+        <item>HUMMER H2</item>
+        <item>Hummer H2</item>
+        <item>Hummer H3</item>
+        <item>HUMMER H3</item>
+        <item>HUMMER H3T</item>
+        <item>Hyundai Accent</item>
+        <item>Hyundai Azera</item>
+        <item>Hyundai Elantra</item>
+        <item>Hyundai Entourage</item>
+        <item>Hyundai Equus</item>
+        <item>Hyundai Excel</item>
+        <item>Hyundai Genesis Coupe</item>
+        <item>Hyundai Genesis</item>
+        <item>Hyundai HED-5</item>
+        <item>Hyundai Santa Fe</item>
+        <item>Hyundai Scoupe</item>
+        <item>Hyundai Sonata</item>
+        <item>Hyundai Tiburon</item>
+        <item>Hyundai Tucson</item>
+        <item>Hyundai Veloster</item>
+        <item>Hyundai Veracruz</item>
+        <item>Hyundai XG300</item>
+        <item>Hyundai XG350</item>
+        <item>Infiniti EX</item>
+        <item>Infiniti FX</item>
+        <item>Infiniti G25</item>
+        <item>Infiniti G35</item>
+        <item>Infiniti G37</item>
+        <item>Infiniti G</item>
+        <item>Infiniti I</item>
+        <item>Infiniti IPL G</item>
+        <item>Infiniti J</item>
+        <item>Infiniti JX</item>
+        <item>Infiniti M</item>
+        <item>Infiniti Q</item>
+        <item>Infiniti QX56</item>
+        <item>Infiniti QX</item>
+        <item>Isuzu Amigo</item>
+        <item>Isuzu Ascender</item>
+        <item>Isuzu Axiom</item>
+        <item>Isuzu Hombre Space</item>
+        <item>Isuzu Hombre</item>
+        <item>Isuzu i-280</item>
+        <item>Isuzu i-290</item>
+        <item>Isuzu i-350</item>
+        <item>Isuzu i-370</item>
+        <item>Isuzu i-Series</item>
+        <item>Isuzu Impulse</item>
+        <item>Isuzu Oasis</item>
+        <item>Isuzu Rodeo Sport</item>
+        <item>Isuzu Rodeo</item>
+        <item>Isuzu Space</item>
+        <item>Isuzu Stylus</item>
+        <item>Isuzu Trooper</item>
+        <item>Isuzu VehiCROSS</item>
+        <item>Jaguar S-Type</item>
+        <item>Jaguar X-Type</item>
+        <item>Jaguar XF</item>
+        <item>Jaguar XJ Series</item>
+        <item>Jaguar XJ</item>
+        <item>Jaguar XK Series</item>
+        <item>Jaguar XK</item>
+        <item>Jeep Cherokee</item>
+        <item>Jeep Comanche</item>
+        <item>Jeep Commander</item>
+        <item>Jeep Compass</item>
+        <item>Jeep Grand Cherokee</item>
+        <item>Jeep Liberty</item>
+        <item>Jeep Patriot</item>
+        <item>Jeep Wrangler</item>
+        <item>Jensen Interceptor</item>
+        <item>Kia Amanti</item>
+        <item>Kia Borrego</item>
+        <item>Kia Carens</item>
+        <item>Kia Forte</item>
+        <item>Kia Mentor</item>
+        <item>Kia Mohave/Borrego</item>
+        <item>Kia Optima</item>
+        <item>Kia Rio5</item>
+        <item>Kia Rio</item>
+        <item>Kia Rondo</item>
+        <item>Kia Sedona</item>
+        <item>Kia Sephia</item>
+        <item>Kia Sorento</item>
+        <item>Kia Soul</item>
+        <item>Kia Spectra5</item>
+        <item>Kia Spectra</item>
+        <item>Kia Sportage</item>
+        <item>Lamborghini Aventador</item>
+        <item>Lamborghini Countach</item>
+        <item>Lamborghini Diablo</item>
+        <item>Lamborghini Gallardo</item>
+        <item>Lamborghini Murciélago LP640</item>
+        <item>Lamborghini Murciélago</item>
+        <item>Lamborghini Reventón</item>
+        <item>Land Rover Defender 110</item>
+        <item>Land Rover Defender 90</item>
+        <item>Land Rover Defender Ice Edition</item>
+        <item>Land Rover Defender</item>
+        <item>Land Rover Discovery Series II</item>
+        <item>Land Rover Discovery</item>
+        <item>Land Rover Freelander</item>
+        <item>Land Rover LR2</item>
+        <item>Land Rover LR3</item>
+        <item>Land Rover LR4</item>
+        <item>Land Rover Range Rover Classic</item>
+        <item>Land Rover Range Rover Evoque</item>
+        <item>Land Rover Range Rover Sport</item>
+        <item>Land Rover Range Rover</item>
+        <item>Land Rover Sterling</item>
+        <item>Lexus CT</item>
+        <item>Lexus ES</item>
+        <item>Lexus GS</item>
+        <item>Lexus GX</item>
+        <item>Lexus HS</item>
+        <item>Lexus IS F</item>
+        <item>Lexus IS-F</item>
+        <item>Lexus IS</item>
+        <item>Lexus LFA</item>
+        <item>Lexus LS Hybrid</item>
+        <item>Lexus LS</item>
+        <item>Lexus LX</item>
+        <item>Lexus RX Hybrid</item>
+        <item>Lexus RX</item>
+        <item>Lexus SC</item>
+        <item>Lincoln Aviator</item>
+        <item>Lincoln Blackwood</item>
+        <item>Lincoln Continental Mark VII</item>
+        <item>Lincoln Continental</item>
+        <item>Lincoln LS</item>
+        <item>Lincoln Mark LT</item>
+        <item>Lincoln Mark VII</item>
+        <item>Lincoln Mark VIII</item>
+        <item>Lincoln MKS</item>
+        <item>Lincoln MKT</item>
+        <item>Lincoln MKX</item>
+        <item>Lincoln MKZ</item>
+        <item>Lincoln Navigator L</item>
+        <item>Lincoln Navigator</item>
+        <item>Lincoln Town Car</item>
+        <item>Lincoln Zephyr</item>
+        <item>Lotus Elan</item>
+        <item>Lotus Elise</item>
+        <item>Lotus Esprit Turbo</item>
+        <item>Lotus Esprit</item>
+        <item>Lotus Evora</item>
+        <item>Lotus Exige</item>
+        <item>Maserati 228</item>
+        <item>Maserati 430</item>
+        <item>Maserati Biturbo</item>
+        <item>Maserati Coupe</item>
+        <item>Maserati Gran Sport</item>
+        <item>Maserati GranSport</item>
+        <item>Maserati GranTurismo</item>
+        <item>Maserati Karif</item>
+        <item>Maserati Quattroporte</item>
+        <item>Maserati Spyder</item>
+        <item>Maybach 57</item>
+        <item>Maybach 57S</item>
+        <item>Maybach 62</item>
+        <item>Maybach Landaulet</item>
+        <item>Mazda 323</item>
+        <item>Mazda 626</item>
+        <item>Mazda 929</item>
+        <item>Mazda B-Series Plus</item>
+        <item>Mazda B-Series</item>
+        <item>Mazda B2000</item>
+        <item>Mazda B2500</item>
+        <item>Mazda B2600</item>
+        <item>Mazda CX-5</item>
+        <item>Mazda CX-7</item>
+        <item>Mazda CX-9</item>
+        <item>Mazda Familia</item>
+        <item>Mazda GLC</item>
+        <item>Mazda Mazda2</item>
+        <item>Mazda Mazda3</item>
+        <item>Mazda Mazda5</item>
+        <item>Mazda Mazda6</item>
+        <item>Mazda Mazdaspeed 3</item>
+        <item>Mazda Mazdaspeed6</item>
+        <item>Mazda Miata MX-5</item>
+        <item>Mazda Millennia</item>
+        <item>Mazda MPV</item>
+        <item>Mazda MX-3</item>
+        <item>Mazda MX-5</item>
+        <item>Mazda MX-6</item>
+        <item>Mazda Navajo</item>
+        <item>Mazda Protege5</item>
+        <item>Mazda Protege</item>
+        <item>Mazda RX-7</item>
+        <item>Mazda RX-8</item>
+        <item>Mazda Tribute</item>
+        <item>McLaren MP4–12C</item>
+        <item>Mercedes-Benz 190E</item>
+        <item>Mercedes-Benz 300CE</item>
+        <item>Mercedes-Benz 300D</item>
+        <item>Mercedes-Benz 300E</item>
+        <item>Mercedes-Benz 300SD</item>
+        <item>Mercedes-Benz 300SE</item>
+        <item>Mercedes-Benz 300SL</item>
+        <item>Mercedes-Benz 300TE</item>
+        <item>Mercedes-Benz 400E</item>
+        <item>Mercedes-Benz 400SE</item>
+        <item>Mercedes-Benz 400SEL</item>
+        <item>Mercedes-Benz 500E</item>
+        <item>Mercedes-Benz 500SEC</item>
+        <item>Mercedes-Benz 500SEL</item>
+        <item>Mercedes-Benz 500SL</item>
+        <item>Mercedes-Benz 600SEC</item>
+        <item>Mercedes-Benz 600SEL</item>
+        <item>Mercedes-Benz 600SL</item>
+        <item>Mercedes-Benz C-Class</item>
+        <item>Mercedes-Benz CL-Class</item>
+        <item>Mercedes-Benz CL65 AMG</item>
+        <item>Mercedes-Benz CLK-Class</item>
+        <item>Mercedes-Benz CLS-Class</item>
+        <item>Mercedes-Benz E-Class</item>
+        <item>Mercedes-Benz G-Class</item>
+        <item>Mercedes-Benz G55 AMG</item>
+        <item>Mercedes-Benz GL-Class</item>
+        <item>Mercedes-Benz GLK-Class</item>
+        <item>Mercedes-Benz M-Class</item>
+        <item>Mercedes-Benz R-Class</item>
+        <item>Mercedes-Benz S-Class</item>
+        <item>Mercedes-Benz SL-Class</item>
+        <item>Mercedes-Benz SL65 AMG</item>
+        <item>Mercedes-Benz SLK-Class</item>
+        <item>Mercedes-Benz SLK55 AMG</item>
+        <item>Mercedes-Benz SLR McLaren</item>
+        <item>Mercedes-Benz SLS AMG</item>
+        <item>Mercedes-Benz SLS-Class</item>
+        <item>Mercedes-Benz Sprinter 2500</item>
+        <item>Mercedes-Benz Sprinter 3500</item>
+        <item>Mercedes-Benz Sprinter</item>
+        <item>Mercedes-Benz W123</item>
+        <item>Mercedes-Benz W126</item>
+        <item>Mercedes-Benz W201</item>
+        <item>Mercury Capri</item>
+        <item>Mercury Cougar</item>
+        <item>Mercury Grand Marquis</item>
+        <item>Mercury Lynx</item>
+        <item>Mercury Marauder</item>
+        <item>Mercury Mariner</item>
+        <item>Mercury Marquis</item>
+        <item>Mercury Milan</item>
+        <item>Mercury Montego</item>
+        <item>Mercury Monterey</item>
+        <item>Mercury Mountaineer</item>
+        <item>Mercury Mystique</item>
+        <item>Mercury Sable</item>
+        <item>Mercury Topaz</item>
+        <item>Mercury Tracer</item>
+        <item>Mercury Villager</item>
+        <item>Merkur XR4Ti</item>
+        <item>MG MGB</item>
+        <item>MINI Clubman</item>
+        <item>MINI Cooper Clubman</item>
+        <item>MINI Cooper Countryman</item>
+        <item>MINI Cooper</item>
+        <item>MINI Countryman</item>
+        <item>MINI</item>
+        <item>Mitsubishi 3000GT</item>
+        <item>Mitsubishi Challenger</item>
+        <item>Mitsubishi Chariot</item>
+        <item>Mitsubishi Cordia</item>
+        <item>Mitsubishi Diamante</item>
+        <item>Mitsubishi Eclipse</item>
+        <item>Mitsubishi Endeavor</item>
+        <item>Mitsubishi Excel</item>
+        <item>Mitsubishi Expo LRV</item>
+        <item>Mitsubishi Expo</item>
+        <item>Mitsubishi Galant</item>
+        <item>Mitsubishi GTO</item>
+        <item>Mitsubishi i-MiEV</item>
+        <item>Mitsubishi L300</item>
+        <item>Mitsubishi Lancer Evolution</item>
+        <item>Mitsubishi Lancer</item>
+        <item>Mitsubishi Mighty Max Macro</item>
+        <item>Mitsubishi Mighty Max</item>
+        <item>Mitsubishi Mirage</item>
+        <item>Mitsubishi Montero Sport</item>
+        <item>Mitsubishi Montero</item>
+        <item>Mitsubishi Outlander Sport</item>
+        <item>Mitsubishi Outlander</item>
+        <item>Mitsubishi Pajero</item>
+        <item>Mitsubishi Precis</item>
+        <item>Mitsubishi Raider</item>
+        <item>Mitsubishi RVR</item>
+        <item>Mitsubishi Sigma</item>
+        <item>Mitsubishi Space</item>
+        <item>Mitsubishi Starion</item>
+        <item>Mitsubishi Tredia</item>
+        <item>Mitsubishi Truck</item>
+        <item>Mitsubishi Tundra</item>
+        <item>Morgan Aero 8</item>
+        <item>Nissan 200SX</item>
+        <item>Nissan 240SX</item>
+        <item>Nissan 280ZX</item>
+        <item>Nissan 300ZX</item>
+        <item>Nissan 350Z Roadster</item>
+        <item>Nissan 350Z</item>
+        <item>Nissan 370Z</item>
+        <item>Nissan Altima</item>
+        <item>Nissan Armada</item>
+        <item>Nissan Cube</item>
+        <item>Nissan cube</item>
+        <item>Nissan Datsun/Nissan Z-car</item>
+        <item>Nissan Frontier</item>
+        <item>Nissan GT-R</item>
+        <item>Nissan JUKE</item>
+        <item>Nissan Leaf</item>
+        <item>Nissan Maxima</item>
+        <item>Nissan Murano</item>
+        <item>Nissan NV1500</item>
+        <item>Nissan NV2500</item>
+        <item>Nissan NV3500</item>
+        <item>Nissan NX</item>
+        <item>Nissan Pathfinder Armada</item>
+        <item>Nissan Pathfinder</item>
+        <item>Nissan Quest</item>
+        <item>Nissan Rogue</item>
+        <item>Nissan Sentra</item>
+        <item>Nissan Stanza</item>
+        <item>Nissan Titan</item>
+        <item>Nissan Versa</item>
+        <item>Nissan Xterra</item>
+        <item>Oldsmobile 88</item>
+        <item>Oldsmobile 98</item>
+        <item>Oldsmobile Achieva</item>
+        <item>Oldsmobile Alero</item>
+        <item>Oldsmobile Aurora</item>
+        <item>Oldsmobile Bravada</item>
+        <item>Oldsmobile Ciera</item>
+        <item>Oldsmobile Custom Cruiser</item>
+        <item>Oldsmobile Cutlass Cruiser</item>
+        <item>Oldsmobile Cutlass Supreme</item>
+        <item>Oldsmobile Cutlass</item>
+        <item>Oldsmobile Intrigue</item>
+        <item>Oldsmobile LSS</item>
+        <item>Oldsmobile Regency</item>
+        <item>Oldsmobile Silhouette</item>
+        <item>Oldsmobile Toronado</item>
+        <item>Panoz Esperante</item>
+        <item>Peugeot 207</item>
+        <item>Plymouth Acclaim</item>
+        <item>Plymouth Breeze</item>
+        <item>Plymouth Colt Vista</item>
+        <item>Plymouth Colt</item>
+        <item>Plymouth Fury</item>
+        <item>Plymouth Grand Voyager</item>
+        <item>Plymouth Horizon</item>
+        <item>Plymouth Laser</item>
+        <item>Plymouth Neon</item>
+        <item>Plymouth Prowler</item>
+        <item>Plymouth Reliant</item>
+        <item>Plymouth Roadrunner</item>
+        <item>Plymouth Sundance</item>
+        <item>Plymouth Volare</item>
+        <item>Plymouth Voyager</item>
+        <item>Pontiac 1000</item>
+        <item>Pontiac 6000</item>
+        <item>Pontiac Aztek</item>
+        <item>Pontiac Bonneville</item>
+        <item>Pontiac Chevette</item>
+        <item>Pontiac Daewoo Kalos</item>
+        <item>Pontiac Fiero</item>
+        <item>Pontiac Firebird Formula</item>
+        <item>Pontiac Firebird Trans Am</item>
+        <item>Pontiac Firebird</item>
+        <item>Pontiac Firefly</item>
+        <item>Pontiac G3</item>
+        <item>Pontiac G5</item>
+        <item>Pontiac G6</item>
+        <item>Pontiac G8</item>
+        <item>Pontiac Gemini</item>
+        <item>Pontiac Grand Am</item>
+        <item>Pontiac Grand Prix Turbo</item>
+        <item>Pontiac Grand Prix</item>
+        <item>Pontiac GTO</item>
+        <item>Pontiac LeMans</item>
+        <item>Pontiac Lemans</item>
+        <item>Pontiac Montana SV6</item>
+        <item>Pontiac Montana</item>
+        <item>Pontiac Monterey</item>
+        <item>Pontiac Parisienne</item>
+        <item>Pontiac Safari</item>
+        <item>Pontiac Solstice</item>
+        <item>Pontiac Sunbird</item>
+        <item>Pontiac Sunfire</item>
+        <item>Pontiac Tempest</item>
+        <item>Pontiac Torrent</item>
+        <item>Pontiac Trans Sport</item>
+        <item>Pontiac Turbo Firefly</item>
+        <item>Pontiac Vibe</item>
+        <item>Porsche 911</item>
+        <item>Porsche 914</item>
+        <item>Porsche 924 S</item>
+        <item>Porsche 924</item>
+        <item>Porsche 928</item>
+        <item>Porsche 944</item>
+        <item>Porsche 968</item>
+        <item>Porsche Boxster</item>
+        <item>Porsche Carrera GT</item>
+        <item>Porsche Cayenne</item>
+        <item>Porsche Cayman</item>
+        <item>Porsche Panamera</item>
+        <item>Ram 1500</item>
+        <item>Ram 2500</item>
+        <item>Ram 3500</item>
+        <item>Ram C/V</item>
+        <item>Ram Dakota</item>
+        <item>Rambler Classic</item>
+        <item>Renault Alliance</item>
+        <item>Rolls-Royce Ghost</item>
+        <item>Rolls-Royce Phantom</item>
+        <item>Saab 9–2X</item>
+        <item>Saab 9–3</item>
+        <item>Saab 9–4X</item>
+        <item>Saab 9–5</item>
+        <item>Saab 9–7X</item>
+        <item>Saab 9000</item>
+        <item>Saab 900</item>
+        <item>Saturn Astra</item>
+        <item>Saturn Aura</item>
+        <item>Saturn Ion</item>
+        <item>Saturn L-Series</item>
+        <item>Saturn Outlook</item>
+        <item>Saturn Relay</item>
+        <item>Saturn S-Series</item>
+        <item>Saturn Sky</item>
+        <item>Saturn VUE</item>
+        <item>Saturn Vue</item>
+        <item>Scion FR-S</item>
+        <item>Scion iQ</item>
+        <item>Scion tC</item>
+        <item>Scion xA</item>
+        <item>Scion xB</item>
+        <item>Scion xD</item>
+        <item>Shelby GT350</item>
+        <item>Shelby GT500</item>
+        <item>Smart Fortwo</item>
+        <item>Spyker C8 Double 12 S</item>
+        <item>Spyker C8 Laviolette</item>
+        <item>Spyker C8 Spyder Wide Body</item>
+        <item>Spyker C8 Spyder</item>
+        <item>Spyker Cars C8</item>
+        <item>Studebaker Avanti</item>
+        <item>Subaru Alcyone SVX</item>
+        <item>Subaru B9 Tribeca</item>
+        <item>Subaru Baja</item>
+        <item>Subaru Brat</item>
+        <item>Subaru BRAT</item>
+        <item>Subaru BRZ</item>
+        <item>Subaru Forester</item>
+        <item>Subaru Impreza WRX</item>
+        <item>Subaru Impreza</item>
+        <item>Subaru Justy</item>
+        <item>Subaru Legacy</item>
+        <item>Subaru Leone</item>
+        <item>Subaru Loyale</item>
+        <item>Subaru Outback Sport</item>
+        <item>Subaru Outback</item>
+        <item>Subaru SVX</item>
+        <item>Subaru Tribeca</item>
+        <item>Subaru XT</item>
+        <item>Suzuki Aerio</item>
+        <item>Suzuki Cultus</item>
+        <item>Suzuki Daewoo Lacetti</item>
+        <item>Suzuki Daewoo Magnus</item>
+        <item>Suzuki Equator</item>
+        <item>Suzuki Esteem</item>
+        <item>Suzuki Forenza</item>
+        <item>Suzuki Grand Vitara</item>
+        <item>Suzuki Kizashi</item>
+        <item>Suzuki Reno</item>
+        <item>Suzuki Samurai</item>
+        <item>Suzuki Sidekick</item>
+        <item>Suzuki SJ 410</item>
+        <item>Suzuki SJ</item>
+        <item>Suzuki Swift</item>
+        <item>Suzuki SX4</item>
+        <item>Suzuki Verona</item>
+        <item>Suzuki Vitara</item>
+        <item>Suzuki X-90</item>
+        <item>Suzuki XL-7</item>
+        <item>Suzuki XL7</item>
+        <item>Tesla Model S</item>
+        <item>Tesla Roadster</item>
+        <item>Toyota 4Runner</item>
+        <item>Toyota Avalon</item>
+        <item>Toyota Camry Hybrid</item>
+        <item>Toyota Camry Solara</item>
+        <item>Toyota Camry</item>
+        <item>Toyota Celica</item>
+        <item>Toyota Corolla</item>
+        <item>Toyota Cressida</item>
+        <item>Toyota Echo</item>
+        <item>Toyota FJ Cruiser</item>
+        <item>Toyota Highlander Hybrid</item>
+        <item>Toyota Highlander</item>
+        <item>Toyota Ipsum</item>
+        <item>Toyota Land Cruiser</item>
+        <item>Toyota Matrix</item>
+        <item>Toyota MR2</item>
+        <item>Toyota Paseo</item>
+        <item>Toyota Previa</item>
+        <item>Toyota Prius c</item>
+        <item>Toyota Prius Plug-in Hybrid</item>
+        <item>Toyota Prius Plug-in</item>
+        <item>Toyota Prius v</item>
+        <item>Toyota Prius</item>
+        <item>Toyota RAV4</item>
+        <item>Toyota Sequoia</item>
+        <item>Toyota Sienna</item>
+        <item>Toyota Solara</item>
+        <item>Toyota Supra</item>
+        <item>Toyota T100 Xtra</item>
+        <item>Toyota T100</item>
+        <item>Toyota Tacoma Xtra</item>
+        <item>Toyota Tacoma</item>
+        <item>Toyota Tercel</item>
+        <item>Toyota Truck Xtracab SR5</item>
+        <item>Toyota Tundra</item>
+        <item>Toyota TundraMax</item>
+        <item>Toyota Venza</item>
+        <item>Toyota Xtra</item>
+        <item>Toyota Yaris</item>
+        <item>Volkswagen Beetle</item>
+        <item>Volkswagen Cabriolet</item>
+        <item>Volkswagen CC</item>
+        <item>Volkswagen Corrado</item>
+        <item>Volkswagen Eos</item>
+        <item>Volkswagen Eurovan</item>
+        <item>Volkswagen Fox</item>
+        <item>Volkswagen GLI</item>
+        <item>Volkswagen Golf III</item>
+        <item>Volkswagen Golf</item>
+        <item>Volkswagen GTI</item>
+        <item>Volkswagen Jetta III</item>
+        <item>Volkswagen Jetta</item>
+        <item>Volkswagen New Beetle</item>
+        <item>Volkswagen Passat</item>
+        <item>Volkswagen Phaeton</item>
+        <item>Volkswagen Quantum</item>
+        <item>Volkswagen R32</item>
+        <item>Volkswagen Rabbit</item>
+        <item>Volkswagen rio</item>
+        <item>Volkswagen riolet</item>
+        <item>Volkswagen Routan</item>
+        <item>Volkswagen Scirocco</item>
+        <item>Volkswagen Tiguan</item>
+        <item>Volkswagen Touareg 2</item>
+        <item>Volkswagen Touareg</item>
+        <item>Volkswagen Type 2</item>
+        <item>Volkswagen Vanagon</item>
+        <item>Volvo 240</item>
+        <item>Volvo 740</item>
+        <item>Volvo 850</item>
+        <item>Volvo 940</item>
+        <item>Volvo 960</item>
+        <item>Volvo C30</item>
+        <item>Volvo C70</item>
+        <item>Volvo S40</item>
+        <item>Volvo S60</item>
+        <item>Volvo S70</item>
+        <item>Volvo S80</item>
+        <item>Volvo S90</item>
+        <item>Volvo V40</item>
+        <item>Volvo V50</item>
+        <item>Volvo V70</item>
+        <item>Volvo V90</item>
+        <item>Volvo XC60</item>
+        <item>Volvo XC70</item>
+        <item>Volvo XC90</item>
+    </string-array>
+</resources>

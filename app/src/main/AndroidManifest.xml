@@ -58,9 +58,6 @@
             android:label="@string/edit_profile"
             android:parentActivityName=".activities.ProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.EventDetailsActivity"
@@ -86,6 +83,11 @@
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/action_settings"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".activities.FindRidesActivity"
+            android:label="@string/find_a_ride"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
 

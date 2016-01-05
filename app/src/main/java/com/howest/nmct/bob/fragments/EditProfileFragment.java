@@ -6,13 +6,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.activities.EditProfileActivity;
 import com.howest.nmct.bob.models.User;
-import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,8 +22,10 @@ import butterknife.ButterKnife;
  * 09/12/15
  */
 public class EditProfileFragment extends Fragment {
-    @Bind(R.id.imgProfile) ImageView imgProfile;
-    @Bind(R.id.tvProfileAboutMe) TextView tvProfileAboutMe;
+    @Bind(R.id.tvProfileAboutMe) EditText etProfileAboutMe;
+    @Bind(R.id.etMobile) EditText etMobile;
+    @Bind(R.id.etCarModel) AutoCompleteTextView etCarModel;
+    @Bind(R.id.etCarNo) EditText etCarNo;
 
     public EditProfileFragment() {
     }
@@ -42,14 +44,25 @@ public class EditProfileFragment extends Fragment {
         User user = parentActivity.getUser();
         if (user == null) return;
 
-        Picasso p = Picasso.with(getActivity());
-        p.load(user.getPicture())
-                .fit()
-                .centerCrop()
-                .into(imgProfile);
-
         if (!user.getAboutMe().isEmpty()) {
-            tvProfileAboutMe.setText(user.getAboutMe());
+            etProfileAboutMe.setText(user.getAboutMe());
+        }
+
+        if (!user.getMobile().isEmpty()) {
+            etMobile.setText(user.getMobile());
+        }
+
+        ArrayAdapter<String> modelAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                getResources().getStringArray(R.array.car_makes));
+        etCarModel.setAdapter(modelAdapter);
+
+        if (!user.getCarModel().isEmpty()) {
+            etCarModel.setText(user.getCarModel());
+        }
+
+        if (!user.getCarNo().isEmpty()) {
+            etCarNo.setText(user.getCarNo());
         }
     }
 
@@ -61,7 +74,10 @@ public class EditProfileFragment extends Fragment {
         EditProfileActivity parentActivity = (EditProfileActivity) getActivity();
         User user = parentActivity.getUser();
 
-        user.setAboutMe(tvProfileAboutMe.getText().toString());
+        user.setAboutMe(etProfileAboutMe.getText().toString());
+        user.setMobile(etMobile.getText().toString());
+        user.setCarModel(etCarModel.getText().toString());
+        user.setCarNo(etCarNo.getText().toString());
 
         return user;
     }

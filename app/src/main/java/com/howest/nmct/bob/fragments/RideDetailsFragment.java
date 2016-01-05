@@ -49,6 +49,8 @@ public class RideDetailsFragment extends Fragment implements
     @Bind(R.id.tvDriverName) TextView tvDriverName;
     @Bind(R.id.lstAccepted) ListView lstAccepted;
     @Bind(R.id.lstRequest) ListView lstRequest;
+    @Bind(R.id.tvDriverCarModel) TextView tvDriverCarModel;
+    @Bind(R.id.tvDriverCarNo) TextView tvDriverCarNo;
 
     private String mRideId;
     private static final int URL_LOADER = 0;
@@ -70,7 +72,9 @@ public class RideDetailsFragment extends Fragment implements
             EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_COVER,
             PlaceEntry.TABLE_NAME + "." + EventEntry.COLUMN_NAME,
             RideEntry.TABLE_NAME + "." + RideEntry.COLUMN_DESCRIPTION,
-            UserEntry.TABLE_NAME + "." + UserEntry.COLUMN_PICTURE
+            UserEntry.TABLE_NAME + "." + UserEntry.COLUMN_PICTURE,
+            UserEntry.TABLE_NAME + "." + UserEntry.COLUMN_CAR_MODEL,
+            UserEntry.TABLE_NAME + "." + UserEntry.COLUMN_CAR_NO
     };
 
     public static final int COL_RIDE_ID = 0;
@@ -84,6 +88,8 @@ public class RideDetailsFragment extends Fragment implements
     public static final int COL_PLACE_NAME = 8;
     public static final int COL_DESCRIPTION = 9;
     public static final int COL_DRIVER_PICTURE = 10;
+    public static final int COL_DRIVER_CAR_MODEL = 11;
+    public static final int COL_DRIVER_CAR_NO = 12;
 
     private static final String[] USER_RIDE_COLUMNS = {
             UserRideEntry.TABLE_NAME + "." + UserRideEntry._ID,
@@ -154,6 +160,8 @@ public class RideDetailsFragment extends Fragment implements
         tvDate.setText(DateFormat.getDateTimeInstance().format(startTime));
         tvDescription.setText(mCursor.getString(COL_DESCRIPTION));
         tvDriverName.setText(mCursor.getString(COL_USER_NAME));
+        tvDriverCarModel.setText(mCursor.getString(COL_DRIVER_CAR_MODEL));
+        tvDriverCarNo.setText(mCursor.getString(COL_DRIVER_CAR_NO));
 
         Picasso p = Picasso.with(getActivity());
         p.load(mCursor.getString(COL_DRIVER_PICTURE))

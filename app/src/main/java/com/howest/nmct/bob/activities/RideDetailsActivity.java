@@ -1,19 +1,25 @@
 package com.howest.nmct.bob.activities;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.ShareActionProvider;
+import android.transition.Transition;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.fragments.RideDetailsFragment;
+import com.howest.nmct.bob.interfaces.ResponseListener;
 import com.howest.nmct.bob.models.Ride;
+import com.howest.nmct.bob.sync.BackendSyncAdapter;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -30,6 +36,8 @@ public class RideDetailsActivity extends BaseActivity {
     private String mRideId;
     private RideDetailsFragment mFragment;
 
+    private String mTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (!parseIntent()) {
@@ -37,6 +45,21 @@ public class RideDetailsActivity extends BaseActivity {
         }
         super.onCreate(savedInstanceState);
         setStatusBarTranslucent(true);
+
+        getWindow().getSharedElementEnterTransition().addListener(new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {}
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                setToolbarTitle(mTitle);
+            }
+            @Override
+            public void onTransitionCancel(Transition transition) {}
+            @Override
+            public void onTransitionPause(Transition transition) {}
+            @Override
+            public void onTransitionResume(Transition transition) {}
+        });
     }
 
     @Override
@@ -81,8 +104,7 @@ public class RideDetailsActivity extends BaseActivity {
 
     protected void initData(Bundle activityData) {
         if (activityData == null) return;
-        String rideId = activityData.getString(RIDE);
-        setRideId(rideId);
+        setRideId(activityData.getString(RIDE));
     }
 
     @Override
@@ -129,14 +151,45 @@ public class RideDetailsActivity extends BaseActivity {
         // Events when selecting an item in the options
         int id = item.getItemId();
         if (id == R.id.event) {
-            navigateToEventDetails(mFragment.getEventId(), (ImageView) findViewById(R.id.toolbarImage));
+            navigateToEventDetails(mFragment.getEventId());
+            return true;
+        } else if (id == R.id.delete) {
+            final Context context = this;
+
+            new AlertDialog.Builder(this)
+                    .setIcon(R.drawable.ic_trash)
+                    .setTitle("Deleting Ride")
+                    .setMessage("Are you sure you want to delete this ride?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            BackendSyncAdapter.deleteRide(context, mRideId, new ResponseListener() {
+                                @Override
+                                public void onSuccess(String id) {
+                                    Toast.makeText(context, "You're no longer part of this ride", Toast.LENGTH_LONG).show();
+                                    finish();
+                                }
+
+                                @Override
+                                public void onFailure(Exception e) {
+                                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void initToolbar(String cover, String title) {
+        this.mTitle = title;
         setToolbarImage(cover);
-        setToolbarTitle(title);
+        setToolbarTitle(mTitle);
     }
 }

@@ -18,21 +18,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.howest.nmct.bob.R;
-import com.howest.nmct.bob.activities.EventsActivity;
 import com.howest.nmct.bob.activities.NavigationActivity;
 import com.howest.nmct.bob.adapters.EventAdapter;
 import com.howest.nmct.bob.data.Contracts.EventEntry;
 import com.howest.nmct.bob.data.Contracts.PlaceEntry;
+import com.howest.nmct.bob.models.Event;
 import com.howest.nmct.bob.sync.BackendSyncAdapter;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,12 +38,9 @@ import butterknife.ButterKnife;
 public class EventsFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
 
-    @Bind(R.id.list)
-    RecyclerView recyclerView;
-    @Bind(R.id.empty_view)
-    TextView emptyView;
-    @Bind(R.id.swipeContainer)
-    SwipeRefreshLayout swipeContainer;
+    @Bind(R.id.list) RecyclerView recyclerView;
+    @Bind(R.id.empty_view) TextView emptyView;
+    @Bind(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
 
     public EventAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -69,8 +61,7 @@ public class EventsFragment extends Fragment implements
     public static final int COL_EVENT_COVER = 3;
     public static final int COL_PLACE_NAME = 4;
 
-    public EventsFragment() {
-    }
+    public EventsFragment() {}
 
     @Nullable
     @Override
@@ -109,8 +100,9 @@ public class EventsFragment extends Fragment implements
     }
 
 
-    public void onEventSelected(String eventId, ImageView imgEvent) {
-        ((NavigationActivity) getActivity()).navigateToEventDetails(eventId, imgEvent);
+    public void onEventSelected(String eventId) {
+        ((NavigationActivity) getActivity())
+                .navigateToEventDetails(eventId);
     }
 
     @Override
@@ -121,9 +113,9 @@ public class EventsFragment extends Fragment implements
                         getActivity(),
                         EventEntry.CONTENT_URI,
                         EVENT_COLUMNS,
+                        EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_HIDE + "=" + Event.VISIBILE,
                         null,
-                        null,
-                        null
+                        EventEntry.COLUMN_START_TIME + " DESC"
                 );
             default:
                 return null;
@@ -134,15 +126,16 @@ public class EventsFragment extends Fragment implements
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         Log.d("EventsFragment", "Cursor loaded " + data.getCount());
 
-        if (data.getCount() == 0) {
-            emptyView.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-            emptyView.setText(R.string.no_events);
-        }
-        else {
-            emptyView.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
-            mAdapter.swapCursor(data);
+        if (getLoaderManager().getLoader(URL_LOADER).equals(loader)) {
+            if (data.getCount() == 0) {
+                emptyView.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+                emptyView.setText(R.string.no_events);
+            } else {
+                emptyView.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                mAdapter.swapCursor(data);
+            }
         }
 
         swipeContainer.setRefreshing(false);

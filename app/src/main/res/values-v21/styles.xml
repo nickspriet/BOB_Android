@@ -2,7 +2,6 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
 
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowContentTransitions">true</item>
@@ -14,7 +13,5 @@
         <item name="android:windowEnterTransition">@transition/slide</item>
         <item name="android:windowExitTransition">@transition/slide</item>
         <item name="android:windowReenterTransition">@transition/slide</item>
-
-        <item name="android:windowSharedElementEnterTransition">@transition/change_image_transform</item>
     </style>
 </resources>

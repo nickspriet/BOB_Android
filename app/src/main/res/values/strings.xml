@@ -82,5 +82,15 @@
     <string name="save">Save</string>
     <string name="edit">Edit</string>
     <string name="view_profile">View Profile</string>
-    <string name="write_something_about_yourself">Write something about yourself</string>
+    <string name="write_something_about_yourself">Something about myself</string>
+    <string name="toolbar_image">Toolbar Image</string>
+    <string name="share_my_ride">Share my ride</string>
+    <string name="find_a_ride">Find a ride</string>
+    <string name="hide_event">Hide event</string>
+    <string name="hide">Hide</string>
+    <string name="delete">Delete</string>
+    <string name="mobile">Mobile</string>
+    <string name="carmodel">Car Model</string>
+    <string name="carno">Car No.</string>
+    <string name="carmake">Car Make</string>
 </resources>

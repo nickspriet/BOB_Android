@@ -8,7 +8,6 @@ package com.howest.nmct.bob.adapters;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -201,9 +200,9 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         return mCursor.getCount();
     }
 
-    private void onRideSelected(int itemId, ImageView rideImage) {
+    private void onRideSelected(int itemId) {
         mCursor.moveToPosition(itemId);
-        mFragment.onRideSelected(mCursor.getString(RidesFragment.COL_RIDE_ID), rideImage);
+        mFragment.onRideSelected(mCursor.getString(RidesFragment.COL_RIDE_ID));
     }
 
     private void onMapButtonClicked(int itemId) {
@@ -240,8 +239,7 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
 
         @OnClick(R.id.cardView)
         public void onCardClicked() {
-            ViewCompat.setTransitionName(rideImage, "toolbarImage");
-            adapter.onRideSelected(getAdapterPosition(), rideImage);
+            adapter.onRideSelected(getAdapterPosition());
         }
 
         @OnClick(R.id.map_button)

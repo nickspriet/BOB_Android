@@ -45,7 +45,6 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 import static com.howest.nmct.bob.Constants.API_USER_LOGIN;
-import static com.howest.nmct.bob.Constants.API_EVENT_SAVE;
 import static com.howest.nmct.bob.Constants.BACKEND_HOST;
 import static com.howest.nmct.bob.Constants.BACKEND_SCHEME;
 import static com.howest.nmct.bob.Constants.BACKEND_TOKEN;
@@ -59,12 +58,9 @@ import static com.howest.nmct.bob.Constants.USER_ID;
 
 public class LoginActivity extends AppCompatActivity {
 
-    @Bind(R.id.progress)
-    ProgressBar progressBar;
-    @Bind(R.id.errorMessage)
-    TextView errorMessage;
-    @Bind(R.id.btnTryAgain)
-    Button btnTryAgain;
+    @Bind(R.id.progress) ProgressBar progressBar;
+    @Bind(R.id.errorMessage) TextView errorMessage;
+    @Bind(R.id.btnTryAgain) Button btnTryAgain;
 
     //manage callbacks
     private CallbackManager callbackManager;
@@ -95,18 +91,15 @@ public class LoginActivity extends AppCompatActivity {
             AccessToken accessToken = AccessToken.getCurrentAccessToken();
             saveToken(accessToken);
             syncToken();
-        }
-        else if (backendToken.isEmpty() && !fbToken.isEmpty()) {
+        } else if (backendToken.isEmpty() && !fbToken.isEmpty()) {
             Log.i("LoginActivity", "No Backend Token - Attempting login");
             setContentView(R.layout.activity_loading);
             syncToken();
-        }
-        else if (!backendToken.isEmpty() && !fbToken.isEmpty()) {
+        } else if (!backendToken.isEmpty() && !fbToken.isEmpty()) {
             Log.i("LoginActivity", "We have a backend token - Get profile");
             setContentView(R.layout.activity_loading);
             getProfile();
-        }
-        else {
+        } else {
             Log.i("LoginActivity", "No backend token and no facebook token");
             initLoginButton();
         }
@@ -203,25 +196,25 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                Log.i("LoginActivity", "Call failed");
+                Log.i("LoginActivity", "Call failed", e);
                 showError("No internet connection", e);
             }
 
             @Override
             public void onResponse(Response response) throws IOException {
-                String responseString = response.body().string();
-                Log.i("LoginActivity", responseString);
-                APILoginResponse apiResponse = new Gson().fromJson(responseString, APILoginResponse.class);
+                APILoginResponse apiResponse = new Gson().fromJson(response.body().charStream(), APILoginResponse.class);
                 if (apiResponse.statusCode == 200) {
-                    getContentResolver().insert(UserEntry.CONTENT_URI, User.asContentValues(apiResponse.data.user));
+                    getContentResolver().insert(
+                            UserEntry.CONTENT_URI,
+                            User.asContentValues(apiResponse.data.user)
+                    );
 
                     preferences.edit()
                             .putString(USER_ID, apiResponse.data.user.getId())
                             .apply();
 
                     onLoggedIn();
-                }
-                else {
+                } else {
                     // Might be an incorrect backend token
                     preferences.edit().remove(BACKEND_TOKEN).apply();
                     showError("Cannot find user");
@@ -271,15 +264,13 @@ public class LoginActivity extends AppCompatActivity {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-                Log.i("LoginActivity", "Call failed");
+                Log.i("LoginActivity", "Call failed", e);
                 showError("No internet connection", e);
             }
 
             @Override
             public void onResponse(Response response) throws IOException {
-                String responseString = response.body().string();
-                Log.i("LoginActivity", responseString);
-                APIAuthenticatedResponse apiResponse = new Gson().fromJson(responseString, APIAuthenticatedResponse.class);
+                APIAuthenticatedResponse apiResponse = new Gson().fromJson(response.body().charStream(), APIAuthenticatedResponse.class);
                 onAuthenticated(apiResponse);
             }
         });

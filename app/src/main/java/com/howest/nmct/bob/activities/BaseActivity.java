@@ -1,6 +1,5 @@
 package com.howest.nmct.bob.activities;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -20,7 +19,6 @@ import com.howest.nmct.bob.data.Contracts.UserEntry;
 import com.howest.nmct.bob.interfaces.ToolbarController;
 import com.howest.nmct.bob.models.User;
 import com.howest.nmct.bob.sync.BackendSyncAdapter;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
@@ -146,18 +144,7 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
         }
     }
 
-    @Override
-    public void setToolbarImage(String url, Callback callback) {
-        if (mToolbarImage != null) {
-            Picasso p = Picasso.with(this);
-            p.load(url)
-                    .noFade()
-                    .fit()
-                    .centerCrop()
-                    .into(mToolbarImage, callback);
-        }
-    }
-
+    // @FixMe: See Android bug #190388
     @Override
     public void setToolbarTitle(String title) {
         if (mToolbarLayout == null) return;
@@ -197,11 +184,6 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
     }
 
     @Override
-    protected void addDataToIntent(Intent i) {
-        i.putExtra(USER_PROFILE, mUser);
-    }
-
-    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         switch (id) {
             case USER_LOADER:
@@ -216,7 +198,8 @@ public abstract class BaseActivity extends NavigationActivity implements Toolbar
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (!data.moveToFirst()) {
-            Log.e("BaseActivity", "No user found " + data.getColumnCount() + " " + Arrays.toString(data.getColumnNames()));
+            Log.e("BaseActivity", "No user found " + data.getColumnCount() +
+                    " " + Arrays.toString(data.getColumnNames()));
             data.close();
             navigatetoLogin();
             return;

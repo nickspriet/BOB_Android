@@ -15,7 +15,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +22,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.howest.nmct.bob.R;
@@ -37,9 +35,11 @@ import static com.howest.nmct.bob.Constants.ACTIVITY_FEED;
 import static com.howest.nmct.bob.Constants.ACTIVITY_PROFILE;
 import static com.howest.nmct.bob.Constants.ACTIVITY_RIDES;
 import static com.howest.nmct.bob.Constants.ACTIVITY_SETTINGS;
+import static com.howest.nmct.bob.Constants.APPBAR_TRANSITION_NAME;
 import static com.howest.nmct.bob.Constants.BACKEND_TOKEN;
 import static com.howest.nmct.bob.Constants.EVENT;
 import static com.howest.nmct.bob.Constants.REQUEST_EDIT;
+import static com.howest.nmct.bob.Constants.REQUEST_RIDE;
 import static com.howest.nmct.bob.Constants.RIDE;
 import static com.howest.nmct.bob.Constants.TOOLBAR_TRANSITION_NAME;
 import static com.howest.nmct.bob.Constants.USER_ID;
@@ -53,20 +53,12 @@ public abstract class NavigationActivity extends AppCompatActivity
 
     private static final String SELECTED_MENU_ITEM_ID = "selectedMenuItemId";
 
-    @Nullable
-    @Bind(R.id.toolbarLayout)
-    CollapsingToolbarLayout mToolbarLayout;
-    @Bind(R.id.appbarLayout)
-    AppBarLayout appBarLayout;
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
-    @Nullable
-    @Bind(R.id.toolbarImage)
-    ImageView mToolbarImage;
-    @Bind(R.id.drawer_layout)
-    DrawerLayout mDrawerLayout;
-    @Bind(R.id.nav_view)
-    NavigationView mNavigationView;
+    @Nullable @Bind(R.id.toolbarLayout) CollapsingToolbarLayout mToolbarLayout;
+    @Bind(R.id.appbarLayout) AppBarLayout appBarLayout;
+    @Bind(R.id.toolbar) Toolbar mToolbar;
+    @Nullable @Bind(R.id.toolbarImage) ImageView mToolbarImage;
+    @Bind(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @Bind(R.id.nav_view) NavigationView mNavigationView;
 
     private ActionBarDrawerToggle mDrawerToggle;
     private int mSelectedMenuItemId;
@@ -206,17 +198,33 @@ public abstract class NavigationActivity extends AppCompatActivity
                 throw new Error("Invalid activityName");
         }
 
-        addDataToIntent(i);
         startActivity(i);
         finish();
     }
 
-    /**
-     * Adds data to the intent - Defined by inheritors
-     *
-     * @param i the intent
-     */
-    protected abstract void addDataToIntent(Intent i);
+    public void navigateToActivity(Intent intent) {
+        Pair appbar = new Pair<>(appBarLayout, APPBAR_TRANSITION_NAME);
+        Pair toolbar = new Pair<>(mToolbar, TOOLBAR_TRANSITION_NAME);
+
+
+        ActivityOptionsCompat transitionActivityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this, appbar, toolbar);
+
+        ActivityCompat.startActivity(this,
+                intent, transitionActivityOptions.toBundle());
+    }
+
+    public void navigateToActivityForResult(Intent intent, int requestCode) {
+        Pair appbar = new Pair<>(appBarLayout, APPBAR_TRANSITION_NAME);
+        Pair toolbar = new Pair<>(mToolbar, TOOLBAR_TRANSITION_NAME);
+
+        ActivityOptionsCompat transitionActivityOptions =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this, appbar, toolbar);
+
+        ActivityCompat.startActivityForResult(this, intent, requestCode, transitionActivityOptions.toBundle());
+    }
 
     /**
      * Shows the back icon
@@ -230,49 +238,23 @@ public abstract class NavigationActivity extends AppCompatActivity
 
 
     /**
-     * Starts the RideActivity and inserts the Ride bundle with a transition
-     *
-     * @param rideId    The Ride ID
-     * @param imageView The View that is shared
+     * Starts the RideDetailsActivity
+     * @param rideId The Ride ID
      */
-    public void navigateToRideDetails(String rideId, ImageView imageView) {
+    public void navigateToRideDetails(String rideId) {
         Intent i = new Intent(this, RideDetailsActivity.class);
-        addDataToIntent(i);
         i.putExtra(RIDE, rideId);
-
-        Pair image = new Pair<>(imageView, ViewCompat.getTransitionName(imageView));
-        Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
-
-        ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this, image, toolbar);
-        ActivityCompat.startActivity(this, i, transitionActivityOptions.toBundle());
+        navigateToActivity(i);
     }
 
     /**
-     * Starts the EventDetailsActivity and inserts the Event bundle with a transition
-     *
-     * @param imageView The View that is shared
+     * Starts the EventDetailsActivity
+     * @param eventId The Event ID
      */
-    public void navigateToEventDetails(String eventId, ImageView imageView) {
-        Intent i = new Intent(this, EventDetailsActivity.class);
-        addDataToIntent(i);
-        i.putExtra(EVENT, eventId);
-
-        Pair image = new Pair<>(imageView, ViewCompat.getTransitionName(imageView));
-        Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
-
-        ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this, image, toolbar);
-        ActivityCompat.startActivity(this, i, transitionActivityOptions.toBundle());
-    }
-
     public void navigateToEventDetails(String eventId) {
         Intent i = new Intent(this, EventDetailsActivity.class);
-        addDataToIntent(i);
         i.putExtra(EVENT, eventId);
-
-        Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
-
-        ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this, toolbar);
-        ActivityCompat.startActivity(this, i, transitionActivityOptions.toBundle());
+        navigateToActivity(i);
     }
 
     /**
@@ -280,12 +262,13 @@ public abstract class NavigationActivity extends AppCompatActivity
      */
     public void navigateToEditProfile() {
         Intent i = new Intent(this, EditProfileActivity.class);
-        addDataToIntent(i);
+        navigateToActivityForResult(i, REQUEST_EDIT);
+    }
 
-        Pair toolbar = new Pair<>(appBarLayout, TOOLBAR_TRANSITION_NAME);
-
-        ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this, toolbar);
-        ActivityCompat.startActivityForResult(this, i, REQUEST_EDIT, transitionActivityOptions.toBundle());
+    public void navigateToFindRides(String eventId) {
+        Intent i = new Intent(this, FindRidesActivity.class);
+        i.putExtra(EVENT, eventId);
+        navigateToActivityForResult(i, REQUEST_RIDE);
     }
 
     /**
@@ -306,33 +289,5 @@ public abstract class NavigationActivity extends AppCompatActivity
         startActivity(i);
         finish();
     }
-
-    /**
-     * Schedules the shared element transition to be started immediately
-     * after the shared element has been measured and laid out within the
-     * activity's view hierarchy. Some common places where it might make
-     * sense to call this method are:
-     * <p/>
-     * (1) Inside a Fragment's onCreateView() method (if the shared element
-     * lives inside a Fragment hosted by the called Activity).
-     * <p/>
-     * (2) Inside a Picasso Callback object (if you need to wait for Picasso to
-     * asynchronously load/scale a bitmap before the transition can begin).
-     * <p/>
-     * (3) Inside a LoaderCallback's onLoadFinished() method (if the shared
-     * element depends on data queried by a Loader).
-     */
-    protected void scheduleStartPostponedTransition(final View sharedElement) {
-        sharedElement.getViewTreeObserver().addOnPreDrawListener(
-                new ViewTreeObserver.OnPreDrawListener() {
-                    @Override
-                    public boolean onPreDraw() {
-                        sharedElement.getViewTreeObserver().removeOnPreDrawListener(this);
-                        startPostponedEnterTransition();
-                        return true;
-                    }
-                });
-    }
-
 
 }

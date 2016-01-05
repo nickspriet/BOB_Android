@@ -1,7 +1,6 @@
 package com.howest.nmct.bob.adapters;
 
 import android.database.Cursor;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +15,7 @@ import com.howest.nmct.bob.fragments.EventsFragment;
 import com.howest.nmct.bob.models.Event;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
 import java.util.Date;
 
 import butterknife.Bind;
@@ -45,11 +45,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         mCursor.moveToPosition(position);
         Date startTime = Event.parseDate(mCursor.getString(EventsFragment.COL_EVENT_START_TIME));
-
-        holder.tvEventDay.setText(Event.formatDate("dd", startTime));
+        
+        holder.tvEventDay.setText(Event.formatDate("d", startTime));
         holder.tvEventMonth.setText(Event.formatDate("MMM", startTime).toUpperCase());
         holder.tvEventName.setText(mCursor.getString(EventsFragment.COL_EVENT_NAME));
-        holder.tvEventDate.setText(Event.formatDate("E h a", startTime));
+        holder.tvEventDate.setText(DateFormat.getDateTimeInstance().format(startTime));
 
         String locationName = mCursor.getString(EventsFragment.COL_PLACE_NAME);
         if (locationName != null && !locationName.isEmpty()) {
@@ -101,14 +101,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
 
         @OnClick(R.id.cardView)
         public void onCardClicked() {
-            ViewCompat.setTransitionName(imgEvent, "toolbarImage");
-            adapter.onEventSelected(getAdapterPosition(), imgEvent);
+            adapter.onEventSelected(getAdapterPosition());
         }
     }
 
-    private void onEventSelected(int itemId, ImageView imgEvent) {
+    private void onEventSelected(int itemId) {
         mCursor.moveToPosition(itemId);
         int idIndex = mCursor.getColumnIndex(Contracts.EventEntry._ID);
-        mFragment.onEventSelected(mCursor.getString(idIndex), imgEvent);
+        mFragment.onEventSelected(mCursor.getString(idIndex));
     }
 }

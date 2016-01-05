@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.howest.nmct.bob.data.Contracts.PlaceEntry;
 import com.howest.nmct.bob.interfaces.EventActionsListener;
 import com.howest.nmct.bob.models.Event;
 
+import java.text.DateFormat;
 import java.util.Date;
 
 import butterknife.Bind;
@@ -38,15 +40,13 @@ public class EventDetailsFragment extends Fragment implements
     @Bind(R.id.tvEventDetailsAddress) TextView tvEventDetailsAddress;
     @Bind(R.id.tvEventDetailsStartTime) TextView tvEventDetailsStartTime;
     @Bind(R.id.tvEventDetailsEndTime) TextView tvEventDetailsEndTime;
-    @Bind(R.id.tvEventDetailsFriendsAndGuests) TextView tvEventDetailsFriendsAndGuests;
     @Bind(R.id.tvDescription) TextView tvDescription;
 
-    @Bind(R.id.btnGoing) Button btnGoing;
-    @Bind(R.id.btnInterested) Button btnInterested;
-    @Bind(R.id.btnNotGoing) Button btnNotGoing;
-
-    @Bind(R.id.bobBadge) View bobBadge;
-    @Bind(R.id.bobBadgeSeparator) View bobBadgeSeparator;
+    @Bind(R.id.tvEventDetailsAttending) TextView tvEventDetailsAttending;
+    @Bind(R.id.tvEventDetailsInterested) TextView tvEventDetailsInterested;
+    @Bind(R.id.tvEventDetailsDeclined) TextView tvEventDetailsDeclined;
+    @Bind(R.id.btnHide)
+    Button btnHide;
 
     @Bind(R.id.endsAtContainer) View endsAtContainer;
     @Bind(R.id.endsAtContainerSeparator) View endsAtContainerSeparator;
@@ -74,6 +74,7 @@ public class EventDetailsFragment extends Fragment implements
             EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_DECLINED_COUNT,
             EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_RSVP_STATUS,
             PlaceEntry.TABLE_NAME + "." + PlaceEntry.COLUMN_NAME,
+            EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_HIDE
     };
 
     public static final int COL_EVENT_ID = 0;
@@ -87,6 +88,7 @@ public class EventDetailsFragment extends Fragment implements
     public static final int COL_EVENT_DECLINED_COUNT = 8;
     public static final int COL_EVENT_RSVP_STATUS = 9;
     public static final int COL_PLACE_NAME = 10;
+    public static final int COL_HIDE = 11;
 
     public EventDetailsFragment() {}
 
@@ -121,15 +123,14 @@ public class EventDetailsFragment extends Fragment implements
         Date startTime = Event.parseDate(mCursor.getString(COL_EVENT_START_TIME));
         Date endTime = Event.parseDate(mCursor.getString(COL_EVENT_END_TIME));
 
-        tvEventDetailsFriendsAndGuests.setText(String.format("%s are going.",
-                        mCursor.getString(COL_EVENT_ATTENDING_COUNT)));
+        tvEventDetailsAttending.setText(Html.fromHtml(String.format("<b>%s</b> are going.",
+                        mCursor.getString(COL_EVENT_ATTENDING_COUNT))));
 
-        bobBadge.setVisibility(View.GONE);
-        bobBadgeSeparator.setVisibility(View.GONE);
+        tvEventDetailsInterested.setText(Html.fromHtml(String.format("<b>%s</b> are interested.",
+                mCursor.getString(COL_EVENT_INTERESTED_COUNT))));
 
-        btnGoing.setText(String.format("Going\n(%d)", mCursor.getInt(COL_EVENT_ATTENDING_COUNT)));
-        btnInterested.setText(String.format("Interested\n(%d)", mCursor.getInt(COL_EVENT_INTERESTED_COUNT)));
-        btnNotGoing.setText(String.format("Not Going\n(%d)", mCursor.getInt(COL_EVENT_DECLINED_COUNT)));
+        tvEventDetailsDeclined.setText(Html.fromHtml(String.format("<b>%s</b> declined.",
+                mCursor.getString(COL_EVENT_DECLINED_COUNT))));
 
         String location = mCursor.getString(COL_PLACE_NAME);
         if (location != null && !location.isEmpty()) {
@@ -140,41 +141,37 @@ public class EventDetailsFragment extends Fragment implements
         }
 
         if (startTime != null) {
-            tvEventDetailsStartTime.setText(String.format("%s %s at %s",
-                    Event.formatDate("EEE", startTime),
-                    Event.formatDate("FF", startTime),
-                    Event.formatDate("hh:mm a", startTime)));
+            tvEventDetailsStartTime.setText(DateFormat.getDateTimeInstance().format(startTime));
         } else {
             startAtContainer.setVisibility(View.GONE);
             startAtContainerSeparator.setVisibility(View.GONE);
         }
 
         if (endTime != null) {
-            tvEventDetailsEndTime.setText(String.format("%s %s at %s",
-                    Event.formatDate("EEE", endTime),
-                    Event.formatDate("FF", endTime),
-                    Event.formatDate("hh:mm a", endTime)));
+            tvEventDetailsEndTime.setText(DateFormat.getDateTimeInstance().format(endTime));
         } else {
             endsAtContainer.setVisibility(View.GONE);
             endsAtContainerSeparator.setVisibility(View.GONE);
         }
 
         tvDescription.setText(mCursor.getString(COL_EVENT_DESCCRIPTION));
+
+        btnHide.setText(mCursor.getInt(COL_HIDE) == 0 ? "Hide" : "Undo hide");
     }
 
-    @OnClick(R.id.btnGoing)
-    public void onBtnGoingClick() {
-        if (mListener != null) mListener.onGoing();
+    @OnClick(R.id.btnShare)
+    public void onBtnShareClick() {
+        if (mListener != null) mListener.onShareRide();
     }
 
-    @OnClick(R.id.btnInterested)
-    public void onBtnInterestedClick() {
-        if (mListener != null) mListener.onInterested();
+    @OnClick(R.id.btnFind)
+    public void onBtnFindClick() {
+        if (mListener != null) mListener.onFindRide();
     }
 
-    @OnClick(R.id.btnGoing)
-    public void onBtnNotGoingClick() {
-        if (mListener != null) mListener.onNotGoing();
+    @OnClick(R.id.btnHide)
+    public void onBtnHideClick() {
+        if (mListener != null) mListener.onHide(mCursor.getInt(COL_HIDE) == 0);
     }
 
 

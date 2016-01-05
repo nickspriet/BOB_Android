@@ -48,8 +48,8 @@ public class ProfileActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         getContentResolver().unregisterContentObserver(userObserver);
+        super.onDestroy();
     }
 
     @Override
@@ -81,31 +81,34 @@ public class ProfileActivity extends BaseActivity {
         if (id == R.id.edit) {
             navigateToEditProfile();
             return true;
-        }
-        else if (id == R.id.facebook) {
+        } else if (id == R.id.facebook) {
             IntentStarter.openFacebookProfile(this, getUser());
             return true;
-        }
-        else {
+        } else {
             throw new Error(String.format("Options Item not specified: %s", item));
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_EDIT) {
+        // FixMe: Losing focus on window
+        if (requestCode == REQUEST_EDIT ) {
             switch (resultCode) {
                 case RESULTS_CLOSE:
                     Toast.makeText(this, "Edit cancelled", Toast.LENGTH_SHORT).show();
+                    navigateToProfile();
+                    finish();
                     break;
                 case RESULTS_OK:
                     Toast.makeText(this, "Edit Saved", Toast.LENGTH_LONG).show();
-                    reloadUser();
+                    // reloadUser();
+                    navigateToProfile();
+                    finish();
                     break;
+                default:
+                    super.onActivityResult(requestCode, resultCode, data);
             }
         }
-
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     class UserObserver extends ContentObserver {

@@ -1,21 +1,23 @@
 package com.howest.nmct.bob.activities;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.transition.Transition;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.howest.nmct.bob.R;
-import com.howest.nmct.bob.collections.Rides;
-import com.howest.nmct.bob.fragments.CreateRideDialogFragment;
+import com.howest.nmct.bob.data.Contracts.EventEntry;
+import com.howest.nmct.bob.data.Contracts.RideEntry;
 import com.howest.nmct.bob.fragments.EventDetailsFragment;
 import com.howest.nmct.bob.interfaces.EventActionsListener;
 import com.howest.nmct.bob.interfaces.ResponseListener;
-import com.howest.nmct.bob.interfaces.RideOptionSelectedListener;
+import com.howest.nmct.bob.models.Event;
 import com.howest.nmct.bob.sync.BackendSyncAdapter;
 
 import java.util.List;
@@ -23,26 +25,44 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.howest.nmct.bob.Constants.EVENT;
+import static com.howest.nmct.bob.Constants.REQUEST_RIDE;
+import static com.howest.nmct.bob.Constants.RESULTS_CLOSE;
+import static com.howest.nmct.bob.Constants.RESULTS_OK;
+import static com.howest.nmct.bob.Constants.RIDE;
 
 /**
  * illyism
  * 24/11/15
  */
-public class EventDetailsActivity extends BaseActivity implements RideOptionSelectedListener,
+public class EventDetailsActivity extends BaseActivity implements
     EventActionsListener {
 
     private String mEventId;
     private EventDetailsFragment mFragment;
 
-    private static final int URL_LOADER = 0;
+    private String mTitle;
 
     protected void onCreate(Bundle savedInstanceState) {
         if (!parseIntent()) {
             initData(getIntent() != null ? getIntent().getExtras() : savedInstanceState);
         }
-        initData(getIntent() != null ?   getIntent().getExtras() : savedInstanceState);
         super.onCreate(savedInstanceState);
         setStatusBarTranslucent(true);
+
+        getWindow().getSharedElementEnterTransition().addListener(new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {}
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                setToolbarTitle(mTitle);
+            }
+            @Override
+            public void onTransitionCancel(Transition transition) {}
+            @Override
+            public void onTransitionPause(Transition transition) {}
+            @Override
+            public void onTransitionResume(Transition transition) {}
+        });
     }
 
 
@@ -89,12 +109,7 @@ public class EventDetailsActivity extends BaseActivity implements RideOptionSele
 
     protected void initData(Bundle activityData) {
         if (activityData == null) return;
-        String oldEventId = mEventId;
-        mEventId = activityData.getString(EVENT);
-        if (mEventId == null || mEventId.isEmpty()) throw new Error("No Event ID in EventDetailsActivity");
-        Log.i("EventDetailsActivity", "Loaded Event " + mEventId);
-        if (!mEventId.equals(oldEventId))
-            getSupportLoaderManager().restartLoader(URL_LOADER, null, this);
+        setEventId(activityData.getString(EVENT));
     }
 
     @Override
@@ -121,36 +136,88 @@ public class EventDetailsActivity extends BaseActivity implements RideOptionSele
     }
 
     public void initToolbar(String cover, String title) {
+        this.mTitle = title;
         setToolbarImage(cover);
-        setToolbarTitle(title);
+        setToolbarTitle(mTitle);
     }
 
-    public void onDialogBobClick(final String eventId) {
+    @Override
+    public void onShareRide() {
         final Context activityContext = this;
-        Rides.createRideFromEvent(this, mEventId, new ResponseListener() {
-            @Override
-            public void onSuccess() {
-                Log.i("EventDetailsActivity", "Ride is created");
-                BackendSyncAdapter.syncImmediately(activityContext);
-                Toast.makeText(activityContext, "Ride created", Toast.LENGTH_LONG).show();
-            }
 
-            @Override
-            public void onFailure() {
-                Log.e("EventDetailsActivity", "Failed to save ride");
-                Toast.makeText(activityContext, "Failed to save this ride", Toast.LENGTH_LONG).show();
-            }
-        });
+        Cursor c = getContentResolver().query(RideEntry.CONTENT_URI,
+                new String[] { RideEntry.TABLE_NAME + "." + RideEntry._ID },
+                RideEntry.COLUMN_EVENT_ID + "=?",
+                new String[] {mEventId},
+                null,
+                null
+        );
+
+        if (c != null && c.moveToFirst()) {
+            // Event already exists
+            navigateToRideDetails(c.getString(0));
+            c.close();
+        } else {
+            BackendSyncAdapter.createRideFromEvent(this, mEventId, new ResponseListener() {
+                @Override
+                public void onSuccess(String id) {
+                    Log.i("EventDetailsActivity", "Ride is created - " + id);
+                    navigateToRideDetails(id);
+                    Toast.makeText(activityContext, "Ride created", Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    Log.e("EventDetailsActivity", "Failed to save ride", e);
+                    Toast.makeText(activityContext, "Failed to save this ride", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
 
     }
 
-    public void onDialogNotBobClick(String mEventId) {}
-
-    public void onGoing() {
-        DialogFragment dialog = CreateRideDialogFragment.newInstance(this, mEventId);
-        dialog.show(getSupportFragmentManager(), "CreateRideDialogFragment");
+    @Override
+    public void onHide(Boolean shouldHide) {
+        ContentValues values = new ContentValues();
+        values.put(EventEntry.COLUMN_HIDE, shouldHide ? Event.HIDDEN : Event.VISIBILE);
+        getContentResolver().update(
+                EventEntry.buildEventUri(mEventId),
+                values, null, null
+        );
+        finish();
     }
 
-    public void onInterested() {}
-    public void onNotGoing() {}
+    @Override
+    public void onFindRide() {
+        navigateToFindRides(mEventId);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_RIDE) {
+            switch (resultCode) {
+                case RESULTS_OK:
+                    Toast.makeText(this, "Ride selected", Toast.LENGTH_SHORT).show();
+                    String rideId = data.getExtras().getString(RIDE);
+                    final Context context = this;
+                    BackendSyncAdapter.requestRide(this, rideId, new ResponseListener() {
+                        @Override
+                        public void onSuccess(String id) {
+                            navigateToRideDetails(id);
+                        }
+
+                        @Override
+                        public void onFailure(Exception e) {
+                            Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    break;
+                case RESULTS_CLOSE:
+                    Toast.makeText(this, "Nothing selected", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

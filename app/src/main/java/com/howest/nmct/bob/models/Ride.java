@@ -12,7 +12,7 @@ import com.howest.nmct.bob.Constants;
 import com.howest.nmct.bob.data.Contracts.RideEntry;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -126,22 +126,25 @@ public class Ride implements Parcelable {
     }
 
     public static ContentValues[] asContentValues(LinkedHashSet<Ride> rides) {
-        ContentValues[] values = new ContentValues[rides.size()];
-        int i = 0;
-        for (Iterator<Ride> iter = rides.iterator(); iter.hasNext(); i++) {
-            values[i] = asContentValues(iter.next());
+        HashMap<String, ContentValues> values = new HashMap<>();
+        for (Ride r : rides) {
+            if (!values.containsKey(r.id)) {
+                values.put(r.id, asContentValues(r));
+            }
         }
-        return values;
+        return values.values().toArray(new ContentValues[values.size()]);
     }
 
-    private static ContentValues asContentValues(Ride r) {
+    public static ContentValues asContentValues(Ride r) {
         ContentValues values = new ContentValues();
         values.put(RideEntry._ID, r.id);
         values.put(RideEntry.COLUMN_START_TIME, r.startTime);
         values.put(RideEntry.COLUMN_END_TIME, r.endTime);
         values.put(RideEntry.COLUMN_DESCRIPTION, r.description);
         values.put(RideEntry.COLUMN_DRIVER_ID, r.driver.Id);
-        values.put(RideEntry.COLUMN_PLACE_ID, r.place.id);
+        if (r.place != null) {
+            values.put(RideEntry.COLUMN_PLACE_ID, r.place.id);
+        }
         values.put(RideEntry.COLUMN_EVENT_ID, r.event.id);
         return values;
     }
