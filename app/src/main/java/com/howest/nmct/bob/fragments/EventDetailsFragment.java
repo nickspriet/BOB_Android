@@ -45,8 +45,8 @@ public class EventDetailsFragment extends Fragment implements
     @Bind(R.id.tvEventDetailsAttending) TextView tvEventDetailsAttending;
     @Bind(R.id.tvEventDetailsInterested) TextView tvEventDetailsInterested;
     @Bind(R.id.tvEventDetailsDeclined) TextView tvEventDetailsDeclined;
-    @Bind(R.id.btnHide)
-    Button btnHide;
+    @Bind(R.id.btnHide) Button btnHide;
+    @Bind(R.id.btnShare) Button btnShare;
 
     @Bind(R.id.endsAtContainer) View endsAtContainer;
     @Bind(R.id.endsAtContainerSeparator) View endsAtContainerSeparator;
@@ -57,6 +57,7 @@ public class EventDetailsFragment extends Fragment implements
     @Bind(R.id.locationContainer) View locationContainer;
     @Bind(R.id.locationContainerSeparator) View locationContainerSeparator;
 
+    private String mRideId;
     private String mEventId;
     private EventActionsListener mListener;
     private Cursor mCursor;
@@ -92,9 +93,10 @@ public class EventDetailsFragment extends Fragment implements
 
     public EventDetailsFragment() {}
 
-    public static EventDetailsFragment newInstance(String eventId) {
+    public static EventDetailsFragment newInstance(String eventId, String rideId) {
         EventDetailsFragment fragment = new EventDetailsFragment();
         fragment.mEventId = eventId;
+        fragment.mRideId = rideId;
         return fragment;
     }
 
@@ -103,11 +105,6 @@ public class EventDetailsFragment extends Fragment implements
         View v = inflater.inflate(R.layout.content_event_details, container, false);
         ButterKnife.bind(this, v);
         return v;
-    }
-
-    public void setEvent(String eventId) {
-        this.mEventId = eventId;
-        getLoaderManager().restartLoader(URL_LOADER, null, this);
     }
 
     @Override
@@ -157,6 +154,7 @@ public class EventDetailsFragment extends Fragment implements
         tvDescription.setText(mCursor.getString(COL_EVENT_DESCCRIPTION));
 
         btnHide.setText(mCursor.getInt(COL_HIDE) == 0 ? "Hide" : "Undo hide");
+        btnShare.setVisibility(mRideId == null ? View.VISIBLE : View.GONE);
     }
 
     @OnClick(R.id.btnShare)

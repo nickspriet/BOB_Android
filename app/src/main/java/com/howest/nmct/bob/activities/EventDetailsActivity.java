@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.howest.nmct.bob.R;
+import com.howest.nmct.bob.data.Contracts;
 import com.howest.nmct.bob.data.Contracts.EventEntry;
 import com.howest.nmct.bob.data.Contracts.RideEntry;
 import com.howest.nmct.bob.fragments.EventDetailsFragment;
@@ -38,6 +39,7 @@ public class EventDetailsActivity extends BaseActivity implements
     EventActionsListener {
 
     private String mEventId;
+    private String mRideId;
     private EventDetailsFragment mFragment;
 
     private String mTitle;
@@ -110,6 +112,15 @@ public class EventDetailsActivity extends BaseActivity implements
     protected void initData(Bundle activityData) {
         if (activityData == null) return;
         setEventId(activityData.getString(EVENT));
+        Cursor c = getContentResolver().query(Contracts.RideEntry.CONTENT_URI,
+                new String[] {RideEntry.TABLE_NAME + "." + RideEntry._ID},
+                RideEntry.COLUMN_EVENT_ID + "=?",
+                new String[] {mEventId},
+                null);
+        if (c != null && c.moveToFirst()) {
+            mRideId = c.getString(0);
+            c.close();
+        }
     }
 
     @Override
@@ -130,7 +141,7 @@ public class EventDetailsActivity extends BaseActivity implements
         if (frags != null)
             mFragment = (EventDetailsFragment) frags.get(0);
         if (mFragment == null) {
-            mFragment = EventDetailsFragment.newInstance(mEventId);
+            mFragment = EventDetailsFragment.newInstance(mEventId, mRideId);
             addFragmentToContainer(mFragment);
         }
     }
@@ -145,18 +156,8 @@ public class EventDetailsActivity extends BaseActivity implements
     public void onShareRide() {
         final Context activityContext = this;
 
-        Cursor c = getContentResolver().query(RideEntry.CONTENT_URI,
-                new String[] { RideEntry.TABLE_NAME + "." + RideEntry._ID },
-                RideEntry.COLUMN_EVENT_ID + "=?",
-                new String[] {mEventId},
-                null,
-                null
-        );
-
-        if (c != null && c.moveToFirst()) {
-            // Event already exists
-            navigateToRideDetails(c.getString(0));
-            c.close();
+        if (mRideId != null && !mRideId.isEmpty()) {
+            navigateToRideDetails(mRideId);
         } else {
             BackendSyncAdapter.createRideFromEvent(this, mEventId, new ResponseListener() {
                 @Override
