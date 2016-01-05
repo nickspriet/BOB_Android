@@ -47,7 +47,6 @@ import java.io.IOException;
 
 import static com.howest.nmct.bob.Constants.API_RIDE;
 import static com.howest.nmct.bob.Constants.API_RIDE_REQUEST;
-import static com.howest.nmct.bob.Constants.API_USER;
 import static com.howest.nmct.bob.Constants.BACKEND_HOST;
 import static com.howest.nmct.bob.Constants.BACKEND_SCHEME;
 import static com.howest.nmct.bob.Constants.BACKEND_TOKEN;
@@ -439,12 +438,18 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String token = preferences.getString(BACKEND_TOKEN, "");
 
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(BACKEND_SCHEME)
+                .encodedAuthority(BACKEND_HOST)
+                .appendPath("api")
+                .appendPath("user")
+                .appendQueryParameter("token", token);
+
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
                 new Gson().toJson(newUser));
 
         Request request = new Request.Builder()
-                .header("Authorization", token)
-                .url(API_USER + "/" + newUser.Id)
+                .url(builder.build().toString())
                 .put(body)
                 .build();
 
@@ -457,7 +462,7 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 
             @Override
             public void onResponse(Response response) throws IOException {
-                Log.i(LOG_TAG, response.body().string());
+                Log.i(LOG_TAG, "response: " + response.body().string());
             }
         });
     }
