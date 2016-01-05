@@ -41,23 +41,23 @@ public class Provider extends ContentProvider {
 
     static final String sRideWithUserEventPlace = RideEntry.TABLE_NAME +
             " LEFT OUTER JOIN " +
-                EventEntry.TABLE_NAME +
-                " ON " + RideEntry.TABLE_NAME + "." + RideEntry.COLUMN_EVENT_ID +
-                " = " + EventEntry.TABLE_NAME + "." + EventEntry._ID +
+            EventEntry.TABLE_NAME +
+            " ON " + RideEntry.TABLE_NAME + "." + RideEntry.COLUMN_EVENT_ID +
+            " = " + EventEntry.TABLE_NAME + "." + EventEntry._ID +
             " LEFT OUTER JOIN " +
-                UserEntry.TABLE_NAME +
-                " ON " + RideEntry.TABLE_NAME + "." + RideEntry.COLUMN_DRIVER_ID +
-                " = " + UserEntry.TABLE_NAME + "." + UserEntry._ID +
+            UserEntry.TABLE_NAME +
+            " ON " + RideEntry.TABLE_NAME + "." + RideEntry.COLUMN_DRIVER_ID +
+            " = " + UserEntry.TABLE_NAME + "." + UserEntry._ID +
             " LEFT OUTER JOIN " +
-                PlaceEntry.TABLE_NAME +
-                " ON " + RideEntry.TABLE_NAME + "." + RideEntry.COLUMN_PLACE_ID +
-                " = " + PlaceEntry.TABLE_NAME + "." + PlaceEntry._ID;
+            PlaceEntry.TABLE_NAME +
+            " ON " + RideEntry.TABLE_NAME + "." + RideEntry.COLUMN_PLACE_ID +
+            " = " + PlaceEntry.TABLE_NAME + "." + PlaceEntry._ID;
 
     static final String sUserRideWithUser = UserRideEntry.TABLE_NAME +
             " LEFT OUTER JOIN " +
-                UserEntry.TABLE_NAME +
-                " ON " + UserRideEntry.TABLE_NAME + "." + UserRideEntry.COLUMN_USER_ID +
-                " = " + UserEntry.TABLE_NAME + "." + UserEntry._ID;
+            UserEntry.TABLE_NAME +
+            " ON " + UserRideEntry.TABLE_NAME + "." + UserRideEntry.COLUMN_USER_ID +
+            " = " + UserEntry.TABLE_NAME + "." + UserEntry._ID;
 
     static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -116,14 +116,13 @@ public class Provider extends ContentProvider {
         Cursor retCursor;
         switch (sUriMatcher.match(uri)) {
             // "event/*"
-            case EVENT_ID:
-            {
+            case EVENT_ID: {
                 final String eventId = uri.getPathSegments().get(1);
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         sEventWithPlace,
                         projection,
                         "(" + EventEntry.TABLE_NAME + "." + EventEntry._ID + "=?)",
-                        new String[] { eventId },
+                        new String[]{eventId},
                         null,
                         null,
                         sortOrder
@@ -131,14 +130,13 @@ public class Provider extends ContentProvider {
                 break;
             }
             // "ride/*"
-            case RIDE_ID:
-            {
+            case RIDE_ID: {
                 final String rideId = uri.getPathSegments().get(1);
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         sRideWithUserEventPlace,
                         projection,
                         "(" + RideEntry.TABLE_NAME + "." + RideEntry._ID + "=?)",
-                        new String[] {rideId},
+                        new String[]{rideId},
                         null,
                         null,
                         sortOrder
@@ -165,7 +163,7 @@ public class Provider extends ContentProvider {
                         UserRideEntry.TABLE_NAME,
                         projection,
                         "(" + UserRideEntry.COLUMN_RIDE_ID + "=?)",
-                        new String[] {rideId},
+                        new String[]{rideId},
                         null,
                         null,
                         sortOrder
@@ -219,7 +217,7 @@ public class Provider extends ContentProvider {
                         UserEntry.TABLE_NAME,
                         projection,
                         "(" + UserEntry._ID + "=?)",
-                        new String[] { userId },
+                        new String[]{userId},
                         null,
                         null,
                         sortOrder
@@ -242,7 +240,7 @@ public class Provider extends ContentProvider {
         switch (match) {
             case EVENT: {
                 long _id = db.insert(EventEntry.TABLE_NAME, null, values);
-                if ( _id > 0 )
+                if (_id > 0)
                     returnUri = EventEntry.buildEventUri(Long.toString(_id));
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
@@ -266,7 +264,7 @@ public class Provider extends ContentProvider {
             }
             case USER: {
                 long _id = db.insertWithOnConflict(UserEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-                if ( _id > 0 )
+                if (_id > 0)
                     returnUri = UserEntry.buildUserUri(Long.toString(_id));
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
@@ -365,7 +363,7 @@ public class Provider extends ContentProvider {
                         RideEntry.TABLE_NAME,
                         values,
                         "(" + RideEntry._ID + " =?)",
-                        new String[] {rideId}
+                        new String[]{rideId}
                 );
                 break;
             case PLACE:
@@ -390,7 +388,7 @@ public class Provider extends ContentProvider {
                         UserEntry.TABLE_NAME,
                         values,
                         "(" + UserEntry._ID + " = ?)",
-                        new String[] {userId}
+                        new String[]{userId}
                 );
                 break;
             default:

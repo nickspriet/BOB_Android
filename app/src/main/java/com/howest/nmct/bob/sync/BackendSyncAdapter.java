@@ -62,7 +62,7 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 
     // 60 seconds (1 minute) * 180 = 3 hours
     public static final int SYNC_INTERVAL = 60 * 180;
-    public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
+    public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
 
     private static OkHttpClient okHttpClient = new OkHttpClient();
     private static Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -95,10 +95,11 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
         String authority = context.getString(R.string.content_authority);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // we can enable inexact timers in our periodic sync
-            SyncRequest request = new SyncRequest.Builder().
-                    syncPeriodic(syncInterval, flexTime).
-                    setSyncAdapter(account, authority).
-                    setExtras(new Bundle()).build();
+            SyncRequest request = new SyncRequest.Builder()
+                    .syncPeriodic(syncInterval, flexTime)
+                    .setSyncAdapter(account, authority)
+                    .setExtras(new Bundle())
+                    .build();
             ContentResolver.requestSync(request);
         } else {
             ContentResolver.addPeriodicSync(account,
@@ -108,6 +109,7 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 
     /**
      * Helper method to have the sync adapter sync immediately
+     *
      * @param context The context used to access the account service
      */
     public static void syncImmediately(Context context) {
@@ -146,7 +148,7 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
                 return null;
             }
             /*
-             * If you don't set android:syncable="true" in
+             * If you don't set android:syncable="true"
              * in your <provider> element in the manifest,
              * then call ContentResolver.setIsSyncable(account, AUTHORITY, 1)
              * here.
@@ -398,6 +400,7 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(BACKEND_SCHEME)
                 .encodedAuthority(BACKEND_HOST)
+                .appendPath("api")
                 .appendPath("event")
                 .appendQueryParameter("token", token);
 
@@ -416,6 +419,9 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
             @Override
             public void onResponse(Response response) throws IOException {
                 APIEventsResponse apiResponse = new Gson().fromJson(response.body().charStream(), APIEventsResponse.class);
+
+                getContext().getContentResolver().delete(Contracts.PlaceEntry.CONTENT_URI, null, null);
+                getContext().getContentResolver().delete(Contracts.EventEntry.CONTENT_URI, null, null);
 
                 getContext().getContentResolver().bulkInsert(
                         PlaceEntry.CONTENT_URI,

@@ -45,6 +45,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 import static com.howest.nmct.bob.Constants.API_USER_LOGIN;
+import static com.howest.nmct.bob.Constants.API_EVENT_SAVE;
 import static com.howest.nmct.bob.Constants.BACKEND_HOST;
 import static com.howest.nmct.bob.Constants.BACKEND_SCHEME;
 import static com.howest.nmct.bob.Constants.BACKEND_TOKEN;
@@ -58,9 +59,12 @@ import static com.howest.nmct.bob.Constants.USER_ID;
 
 public class LoginActivity extends AppCompatActivity {
 
-    @Bind(R.id.progress) ProgressBar progressBar;
-    @Bind(R.id.errorMessage) TextView errorMessage;
-    @Bind(R.id.btnTryAgain) Button btnTryAgain;
+    @Bind(R.id.progress)
+    ProgressBar progressBar;
+    @Bind(R.id.errorMessage)
+    TextView errorMessage;
+    @Bind(R.id.btnTryAgain)
+    Button btnTryAgain;
 
     //manage callbacks
     private CallbackManager callbackManager;
@@ -86,20 +90,23 @@ public class LoginActivity extends AppCompatActivity {
         String backendToken = preferences.getString(BACKEND_TOKEN, "");
         Log.i("LoginActivity", "Checking saved token");
 
-        if (fbToken.isEmpty() && AccessToken.getCurrentAccessToken() != null ) {
+        if (fbToken.isEmpty() && AccessToken.getCurrentAccessToken() != null) {
             Log.i("LoginActivity", "No tokens saved - Saving token");
             AccessToken accessToken = AccessToken.getCurrentAccessToken();
             saveToken(accessToken);
             syncToken();
-        } else if (backendToken.isEmpty() && !fbToken.isEmpty()) {
+        }
+        else if (backendToken.isEmpty() && !fbToken.isEmpty()) {
             Log.i("LoginActivity", "No Backend Token - Attempting login");
             setContentView(R.layout.activity_loading);
             syncToken();
-        } else if (!backendToken.isEmpty() && !fbToken.isEmpty()) {
+        }
+        else if (!backendToken.isEmpty() && !fbToken.isEmpty()) {
             Log.i("LoginActivity", "We have a backend token - Get profile");
             setContentView(R.layout.activity_loading);
             getProfile();
-        } else {
+        }
+        else {
             Log.i("LoginActivity", "No backend token and no facebook token");
             initLoginButton();
         }
@@ -182,6 +189,7 @@ public class LoginActivity extends AppCompatActivity {
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(BACKEND_SCHEME)
                 .encodedAuthority(BACKEND_HOST)
+                .appendPath("api")
                 .appendPath("user")
                 .appendPath("profile")
                 .appendQueryParameter("token", token);
@@ -205,15 +213,15 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i("LoginActivity", responseString);
                 APILoginResponse apiResponse = new Gson().fromJson(responseString, APILoginResponse.class);
                 if (apiResponse.statusCode == 200) {
-                    getContentResolver().insert(UserEntry.CONTENT_URI,
-                            User.asContentValues(apiResponse.data.user));
+                    getContentResolver().insert(UserEntry.CONTENT_URI, User.asContentValues(apiResponse.data.user));
 
                     preferences.edit()
                             .putString(USER_ID, apiResponse.data.user.getId())
                             .apply();
 
                     onLoggedIn();
-                } else {
+                }
+                else {
                     // Might be an incorrect backend token
                     preferences.edit().remove(BACKEND_TOKEN).apply();
                     showError("Cannot find user");
@@ -225,6 +233,7 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Save the Facebook token in our SharedPreferences
+     *
      * @param accessToken The accesstoken that is to be saved
      */
     private void saveToken(AccessToken accessToken) {

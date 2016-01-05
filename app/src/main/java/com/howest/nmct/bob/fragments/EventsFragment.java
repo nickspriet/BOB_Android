@@ -1,12 +1,17 @@
 package com.howest.nmct.bob.fragments;
 
+import android.content.Context;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,12 +19,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.howest.nmct.bob.R;
+import com.howest.nmct.bob.activities.EventsActivity;
 import com.howest.nmct.bob.activities.NavigationActivity;
 import com.howest.nmct.bob.adapters.EventAdapter;
 import com.howest.nmct.bob.data.Contracts.EventEntry;
 import com.howest.nmct.bob.data.Contracts.PlaceEntry;
+import com.howest.nmct.bob.sync.BackendSyncAdapter;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import com.howest.nmct.bob.models.Event;
 
 import butterknife.Bind;
@@ -29,10 +41,11 @@ import butterknife.ButterKnife;
  * Nick on 28/10/2015.
  */
 public class EventsFragment extends Fragment implements
-        LoaderManager.LoaderCallbacks<Cursor> {
+        LoaderManager.LoaderCallbacks<Cursor>, SwipeRefreshLayout.OnRefreshListener {
 
     @Bind(R.id.list) RecyclerView recyclerView;
     @Bind(R.id.empty_view) TextView emptyView;
+    @Bind(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
 
     public EventAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -61,6 +74,7 @@ public class EventsFragment extends Fragment implements
         View view = inflater.inflate(R.layout.content_events, container, false);
         ButterKnife.bind(this, view);
         initViews();
+        swipeContainer.setOnRefreshListener(this);
         return view;
     }
 
@@ -128,10 +142,42 @@ public class EventsFragment extends Fragment implements
                 mAdapter.swapCursor(data);
             }
         }
+
+        swipeContainer.setRefreshing(false);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeContainer.setRefreshing(true);
+        BackendSyncAdapter.syncImmediately(EventsFragment.this.getContext());
+        mAdapter.notifyDataSetChanged();
+
+        //stop refresh icon animation when offline
+        if (!hasInternetConnection(getContext())) {
+            //wait 1.5 seconds
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    //stop refresh animation
+                    swipeContainer.setRefreshing(false);
+                    Toast.makeText(getContext(), "No internet connection available", Toast.LENGTH_SHORT).show();
+                }
+            }, 1500);
+
+        }
+    }
+
+    /**
+     * Check internet connection
+     * Don't forget to add ACCESS_NETWORK_STATE permission to android manifest file
+    */
+    public static boolean hasInternetConnection(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 }

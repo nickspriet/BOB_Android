@@ -103,7 +103,8 @@ public abstract class NavigationActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) mDrawerLayout.closeDrawer(GravityCompat.START);
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
+            mDrawerLayout.closeDrawer(GravityCompat.START);
         else super.onBackPressed();
     }
 
@@ -125,6 +126,7 @@ public abstract class NavigationActivity extends AppCompatActivity
 
     /**
      * Navigates to a fragment from a navigation drawer click
+     *
      * @param itemId the id of the menu item
      */
     private void updateNavigation(int itemId) {
@@ -171,6 +173,7 @@ public abstract class NavigationActivity extends AppCompatActivity
 
     /**
      * Navigates to an activity
+     *
      * @param activityName The name of the activity
      */
     private void navigateToActivity(String activityName) {
