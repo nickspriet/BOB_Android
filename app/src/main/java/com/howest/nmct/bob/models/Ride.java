@@ -12,7 +12,7 @@ import com.howest.nmct.bob.Constants;
 import com.howest.nmct.bob.data.Contracts.RideEntry;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -126,12 +126,13 @@ public class Ride implements Parcelable {
     }
 
     public static ContentValues[] asContentValues(LinkedHashSet<Ride> rides) {
-        ContentValues[] values = new ContentValues[rides.size()];
-        int i = 0;
-        for (Iterator<Ride> iter = rides.iterator(); iter.hasNext(); i++) {
-            values[i] = asContentValues(iter.next());
+        HashMap<String, ContentValues> values = new HashMap<>();
+        for (Ride r : rides) {
+            if (!values.containsKey(r.id)) {
+                values.put(r.id, asContentValues(r));
+            }
         }
-        return values;
+        return values.values().toArray(new ContentValues[values.size()]);
     }
 
     public static ContentValues asContentValues(Ride r) {

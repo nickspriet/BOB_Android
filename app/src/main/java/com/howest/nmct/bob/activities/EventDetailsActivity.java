@@ -12,13 +12,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.howest.nmct.bob.R;
-import com.howest.nmct.bob.collections.Rides;
 import com.howest.nmct.bob.data.Contracts.EventEntry;
 import com.howest.nmct.bob.data.Contracts.RideEntry;
 import com.howest.nmct.bob.fragments.EventDetailsFragment;
 import com.howest.nmct.bob.interfaces.EventActionsListener;
 import com.howest.nmct.bob.interfaces.ResponseListener;
 import com.howest.nmct.bob.models.Event;
+import com.howest.nmct.bob.sync.BackendSyncAdapter;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -158,7 +158,7 @@ public class EventDetailsActivity extends BaseActivity implements
             navigateToRideDetails(c.getString(0));
             c.close();
         } else {
-            Rides.createRideFromEvent(this, mEventId, new ResponseListener() {
+            BackendSyncAdapter.createRideFromEvent(this, mEventId, new ResponseListener() {
                 @Override
                 public void onSuccess(String id) {
                     Log.i("EventDetailsActivity", "Ride is created - " + id);
@@ -200,7 +200,7 @@ public class EventDetailsActivity extends BaseActivity implements
                     Toast.makeText(this, "Ride selected", Toast.LENGTH_SHORT).show();
                     String rideId = data.getExtras().getString(RIDE);
                     final Context context = this;
-                    Rides.requestRide(this, rideId, new ResponseListener() {
+                    BackendSyncAdapter.requestRide(this, rideId, new ResponseListener() {
                         @Override
                         public void onSuccess(String id) {
                             navigateToRideDetails(id);

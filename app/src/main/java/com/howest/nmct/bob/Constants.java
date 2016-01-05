@@ -8,10 +8,10 @@ public class Constants {
     public static final String BACKEND_HOST = "bob.il.ly";
     public static final String BACKEND_SCHEME = "http";
     public static final String BACKEND_BASEURL =  BACKEND_SCHEME + "://" + BACKEND_HOST;
+    public static final String API_USER = BACKEND_BASEURL + "/user";
     public static final String API_USER_LOGIN = BACKEND_BASEURL + "/user/login";
-    public static final String API_RIDE_CREATE = BACKEND_BASEURL + "/ride";
+    public static final String API_RIDE = BACKEND_BASEURL + "/ride";
     public static final String API_RIDE_REQUEST = BACKEND_BASEURL + "/ride/request";
-    public static final String API_RIDE_DELETE = BACKEND_BASEURL + "/ride";
 
     public static final String FACEBOOK_TOKEN = "com.howest.nmct.bob.FACEBOOK_TOKEN";
     public static final String FACEBOOK_USERID = "com.howest.nmct.bob.FACEBOOK_USERID";

@@ -14,6 +14,7 @@ import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.data.Contracts.UserEntry;
 import com.howest.nmct.bob.fragments.EditProfileFragment;
 import com.howest.nmct.bob.models.User;
+import com.howest.nmct.bob.sync.BackendSyncAdapter;
 
 import java.util.List;
 
@@ -83,20 +84,25 @@ public class EditProfileActivity extends BaseActivity {
             finish();
             return true;
         } else if (id == R.id.save) {
-            Intent i = new Intent();
-            User newUser = mFragment.getUser();
-            getContentResolver().update(
-                    UserEntry.buildUserUri(newUser.getId()),
-                    User.asContentValues(newUser),
-                    null,
-                    null
-            );
-            setResult(RESULTS_OK, i);
-            finish();
+            onSave();
             return true;
         } else {
             throw new Error(String.format("Options Item not specified: %s", item));
         }
+    }
+
+    private void onSave() {
+        Intent i = new Intent();
+        User newUser = mFragment.getUser();
+        getContentResolver().update(
+                UserEntry.buildUserUri(newUser.getId()),
+                User.asContentValues(newUser),
+                null,
+                null
+        );
+        BackendSyncAdapter.syncUser(this, newUser);
+        setResult(RESULTS_OK, i);
+        finish();
     }
 
     class UserObserver extends ContentObserver {

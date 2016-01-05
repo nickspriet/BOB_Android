@@ -16,10 +16,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.howest.nmct.bob.R;
-import com.howest.nmct.bob.collections.Rides;
 import com.howest.nmct.bob.fragments.RideDetailsFragment;
 import com.howest.nmct.bob.interfaces.ResponseListener;
 import com.howest.nmct.bob.models.Ride;
+import com.howest.nmct.bob.sync.BackendSyncAdapter;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -164,7 +164,7 @@ public class RideDetailsActivity extends BaseActivity {
                     {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Rides.delete(context, mRideId, new ResponseListener() {
+                            BackendSyncAdapter.deleteRide(context, mRideId, new ResponseListener() {
                                 @Override
                                 public void onSuccess(String id) {
                                     Toast.makeText(context, "You're no longer part of this ride", Toast.LENGTH_LONG).show();

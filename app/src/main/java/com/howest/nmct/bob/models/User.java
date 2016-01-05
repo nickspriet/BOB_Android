@@ -10,7 +10,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.howest.nmct.bob.data.Contracts.UserEntry;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 
 /**
@@ -145,7 +145,7 @@ public class User implements Parcelable {
     }
 
     public String getMobile() {
-        if (mobile == null) return "";
+        if (mobile == null || mobile.isEmpty()) return "";
         return PhoneNumberUtils.formatNumber(mobile, "BE");
     }
 
@@ -203,20 +203,20 @@ public class User implements Parcelable {
     }
 
     public static ContentValues[] asContentValues(LinkedHashSet<Ride> rides) {
-        ArrayList<ContentValues> values = new ArrayList<>();
+        HashMap<String, ContentValues> values = new HashMap<>();
         for (Ride r : rides) {
             ContentValues driverValues = asContentValues(r.driver);
-            if (driverValues != null) values.add(driverValues);
+            if (driverValues != null) values.put(r.driver.Id, driverValues);
             for (User u : r.approvedList) {
                 ContentValues listValues = asContentValues(u);
-                if (listValues != null) values.add(listValues);
+                if (listValues != null) values.put(u.Id, listValues);
             }
             for (User u : r.requestsList) {
                 ContentValues listValues = asContentValues(u);
-                if (listValues != null) values.add(listValues);
+                if (listValues != null) values.put(u.Id, listValues);
             }
         }
-        return values.toArray(new ContentValues[values.size()]);
+        return values.values().toArray(new ContentValues[values.size()]);
     }
 
     public void setMobile(String mobile) {

@@ -152,34 +152,10 @@ public class Event implements Parcelable {
         }
     }
 
-    public Date getStartTime() {
-        return parseDate(startTime);
-    }
-
-    public Date getEndTime() {
-        return parseDate(endTime);
-    }
-
-    public String getCover() {
-        return cover;
-    }
-
-    public String getAddress() {
-        if (place != null) {
-            return place.toString();
-        } else {
-            return "";
-        }
-    }
-
     public static String formatDate(String datePattern, Date date) {
         if (date == null) return "";
         SimpleDateFormat sdf = new SimpleDateFormat(datePattern, Locale.US);
         return sdf.format(date);
-    }
-
-    public String getEventFriendsOrGuests() {
-        return "Ilias, Nick and 5 other friends are going";
     }
 
     @Override
@@ -238,18 +214,6 @@ public class Event implements Parcelable {
                     return new Event[size];
                 }
             };
-
-    public int getAttendingCount() {
-        return attendingCount;
-    }
-
-    public int getInterestedCount() {
-        return interestedCount;
-    }
-
-    public int getDeclinedCount() {
-        return declinedCount;
-    }
 
     public String getDescription() {
         return description;
