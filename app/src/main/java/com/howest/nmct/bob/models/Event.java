@@ -269,4 +269,12 @@ public class Event implements Parcelable {
             values.put(EventEntry.COLUMN_PLACE_ID, e.place.id);
         return values;
     }
+
+    public static ContentValues[] asContentValues(LinkedHashSet<Ride> rides, boolean isHidden) {
+        ContentValues[] values = asContentValues(rides);
+        for (ContentValues v : values) {
+            v.put(EventEntry.COLUMN_HIDE, isHidden ? Event.HIDDEN : Event.VISIBILE);
+        }
+        return values;
+    }
 }

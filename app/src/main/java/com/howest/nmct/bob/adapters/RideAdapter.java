@@ -140,7 +140,6 @@ public class RideAdapter extends RecyclerView.Adapter<RideAdapter.ViewHolder> {
         p.load(mCursor.getString(RidesFragment.COL_EVENT_COVER))
                 .fit()
                 .centerCrop()
-                .placeholder(R.drawable.ic_image)
                 .into(holder.rideImage);
 
         if (profile != null) {

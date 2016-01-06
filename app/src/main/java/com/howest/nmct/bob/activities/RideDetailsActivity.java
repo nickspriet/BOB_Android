@@ -37,6 +37,7 @@ public class RideDetailsActivity extends BaseActivity {
     private RideDetailsFragment mFragment;
 
     private String mTitle;
+    private String mCover;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,7 @@ public class RideDetailsActivity extends BaseActivity {
             @Override
             public void onTransitionEnd(Transition transition) {
                 setToolbarTitle(mTitle);
+                setToolbarImage(mCover);
             }
             @Override
             public void onTransitionCancel(Transition transition) {}
@@ -189,7 +191,8 @@ public class RideDetailsActivity extends BaseActivity {
 
     public void initToolbar(String cover, String title) {
         this.mTitle = title;
-        setToolbarImage(cover);
+        this.mCover = cover;
+        setToolbarImage(mCover);
         setToolbarTitle(mTitle);
     }
 }

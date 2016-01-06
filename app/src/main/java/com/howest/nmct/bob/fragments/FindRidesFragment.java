@@ -1,12 +1,16 @@
 package com.howest.nmct.bob.fragments;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.MatrixCursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.preference.PreferenceManager;
+import android.provider.BaseColumns;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,30 +20,40 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
 import com.howest.nmct.bob.R;
 import com.howest.nmct.bob.activities.FindRidesActivity;
 import com.howest.nmct.bob.adapters.UserAdapter;
-import com.howest.nmct.bob.data.Contracts.EventEntry;
-import com.howest.nmct.bob.data.Contracts.PlaceEntry;
+import com.howest.nmct.bob.api.APIRidesResponse;
 import com.howest.nmct.bob.data.Contracts.RideEntry;
 import com.howest.nmct.bob.data.Contracts.UserEntry;
+import com.howest.nmct.bob.models.Ride;
+import com.squareup.okhttp.Call;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.howest.nmct.bob.Constants.BACKEND_HOST;
+import static com.howest.nmct.bob.Constants.BACKEND_SCHEME;
+import static com.howest.nmct.bob.Constants.BACKEND_TOKEN;
 
 /**
  * illyism
  * 21/10/15
  */
-public class FindRidesFragment extends Fragment implements
-        LoaderManager.LoaderCallbacks<Cursor> {
-
+public class FindRidesFragment extends Fragment {
+    private static Handler mainHandler = new Handler(Looper.getMainLooper());
     @Bind(R.id.lstRides) ListView lstRides;
 
     public UserAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private static final int URL_LOADER = 0;
     private String mEventId;
     private FindRidesActivity mActivity;
     private Cursor mCursor;
@@ -55,36 +69,20 @@ public class FindRidesFragment extends Fragment implements
 
     public void setEvent(String eventId) {
         this.mEventId = eventId;
-        getLoaderManager().restartLoader(URL_LOADER, null, this);
     }
 
     private static final String[] RIDE_COLUMNS = {
+            BaseColumns._ID,
             RideEntry.TABLE_NAME + "." + RideEntry._ID,
-            EventEntry.TABLE_NAME + "." + EventEntry._ID,
-            PlaceEntry.TABLE_NAME + "." + PlaceEntry._ID,
             UserEntry.TABLE_NAME + "." + UserEntry._ID,
-            RideEntry.TABLE_NAME + "." + RideEntry.COLUMN_START_TIME,
             UserEntry.TABLE_NAME + "." + UserEntry.COLUMN_NAME,
-            EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_NAME,
-            EventEntry.TABLE_NAME + "." + EventEntry.COLUMN_COVER,
-            PlaceEntry.TABLE_NAME + "." + EventEntry.COLUMN_NAME,
-            "(SELECT count(*) FROM userride WHERE ride._id=userride.ride_id AND userride.status=1)",
-            "(SELECT count(*) FROM userride WHERE ride._id=userride.ride_id AND userride.status=2)",
             UserEntry.TABLE_NAME + "." + UserEntry.COLUMN_PICTURE
     };
 
-    public static final int COL_RIDE_ID = 0;
-    public static final int COL_EVENT_ID = 1;
-    public static final int COL_PLACE_ID = 2;
-    public static final int COL_USER_ID = 3;
-    public static final int COL_RIDE_START_TIME = 4;
-    public static final int COL_USER_NAME = 5;
-    public static final int COL_EVENT_NAME = 6;
-    public static final int COL_EVENT_COVER = 7;
-    public static final int COL_PLACE_NAME = 8;
-    public static final int COL_USER_RIDE_APPROVED_COUNT = 9;
-    public static final int COL_USER_RIDE_REQUEST_COUNT = 10;
-    public static final int COL_USER_PICTURE = 11;
+    public static final int COL_RIDE_ID = 1;
+    public static final int COL_USER_ID = 2;
+    public static final int COL_USER_NAME = 3;
+    public static final int COL_USER_PICTURE = 4;
 
     public FindRidesFragment() {}
 
@@ -100,8 +98,61 @@ public class FindRidesFragment extends Fragment implements
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(URL_LOADER, null, this);
+        loadData();
         this.mActivity = (FindRidesActivity) getActivity();
+    }
+
+    private void loadData() {
+        OkHttpClient okHttpClient = new OkHttpClient();
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String token = preferences.getString(BACKEND_TOKEN, "");
+
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(BACKEND_SCHEME)
+                .encodedAuthority(BACKEND_HOST)
+                .appendPath("api")
+                .appendPath("event")
+                .appendPath(mEventId)
+                .appendPath("ride")
+                .appendQueryParameter("token", token);
+
+        Request request = new Request.Builder()
+                .url(builder.build().toString())
+                .get()
+                .build();
+
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, final IOException e) {
+                Log.e("FindRidesFragment", "Find Rides failed", e);
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                APIRidesResponse apiResponse = new Gson().fromJson(response.body().charStream(), APIRidesResponse.class);
+
+                final MatrixCursor c = new MatrixCursor(RIDE_COLUMNS);
+
+                int i = 0;
+                for (Ride r : apiResponse.data.rides) {
+                    c.newRow()
+                        .add(i++)
+                        .add(r.id)
+                        .add(r.driver.Id)
+                        .add(r.driver.name)
+                        .add(r.driver.picture);
+                }
+
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        onLoadFinished(c);
+                    }
+                });
+            }
+        });
     }
 
     /**
@@ -129,33 +180,9 @@ public class FindRidesFragment extends Fragment implements
         }
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        switch (id) {
-            case URL_LOADER:
-                return new CursorLoader(
-                        getContext(),
-                        RideEntry.CONTENT_URI,
-                        RIDE_COLUMNS,
-                        RideEntry.TABLE_NAME + "." + RideEntry.COLUMN_EVENT_ID + "=?",
-                        new String[] {mEventId},
-                        RideEntry.TABLE_NAME + "." + RideEntry.COLUMN_START_TIME + " DESC"
-                );
-            default:
-                return null;
-        }
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Cursor data) {
         Log.d("FindRidesFragment", "Rides loaded " + data.getCount());
         this.mCursor = data;
         mAdapter.swapCursor(mCursor);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        mCursor = null;
-        mAdapter.swapCursor(null);
     }
 }
