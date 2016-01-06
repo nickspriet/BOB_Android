@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SyncRequest;
@@ -44,10 +45,11 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import static com.howest.nmct.bob.Constants.API_RIDE;
 import static com.howest.nmct.bob.Constants.API_RIDE_REQUEST;
-import static com.howest.nmct.bob.Constants.API_USER;
 import static com.howest.nmct.bob.Constants.BACKEND_HOST;
 import static com.howest.nmct.bob.Constants.BACKEND_SCHEME;
 import static com.howest.nmct.bob.Constants.BACKEND_TOKEN;
@@ -256,6 +258,16 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
                     context.getContentResolver().insert(RideEntry.CONTENT_URI,
                             Ride.asContentValues(apiResponse.data.ride));
 
+                    HashMap<String, ContentValues> userValues = User.asContentValues(apiResponse.data.ride);
+                    context.getContentResolver().bulkInsert(
+                            UserEntry.CONTENT_URI,
+                            userValues.values().toArray(new ContentValues[userValues.size()]));
+
+                    ArrayList<ContentValues> userRideValues = UserRide.asContentValues(apiResponse.data.ride);
+                    context.getContentResolver().bulkInsert(
+                            UserRideEntry.CONTENT_URI,
+                            userRideValues.toArray(new ContentValues[userRideValues.size()]));
+
                     mainHandler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -340,8 +352,18 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.d(LOG_TAG, "On Perform Sync");
-        getRides();
         getEvents();
+        getRides();
+    }
+
+    public static int clearData(final Context context) {
+        int total = 0;
+        total += context.getContentResolver().delete(EventEntry.CONTENT_URI, null, null);
+        total += context.getContentResolver().delete(PlaceEntry.CONTENT_URI, null, null);
+        total += context.getContentResolver().delete(RideEntry.CONTENT_URI, null, null);
+        total += context.getContentResolver().delete(UserEntry.CONTENT_URI, null, null);
+        total += context.getContentResolver().delete(UserRideEntry.CONTENT_URI, null, null);
+        return total;
     }
 
     private void getRides() {
@@ -370,10 +392,11 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
             @Override
             public void onResponse(Response response) throws IOException {
                 APIRidesResponse apiResponse = new Gson().fromJson(response.body().charStream(), APIRidesResponse.class);
+                if (apiResponse.data.rides == null) return;
 
                 getContext().getContentResolver().bulkInsert(
                         EventEntry.CONTENT_URI,
-                        Event.asContentValues(apiResponse.data.rides));
+                        Event.asContentValues(apiResponse.data.rides, true));
 
                 getContext().getContentResolver().bulkInsert(
                         PlaceEntry.CONTENT_URI,
@@ -420,9 +443,7 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
             @Override
             public void onResponse(Response response) throws IOException {
                 APIEventsResponse apiResponse = new Gson().fromJson(response.body().charStream(), APIEventsResponse.class);
-
-                getContext().getContentResolver().delete(PlaceEntry.CONTENT_URI, null, null);
-                getContext().getContentResolver().delete(EventEntry.CONTENT_URI, null, null);
+                if (apiResponse.data.events == null) return;
 
                 getContext().getContentResolver().bulkInsert(
                         PlaceEntry.CONTENT_URI,
@@ -439,12 +460,18 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String token = preferences.getString(BACKEND_TOKEN, "");
 
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(BACKEND_SCHEME)
+                .encodedAuthority(BACKEND_HOST)
+                .appendPath("api")
+                .appendPath("user")
+                .appendQueryParameter("token", token);
+
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),
                 new Gson().toJson(newUser));
 
         Request request = new Request.Builder()
-                .header("Authorization", token)
-                .url(API_USER + "/" + newUser.Id)
+                .url(builder.build().toString())
                 .put(body)
                 .build();
 
@@ -457,7 +484,7 @@ public class BackendSyncAdapter extends AbstractThreadedSyncAdapter {
 
             @Override
             public void onResponse(Response response) throws IOException {
-                Log.i(LOG_TAG, response.body().string());
+                Log.i(LOG_TAG, "response: " + response.body().string());
             }
         });
     }

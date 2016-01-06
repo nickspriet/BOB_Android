@@ -205,18 +205,26 @@ public class User implements Parcelable {
     public static ContentValues[] asContentValues(LinkedHashSet<Ride> rides) {
         HashMap<String, ContentValues> values = new HashMap<>();
         for (Ride r : rides) {
-            ContentValues driverValues = asContentValues(r.driver);
-            if (driverValues != null) values.put(r.driver.Id, driverValues);
-            for (User u : r.approvedList) {
-                ContentValues listValues = asContentValues(u);
-                if (listValues != null) values.put(u.Id, listValues);
-            }
-            for (User u : r.requestsList) {
-                ContentValues listValues = asContentValues(u);
-                if (listValues != null) values.put(u.Id, listValues);
-            }
+            values.putAll(asContentValues(r));
         }
         return values.values().toArray(new ContentValues[values.size()]);
+    }
+
+    public static HashMap<String, ContentValues> asContentValues(Ride r) {
+        HashMap<String, ContentValues> values = new HashMap<>();
+
+        ContentValues driverValues = asContentValues(r.driver);
+        if (driverValues != null) values.put(r.driver.Id, driverValues);
+        for (User u : r.approvedList) {
+            ContentValues listValues = asContentValues(u);
+            if (listValues != null) values.put(u.Id, listValues);
+        }
+        for (User u : r.requestsList) {
+            ContentValues listValues = asContentValues(u);
+            if (listValues != null) values.put(u.Id, listValues);
+        }
+
+        return values;
     }
 
     public void setMobile(String mobile) {
@@ -240,4 +248,6 @@ public class User implements Parcelable {
     public void setCarNo(String carNo) {
         this.carNo = carNo;
     }
+
+
 }
